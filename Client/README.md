@@ -53,6 +53,7 @@ export default tseslint.config({
 # template readme 
 
 
+
 ### Git strategy
 
 
@@ -68,3 +69,6 @@ export default tseslint.config({
 
 
 ### Database design
+
+### Bootstrap
+scaffolding
