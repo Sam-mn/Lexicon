@@ -1,15 +1,17 @@
 import { createBrowserRouter, createRoutesFromElements, Route} from "react-router-dom";
-import { Dashboard, Login, CourseDetails, ModuleDetails, ActivityDetails } from "../pages";
 import { Layout } from "../components";
+import {HomePage, CourseDetailsPage, ModulesPage, ActivitiesPage, LoginPage, DashboardPage } from "../pages";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<Layout />} path="/">
-      <Route index element={<Dashboard />} />
-      <Route path="login" element={<Login />} />
-      <Route path="courses/:courseId" element={<CourseDetails />} />
-      <Route path="modules/:moduleId" element={<ModuleDetails />} />
-      <Route path="activities/:activityId" element={<ActivityDetails />} />
+    <Route element={<Layout />} path="/">      
+      <Route path="/" element={<HomePage />} />      
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="courses/:courseId" element={<CourseDetailsPage />} />
+      <Route path="modules/:moduleId" element={<ModulesPage />} />
+      <Route path="activities/:activityId" element={<ActivitiesPage />} />
     </Route>
   )
 );
