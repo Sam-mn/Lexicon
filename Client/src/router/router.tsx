@@ -1,5 +1,5 @@
 import { createBrowserRouter, createRoutesFromElements, Route} from "react-router-dom";
-import { Layout } from "../components";
+import { Layout, RequireAuth } from "../components";
 import {HomePage, CourseDetailsPage, ModulesPage, ActivitiesPage, LoginPage, DashboardPage } from "../pages";
 
 
