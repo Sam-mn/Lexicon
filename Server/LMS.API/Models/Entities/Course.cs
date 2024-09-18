@@ -18,7 +18,7 @@ namespace LMS.API.Models.Entities
         DateTime StartDate {  get; set; }
 
         //Navigation property for Artifacts
-        public virtual ICollection<Artifact> Artifacts { get; set; }
+        public ICollection<Artifact> Artifacts { get; set; }
 
     }
 }

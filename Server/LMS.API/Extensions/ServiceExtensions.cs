@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
-namespace Companies.API.Extensions;
+namespace LMS.API.Extensions;
 
 public static class ServiceExtensions
 {
