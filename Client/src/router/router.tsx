@@ -15,3 +15,20 @@ export const router = createBrowserRouter(
     </Route>
   )
 );
+
+
+// vi behöver ändra till detta sen för RequireAuth
+// export const router = createBrowserRouter(
+//  createRoutesFromElements(
+//      <Route element={<Layout />} path="/">
+//        <Route path="/" element={<HomePage />} />
+//        <Route path="/login" element={<LoginPage />} />
+//        <Route element={<RequireAuth>
+//          <Route path="/dashboard" element={<DashboardPage />} />
+//          <Route path="courses/:courseId" element={<CourseDetailsPage />} />
+//          <Route path="modules/:moduleId" element={<ModulesPage />} />
+//          <Route path="activities/:activityId" element={<ActivitiesPage />} />
+//        </RequireAuth>} />
+//      </Route>
+//    )
+//  );
