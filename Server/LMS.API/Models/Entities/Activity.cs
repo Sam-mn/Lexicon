@@ -10,20 +10,19 @@ namespace LMS.API.Models.Entities
 
         [Required]
         public string Name { get; set; }
-
         //Foreign key
         [ForeignKey("ActivityType")]
-        public string ActivityTypeId { get; set; }
-        public virtual ActivityType ActivityType { get; set; }
+        public Guid ActivityTypeId { get; set; }
+        public ActivityType ActivityType { get; set; }
 
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
 
         public Guid ModuleId { get; set; }
-        public virtual Module Module { get; set; }
+        public Module? Module { get; set; }
 
         //Navigation property for Artifacts
-        public virtual ICollection<Artifact> Artifacts { get; set; }
+        public virtual ICollection<Artifact>? Artifacts { get; set; }
     }
 }

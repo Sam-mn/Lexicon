@@ -28,6 +28,6 @@ namespace LMS.API.Models.Entities
         public virtual Course Course { get; set; }
 
         //Navigation property for Artifacts
-        public virtual ICollection<Artifact> Artifacts { get; set; }
+        public ICollection<Artifact>? Artifacts { get; set; }
     }
 }

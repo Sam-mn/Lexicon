@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LMS.API.Data
 {
@@ -10,6 +11,7 @@ namespace LMS.API.Data
         public LmsContext(DbContextOptions<LmsContext> options) : base(options)
         {
         }
-
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Course> Courses => Set<Course>();
     }
 }

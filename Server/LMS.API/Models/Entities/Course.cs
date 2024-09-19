@@ -15,10 +15,10 @@ namespace LMS.API.Models.Entities
 
         public string Description {  get; set; }
 
-        DateTime StartDate {  get; set; }
+        public DateTime StartDate {  get; set; }
 
         //Navigation property for Artifacts
-        public ICollection<Artifact> Artifacts { get; set; }
+        public ICollection<Artifact>? Artifacts { get; set; }
 
     }
 }
