@@ -1,19 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');
 
 :root {
-  --primary-black: #2d2a1b;
+  --primary-black: #333;
   --primary-offwhite: #f6f5ef;
+  --primary-grey: #ddd;
   --color-white: #fffefa;
-  --background-color: #fffefa;
+  --color-blue: #4a90e2;
+  --color-blue-dark: #357ae8;
+  --background-color: #f0f2f5;
+  --color-error: #cf4444;
+
 }
 
 body {
   font-family: 'Reddit Sans', sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
-  margin: 0;
-  
-  padding-top: 2rem;
+  margin: 0;  
   box-sizing: border-box;
 }
 

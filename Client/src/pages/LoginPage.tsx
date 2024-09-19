@@ -6,6 +6,8 @@ import '../css/LoginPage.css';
 export function LoginPage(): ReactElement {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isLoggedIn, login } = useAuth();
   const navigate = useNavigate();
 
@@ -15,33 +17,49 @@ export function LoginPage(): ReactElement {
 
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-    await login(username, password);
-    navigate("/");
+    try {
+      await login(username, password);
+      navigate("/");
+    } catch (err) {
+      setError("Invalid username or password");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <main id="login-page" className="g-container">
+    <div className="login-container">
       <form className="login-form" onSubmit={handleOnSubmit}>
-        <fieldset>
-          <legend>Login</legend>
+        <h1>Welcome Back</h1>
+        <div className="input-group">
           <label htmlFor="username">Username</label>
           <input
             id="username"
             onChange={(e) => setUsername(e.target.value)}
             type="text"
             value={username}
+            required
+            autoFocus
           />
+        </div>
+        <div className="input-group">
           <label htmlFor="password">Password</label>
           <input
             id="password"
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             value={password}
+            required
           />
-          <button type="submit">Submit</button>
-        </fieldset>
+        </div>
+        {error && <div className="error-message">{error}</div>}
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Log In'}
+        </button>
       </form>
-    </main>
+    </div>
   );
 }
