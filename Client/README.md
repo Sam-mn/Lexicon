@@ -48,3 +48,23 @@ export default tseslint.config({
   },
 })
 ```
+
+
+# template readme 
+
+
+### Git strategy
+
+
+### bootstrapping
+
+
+
+### 
+
+
+### 
+
+
+
+### Database design
