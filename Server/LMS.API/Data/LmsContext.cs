@@ -11,7 +11,6 @@ namespace LMS.API.Data
         public LmsContext(DbContextOptions<LmsContext> options) : base(options)
         {
         }
-        public DbSet<User> Users => Set<User>();
         public DbSet<Course> Courses => Set<Course>();
     }
 }

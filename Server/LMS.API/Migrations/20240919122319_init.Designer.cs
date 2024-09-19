@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.API.Migrations
 {
     [DbContext(typeof(LmsContext))]
-    [Migration("20240919083701_init")]
+    [Migration("20240919122319_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -91,7 +91,11 @@ namespace LMS.API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -103,6 +107,11 @@ namespace LMS.API.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -127,6 +136,10 @@ namespace LMS.API.Migrations
                     b.Property<DateTime>("RefreshTokenExpireTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -138,6 +151,8 @@ namespace LMS.API.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -182,6 +197,10 @@ namespace LMS.API.Migrations
                     b.Property<DateTime>("UploadTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UploadedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -193,7 +212,7 @@ namespace LMS.API.Migrations
 
                     b.HasIndex("ModuleId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UploadedById");
 
                     b.ToTable("Artifact");
                 });
@@ -248,35 +267,6 @@ namespace LMS.API.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Module");
-                });
-
-            modelBuilder.Entity("LMS.API.Models.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -431,6 +421,17 @@ namespace LMS.API.Migrations
                     b.Navigation("Module");
                 });
 
+            modelBuilder.Entity("LMS.API.Models.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("LMS.API.Models.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("LMS.API.Models.Entities.Artifact", b =>
                 {
                     b.HasOne("LMS.API.Models.Entities.Activity", "PartOf")
@@ -445,9 +446,11 @@ namespace LMS.API.Migrations
                         .WithMany("Artifacts")
                         .HasForeignKey("ModuleId");
 
-                    b.HasOne("LMS.API.Models.Entities.User", "UploadedBy")
+                    b.HasOne("LMS.API.Models.Entities.ApplicationUser", "UploadedBy")
                         .WithMany("Artifacts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UploadedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AssociatedWith");
 
@@ -459,17 +462,6 @@ namespace LMS.API.Migrations
                 });
 
             modelBuilder.Entity("LMS.API.Models.Entities.Module", b =>
-                {
-                    b.HasOne("LMS.API.Models.Entities.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("LMS.API.Models.Entities.User", b =>
                 {
                     b.HasOne("LMS.API.Models.Entities.Course", "Course")
                         .WithMany()
@@ -541,6 +533,11 @@ namespace LMS.API.Migrations
                     b.Navigation("Activities");
                 });
 
+            modelBuilder.Entity("LMS.API.Models.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Artifacts");
+                });
+
             modelBuilder.Entity("LMS.API.Models.Entities.Course", b =>
                 {
                     b.Navigation("Artifacts");
@@ -550,11 +547,6 @@ namespace LMS.API.Migrations
                 {
                     b.Navigation("Activities");
 
-                    b.Navigation("Artifacts");
-                });
-
-            modelBuilder.Entity("LMS.API.Models.Entities.User", b =>
-                {
                     b.Navigation("Artifacts");
                 });
 #pragma warning restore 612, 618

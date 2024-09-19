@@ -26,7 +26,7 @@ namespace LMS.API.Models.Entities
 
         //Navigation properties
         public Guid? UserId { get; set; }
-        public User UploadedBy { get; set; }
+        public ApplicationUser UploadedBy { get; set; }
 
         public Guid? CourseId { get; set; }
         public Course RelatedTo { get; set; }
