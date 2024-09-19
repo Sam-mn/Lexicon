@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');
+
+:root {
+  --primary-black: #2d2a1b;
+  --primary-offwhite: #f6f5ef;
+  --color-white: #fffefa;
+  --background-color: #fffefa;
+}
+
+body {
+  font-family: 'Reddit Sans', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  
+  padding-top: 2rem;
+  box-sizing: border-box;
+}
+

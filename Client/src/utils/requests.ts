@@ -17,3 +17,5 @@ export async function loginReq(username: string, password: string): Promise<ITok
 
   return (await response.json()) as ITokens;
 }
+
+// vi behöver komplettera med export async function refreshTokens

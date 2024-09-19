@@ -1,15 +1,17 @@
 import { ReactElement } from 'react';
-import { Outlet } from "react-router-dom";
-import { Navbar, Footer } from "../components";
+import { Outlet } from 'react-router-dom';
+import { LoginStatusChip, Navbar } from '../components';
 
 export function Layout(): ReactElement {
   return (
-    <div className="layout">
-      <Navbar />
-      <main className="main-content">
+    <div className="authenticated-container">
+      <header>
+        <Navbar />
+        <LoginStatusChip />
+      </header>
+      <main>
         <Outlet />
       </main>
-      <Footer />
     </div>
   );
 }

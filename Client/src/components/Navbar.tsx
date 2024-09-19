@@ -5,10 +5,7 @@ import '../css/Navbar.css';
 export function Navbar(): ReactElement {
   return (
     <nav className="navbar">
-      <ul className="navbar-nav">
-        <li className="nav-item">
-          <Link to="/" className="nav-link">Hem</Link>
-        </li>
+      <ul className="navbar-nav">        
         <li className="nav-item">
           <Link to="/courses" className="nav-link">Kurser</Link>
         </li>
