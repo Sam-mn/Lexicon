@@ -1,0 +1,7 @@
+.login-status-chip {
+  background-color: var(--color-success);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  margin-top: auto;
+  margin-bottom: 5rem;
+}

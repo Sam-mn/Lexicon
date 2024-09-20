@@ -1,1 +1,30 @@
-/*test comment*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');
+
+:root {
+  --primary-black: #333;
+  --primary-offwhite: #f6f5ef;
+  --primary-grey: #ddd;
+  --primary-grey-dark: #555;
+  --color-white: #fffefa;
+  --color-blue: #4a90e2;
+  --color-blue-dark: #357ae8;
+  --background-color: #f0f2f5;
+  --color-success: #9acd32;
+  --color-error: #ff4f46;
+
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: 'Reddit Sans', sans-serif;
+  background-color: var(--background-color);  
+  margin: 0;  
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
