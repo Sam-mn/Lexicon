@@ -22,8 +22,7 @@ body, html {
 
 body {
   font-family: 'Reddit Sans', sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: var(--background-color);  
   margin: 0;  
   box-sizing: border-box;
   min-height: 100vh;

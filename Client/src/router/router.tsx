@@ -17,4 +17,5 @@ export const router = createBrowserRouter(
   )
 );
 
+// Detta kommenteras ut tills vi har en user och kan logga in
 // <Route element={<RequireAuth><Layout /></RequireAuth>}>
