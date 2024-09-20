@@ -13,7 +13,7 @@ namespace LMS.API.Models.Entities
         //Foreign key
         [ForeignKey("ActivityType")]
         public Guid ActivityTypeId { get; set; }
-        public ActivityType ActivityType { get; set; }
+        public ActivityType? ActivityType { get; set; }
 
         public DateTime StartTime { get; set; }
 

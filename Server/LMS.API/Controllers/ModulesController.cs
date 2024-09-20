@@ -7,49 +7,49 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.API.Controllers
 {
-    [Route("api/courses")]
+    [Route("api/modules")]
     [ApiController]
-    public class CoursesController : ControllerBase
+    public class ModulesController : ControllerBase
     {
         private readonly LmsContext _context;
-        public CoursesController(LmsContext context)
+        public ModulesController(LmsContext context)
         {
             _context = context;
 
         }
 
-        // GET: api/Courses
+        // GET: api/modules
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourse()
+        public async Task<ActionResult<IEnumerable<Module>>> GetModule()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Module.ToListAsync();
         }
 
-        //GET: api/Courses/5
+        //GET: api/modules/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(Guid id)
+        public async Task<ActionResult<Module>> GetModule(Guid id)
         {
-            var course = await _context.Courses.FindAsync(id);
+            var module = await _context.Module.FindAsync(id);
 
-            if (course == null)
+            if (module == null)
             {
                 return NotFound();
             }
 
-            return course;
+            return module;
         }
 
-        // PUT: api/Courses/5
+        // PUT: api/modules/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(Guid id, Course course)
+        public async Task<IActionResult> PutModule(Guid id, Module module)
         {
-            if (id != course.Id)
+            if (id != module.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(course).State = EntityState.Modified;
+            _context.Entry(module).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace LMS.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CourseExists(id))
+                if (!ModuleExists(id))
                 {
                     return NotFound();
                 }
@@ -70,36 +70,36 @@ namespace LMS.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Courses
+        // POST: api/modules
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<Course>> PostModule(Module module)
         {
-            _context.Courses.Add(course);
+            _context.Module.Add(module);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+            return CreatedAtAction("GetModule", new { id = module.Id }, module);
         }
 
-        // DELETE: api/Courses/5
+        // DELETE: api/modules/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(Guid id)
+        public async Task<IActionResult> DeleteModule(Guid id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
+            var module = await _context.Module.FindAsync(id);
+            if (module == null)
             {
                 return NotFound();
             }
 
-            _context.Courses.Remove(course);
+            _context.Module.Remove(module);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CourseExists(Guid id)
+        private bool ModuleExists(Guid id)
         {
-            return _context.Courses.Any(e => e.Id == id);
+            return _context.Module.Any(e => e.Id == id);
         }
     }
 }

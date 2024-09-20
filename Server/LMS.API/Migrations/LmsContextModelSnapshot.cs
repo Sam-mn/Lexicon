@@ -88,7 +88,7 @@ namespace LMS.API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CourseId")
+                    b.Property<Guid?>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -106,7 +106,6 @@ namespace LMS.API.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -132,10 +131,6 @@ namespace LMS.API.Migrations
 
                     b.Property<DateTime>("RefreshTokenExpireTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -195,7 +190,6 @@ namespace LMS.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UploadedById")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid?>("UserId")
@@ -422,9 +416,7 @@ namespace LMS.API.Migrations
                 {
                     b.HasOne("LMS.API.Models.Entities.Course", "Course")
                         .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.Navigation("Course");
                 });
@@ -445,9 +437,7 @@ namespace LMS.API.Migrations
 
                     b.HasOne("LMS.API.Models.Entities.ApplicationUser", "UploadedBy")
                         .WithMany("Artifacts")
-                        .HasForeignKey("UploadedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UploadedById");
 
                     b.Navigation("AssociatedWith");
 
