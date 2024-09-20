@@ -4,11 +4,13 @@
   --primary-black: #333;
   --primary-offwhite: #f6f5ef;
   --primary-grey: #ddd;
+  --primary-grey-dark: #555;
   --color-white: #fffefa;
   --color-blue: #4a90e2;
   --color-blue-dark: #357ae8;
   --background-color: #f0f2f5;
-  --color-error: #cf4444;
+  --color-success: #9acd32;
+  --color-error: #ff4f46;
 
 }
 
@@ -18,5 +20,6 @@ body {
   color: var(--text-color);
   margin: 0;  
   box-sizing: border-box;
+  min-height: 100vh;
 }
 

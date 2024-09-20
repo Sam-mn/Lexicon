@@ -1,9 +1,8 @@
 #login-status-chip {
     position: fixed;
     bottom: 1rem;
-    right: 1rem;
-  
-    background-color: yellowgreen;
+    right: 1rem;  
+    background-color: var(--color-success);
     border-radius: 1rem;
     padding: 0.5rem;
   }

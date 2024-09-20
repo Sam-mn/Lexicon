@@ -30,7 +30,7 @@
 .input-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #555;
+  color: var(--primary-grey-dark);
 }
 
 .input-group input {
