@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 export function DashboardPage(): ReactElement {
   return (
-    <div>
+    <div className="dashboard-container">
       <h1>Dashboard</h1>
       <p>Welcome to the Lexicon LMS Dashboard</p>
     </div>
