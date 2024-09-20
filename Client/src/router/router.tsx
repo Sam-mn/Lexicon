@@ -7,7 +7,7 @@ export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<BaseLayout />}>
       <Route path="/login" element={<LoginPage />} />
-      <Route element={<RequireAuth><Layout /></RequireAuth>}>
+      <Route element={<Layout />}>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/courses/:id" element={<CourseDetailsPage />} />
         <Route path="/modules" element={<ModulesPage />} />
@@ -16,3 +16,5 @@ export const router = createBrowserRouter(
     </Route>
   )
 );
+
+// <Route element={<RequireAuth><Layout /></RequireAuth>}>

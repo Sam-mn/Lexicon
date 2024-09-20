@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
+import { LoginStatusChip } from './LoginStatusChip';
 import '../css/Navbar.css';
 
 export function Navbar(): ReactElement {
@@ -14,11 +15,9 @@ export function Navbar(): ReactElement {
         </li>
         <li className="nav-item">
           <Link to="/activities" className="nav-link">Aktiviteter</Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/login" className="nav-link">Logga in</Link>
-        </li>
+        </li>        
       </ul>
+      <LoginStatusChip />
     </nav>
   );
 }
