@@ -1,7 +1,7 @@
 import { BASE_URL, CustomError, ITokens } from ".";
 
 export async function loginReq(username: string, password: string): Promise<ITokens> {
-  const url = `${BASE_URL}/auth/login`;
+  const url = `${BASE_URL}/authentication/login`;
 
   const response: Response = await fetch(url, {
     method: "POST",

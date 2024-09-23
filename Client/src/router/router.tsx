@@ -7,7 +7,7 @@ export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<BaseLayout />}>
       <Route path="/login" element={<LoginPage />} />
-      <Route element={<Layout />}>
+      <Route element={<RequireAuth><Layout /></RequireAuth>}>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/courses/:id" element={<CourseDetailsPage />} />
         <Route path="/modules" element={<ModulesPage />} />
