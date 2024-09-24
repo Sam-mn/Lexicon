@@ -42,6 +42,20 @@ export async function getModulesReq(courseId: number): Promise<IModule[]> {
   }
 }
 
+export async function getActivitiesReq(moduleId: number): Promise<IActivity[]> {
+  try {
+    const response = await axios.get<IActivity[]>(`${BASE_URL}/modules/${moduleId}/activities`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching activities:', error);
+    throw error;
+  }
+}
+
 export async function getCourseDetails(courseId: number): Promise<ICourse> {
   const response = await axios.get(`${BASE_URL}/courses/${courseId}`);
   return response.data;

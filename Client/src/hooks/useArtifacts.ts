@@ -9,24 +9,24 @@ interface ArtifactsHookResult {
 }
 
 export function useArtifacts(courseId: number): ArtifactsHookResult {
-    const [artifacts, setArtifacts] = useState<IArtifact[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-  
-    useEffect(() => {
-      async function fetchArtifacts() {
-        try {
-          const data = await getCourseArtifacts(courseId);
-          setArtifacts(data);
-          setLoading(false);
-        } catch (err) {
-          setError('An error occurred while fetching artifacts.');
-          setLoading(false);
-        }
+  const [artifacts, setArtifacts] = useState<IArtifact[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchArtifacts() {
+      try {
+        const data = await getCourseArtifacts(courseId);
+        setArtifacts(data);
+        setLoading(false);
+      } catch (err) {
+        setError('An error occurred while fetching artifacts.');
+        setLoading(false);
       }
-  
-      fetchArtifacts();
-    }, [courseId]);
-  
-    return { artifacts, loading, error };
-  }
+    }
+
+    fetchArtifacts();
+  }, [courseId]);
+
+  return { artifacts, loading, error };
+}

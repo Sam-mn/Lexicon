@@ -25,12 +25,21 @@ export interface IModule {
   courseId: number;
 }
 
+export interface IActivityType {
+  id: number;
+  activityTypeName: string;
+  type: string;
+  description: string;
+}
+
 export interface IActivity {
   id: number;
   name: string;
   description: string;
   startTime: string;
   endTime: string;
+  moduleId: number;
+  activityType: IActivityType;
 }
 
 export interface IArtifact {
