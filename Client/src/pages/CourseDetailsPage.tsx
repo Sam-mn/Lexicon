@@ -1,7 +1,7 @@
-import {ReactElement} from "react";
+import { ReactElement } from 'react';
 
 export function CourseDetailsPage(): ReactElement {
-    return (
-        <>TEST </>
-    )
+  return (
+    <div>TEST</div>
+  );
 }

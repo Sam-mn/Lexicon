@@ -24,3 +24,26 @@ export interface IModule {
   endDate: string;
   courseId: number;
 }
+
+export interface IActivity {
+  id: number;
+  name: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+}
+
+export interface IArtifact {
+  id: number;
+  fileName: string;
+  filePath: string;
+  description: string;
+  uploadTime: string;
+}
+
+export interface IUser {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}
