@@ -1,6 +1,6 @@
 import { BASE_URL, CustomError, ITokens } from ".";
 import axios from 'axios';
-import { ICourse } from './interfaces';
+import { ICourse, IModule } from './interfaces';
 
 export async function loginReq(username: string, password: string): Promise<ITokens> {
   const url = `${BASE_URL}/authentication/login`;
@@ -28,6 +28,16 @@ export async function getCoursesReq(): Promise<ICourse[]> {
     return response.data;
   } catch (error) {
     console.error('Error fetching courses:', error);
+    throw error;
+  }
+}
+
+export async function getModulesReq(courseId: number): Promise<IModule[]> {
+  try {
+    const response = await axios.get<IModule[]>(`${BASE_URL}/courses/${courseId}/modules`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching modules for course ${courseId}:`, error);
     throw error;
   }
 }
