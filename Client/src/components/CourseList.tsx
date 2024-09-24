@@ -1,5 +1,5 @@
 import { ReactElement, useState, useEffect } from 'react';
-import { useCourses } from '../hooks/useCourses';
+import { useCourses } from "../hooks/";
 import { ICourse } from '../utils/interfaces';
 import '../css/CourseList.css'; // denna definieras senare
 
