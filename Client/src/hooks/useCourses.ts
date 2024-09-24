@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { getCoursesReq } from '../utils/requests'
-import { ICourse } from "../utils/interfaces";
+import { getCoursesReq } from '../utils/'
+import { ICourse } from "../utils/";
 
 export function useCourses() {
     const [courses, setCourses] = useState<ICourse[]>([]);
