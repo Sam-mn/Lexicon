@@ -15,3 +15,12 @@ export interface ICourse {
   description: string;
   startDate: string;
 }
+
+export interface IModule {
+  id: number;
+  moduleName: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  courseId: number;
+}
