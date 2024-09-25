@@ -34,9 +34,9 @@ namespace LMS.API.Data
         private static IEnumerable<Course> GenerateCourses(int nrOfCourses)
         {
             var courseFaker = new Faker<Course>("sv")
-                .RuleFor(c => c.CourseName, f => GenerateCourseName(f));
-
-            var fakeCourse = courseFaker.Generate();
+                .RuleFor(c => c.CourseName, f => GenerateCourseName(f))
+                .RuleFor(c => c.StartDate, f => f.Date.Future())
+                .RuleFor(c => c.Description, f => f.Lorem.Paragraph());
 
             return courseFaker.Generate(nrOfCourses);
         }
