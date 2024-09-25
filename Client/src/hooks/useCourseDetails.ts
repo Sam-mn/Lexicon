@@ -4,7 +4,7 @@ import { ICourse, IActivity } from '../utils/';
 
 interface CourseDetailsHookResult {
   course: ICourse | null;
-  activities: IActivity[];
+  activities?: IActivity[];
   loading: boolean;
   error: string | null;
 }
@@ -20,9 +20,10 @@ export function useCourseDetails(courseId: string): CourseDetailsHookResult {
       try {
         console.log(courseId)
         const courseData = await getCourseDetails(courseId);
-        const activitiesData = await getCourseActivities(courseId);
+        console.log(courseData)
+        //const activitiesData = await getCourseActivities(courseId);
         setCourse(courseData);
-        setActivities(activitiesData);
+        //setActivities(activitiesData);
         setLoading(false);
       } catch (err) {
         setError('An error occurred while fetching course details.');
