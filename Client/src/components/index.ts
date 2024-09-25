@@ -1,9 +1,12 @@
+export * from "./ActivityCard";
 export * from "./App";
+export * from "./ArtifactList";
 export * from "./BaseLayout";
+export * from "./CourseList";
 export * from './Footer';
 export * from "./Layout";
 export * from "./LoginStatusChip";
-export * from './Navbar';
+export * from "./ModuleList";
+export * from "./Navbar";
+export * from "./ParticipantList";
 export * from "./RequireAuth";
-
-// test
