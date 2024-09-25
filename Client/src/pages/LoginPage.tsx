@@ -2,8 +2,8 @@ import { FormEventHandler, ReactElement, useState } from "react";
 import { useAuth } from "../hooks";
 import { Navigate, useNavigate } from "react-router-dom";
 import "../css/LoginPage.css";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import logo from "../../public/images/logo-lexicon.gif";
+import { Form, Button, Row, Col } from "react-bootstrap";
+import logo from "../assets/images/logo-lexicon.gif";
 
 export function LoginPage(): ReactElement {
   const [username, setUsername] = useState<string>("");

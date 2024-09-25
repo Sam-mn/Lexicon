@@ -1,14 +1,16 @@
 import { ReactElement } from "react";
 import { useAuth } from "../hooks";
-import '../css/LoginStatusChip.css';
+import "../css/LoginStatusChip.css";
+import { PiDoorOpenLight } from "react-icons/pi";
 
 export function LoginStatusChip(): ReactElement {
-  const { isLoggedIn, logout } = useAuth();
+  const { logout } = useAuth();
 
   return (
     <div className="login-status-chip">
-      <p>Logged in: {isLoggedIn.toString()}</p>
-      <button disabled={!isLoggedIn} onClick={logout}>
+      <button onClick={logout}>
+        {" "}
+        <PiDoorOpenLight style={{ paddingRight: "0.3rem" }} size={25} />
         Log out
       </button>
     </div>

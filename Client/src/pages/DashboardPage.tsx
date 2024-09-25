@@ -1,10 +1,113 @@
-import { ReactElement } from 'react';
+import { ReactElement } from "react";
+import "../css/DashboardPage.css";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export function DashboardPage(): ReactElement {
+  const navigate = useNavigate();
+
   return (
-    <div className="dashboard-container">
-      <h1>Dashboard</h1>
-      <p>Welcome to the Lexicon LMS Dashboard</p>
+    <div className="dashboard-container p-3">
+      <h1>Välkommen Carl!</h1>
+      <div className="mt-4 d-flex flex-wrap">
+        <div
+          className="card bg-light mb-3"
+          style={{ maxWidth: "20rem", marginRight: "2rem" }}
+        >
+          <div className="card-header d-flex justify-content-between">
+            <span>Inlämning Programmering 1</span>
+            <span>idag</span>
+          </div>
+          <div className="card-body">
+            <p className="card-text p-2">
+              Deadline för inlämning programmering 1. glöm inte att ladda upp
+              era projectfiller.
+            </p>
+          </div>
+        </div>
+
+        <div
+          className="card bg-light mb-3"
+          style={{ maxWidth: "20rem", marginRight: "2rem" }}
+        >
+          <div className="card-header d-flex justify-content-between">
+            <span>Inlämning Programmering 1</span>
+            <span>idag</span>
+          </div>
+          <div className="card-body">
+            <p className="card-text p-2">
+              Deadline för inlämning programmering 1. glöm inte att ladda upp
+              era projectfiller.
+            </p>
+          </div>
+        </div>
+        <div
+          className="card bg-light mb-3"
+          style={{ maxWidth: "20rem", marginRight: "2rem" }}
+        >
+          <div className="card-header d-flex justify-content-between">
+            <span>Inlämning Programmering 1</span>
+            <span>idag</span>
+          </div>
+          <div className="card-body">
+            <p className="card-text p-2">
+              Deadline för inlämning programmering 1. glöm inte att ladda upp
+              era projectfiller.
+            </p>
+          </div>
+        </div>
+        <div
+          className="card bg-light mb-3"
+          style={{ maxWidth: "20rem", marginRight: "2rem" }}
+        >
+          <div className="card-header d-flex justify-content-between">
+            <span>Inlämning Programmering 1</span>
+            <span>idag</span>
+          </div>
+          <div className="card-body">
+            <p className="card-text p-2">
+              Deadline för inlämning programmering 1. glöm inte att ladda upp
+              era projectfiller.
+            </p>
+          </div>
+        </div>
+        <div
+          className="card bg-light mb-3"
+          style={{ maxWidth: "20rem", marginRight: "2rem" }}
+        >
+          <div className="card-header d-flex justify-content-between">
+            <span>Inlämning Programmering 1</span>
+            <span>idag</span>
+          </div>
+          <div className="card-body">
+            <p className="card-text p-2">
+              Deadline för inlämning programmering 1. glöm inte att ladda upp
+              era projectfiller.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="mt-4 ">
+        <h1>Kurser</h1>
+        <Link to="/addCourse" className="linkToNewCourse">
+          Lägg till en ny kurs
+        </Link>
+        <div className="dashBoardCourseList">
+          <h4>programmering1</h4>
+        </div>
+        <div className="dashBoardCourseList">
+          <h4>programmering1</h4>
+        </div>
+        <div className="dashBoardCourseList">
+          <h4>programmering1</h4>
+        </div>
+        <div className="dashBoardCourseList">
+          <h4>programmering1</h4>
+        </div>
+        <div className="dashBoardCourseList">
+          <h4>programmering1</h4>
+        </div>
+      </div>
     </div>
   );
 }

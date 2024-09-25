@@ -1,0 +1,26 @@
+.dashboard-container {
+  overflow: scroll;
+  max-height: 82vh;
+}
+.dashBoardCourseList {
+  border: 1px solid black;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  width: 80%;
+  margin-top: 1rem;
+  cursor: pointer;
+  h4 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 0;
+  }
+}
+
+.dashBoardCourseList:hover {
+  background-color: #042c65;
+  color: #fff;
+}
+
+.linkToNewCourse {
+  color: #000;
+}
