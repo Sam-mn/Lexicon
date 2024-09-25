@@ -56,22 +56,26 @@ export async function getActivitiesReq(moduleId: number): Promise<IActivity[]> {
   }
 }
 
-export async function getCourseDetails(courseId: number): Promise<ICourse> {
-  const response = await axios.get(`${BASE_URL}/courses/${courseId}`);
+export async function getCourseDetails(courseId: string): Promise<ICourse> {
+  const response = await axios.get(`${BASE_URL}/courses/${courseId}`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  }) ;
   return response.data;
 }
 
-export async function getCourseActivities(courseId: number): Promise<IActivity[]> {
+export async function getCourseActivities(courseId: string): Promise<IActivity[]> {
   const response = await axios.get(`${BASE_URL}/courses/${courseId}/activities`);
   return response.data;
 }
 
-export async function getCourseArtifacts(courseId: number): Promise<IArtifact[]> {
+export async function getCourseArtifacts(courseId: string): Promise<IArtifact[]> {
   const response = await axios.get(`${BASE_URL}/courses/${courseId}/artifacts`);
   return response.data;
 }
 
-export async function getCourseParticipants(courseId: number): Promise<IUser[]> {
+export async function getCourseParticipants(courseId: string): Promise<IUser[]> {
   const response = await axios.get(`${BASE_URL}/courses/${courseId}/participants`);
   return response.data;
 }

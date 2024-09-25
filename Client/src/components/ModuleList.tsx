@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { useModules } from '../hooks';
 import { IModule } from '../utils';
-import '../css/ModuleList.css'; // denna definieras senare
+//import '../css/ModuleList.css'; // denna definieras senare
 
 interface ModuleListProps {
   courseId: number;

@@ -1,7 +1,7 @@
 import { ReactElement, useState, useEffect } from 'react';
 import { useCourses } from "../hooks/";
 import { ICourse } from '../utils/interfaces';
-import '../css/CourseList.css'; // denna definieras senare
+//import '../css/CourseList.css'; // denna definieras senare
 
 export function CourseList(): ReactElement {
   const { courses, loading, error } = useCourses();

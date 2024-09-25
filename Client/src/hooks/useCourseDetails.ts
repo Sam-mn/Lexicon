@@ -9,7 +9,7 @@ interface CourseDetailsHookResult {
   error: string | null;
 }
 
-export function useCourseDetails(courseId: number): CourseDetailsHookResult {
+export function useCourseDetails(courseId: string): CourseDetailsHookResult {
   const [course, setCourse] = useState<ICourse | null>(null);
   const [activities, setActivities] = useState<IActivity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -18,6 +18,7 @@ export function useCourseDetails(courseId: number): CourseDetailsHookResult {
   useEffect(() => {
     async function fetchCourseDetails() {
       try {
+        console.log(courseId)
         const courseData = await getCourseDetails(courseId);
         const activitiesData = await getCourseActivities(courseId);
         setCourse(courseData);
