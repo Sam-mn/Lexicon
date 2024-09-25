@@ -8,20 +8,39 @@ export function AddEditCourse(): ReactElement {
   const [description, setDescription] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [sucsses, setSucsses] = useState<boolean>(false);
+
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = axios.post(`${BASE_URL}/courses`, {
-      description,
-      courseName,
-      startDate,
-    });
-    console.log(res);
-    // setCourseName("");
-    // setDescription("");
-    // setStartDate("");
-    // setError("");
+    try{
+      setSucsses(false);
+      const res = await axios.post(`${BASE_URL}/courses`, {
+        description,
+        courseName,
+        startDate,
+      });
+      setLoading(true);
+      
+      console.log(res);
+      if(res.status === 201){
+        setSucsses(true)
+        setCourseName("");
+        setDescription("");
+        setStartDate("");
+        setError("");
+        setLoading(false);
+        }
+        else{
+          setLoading(false);
+          setError("Something went wrong");
+        }
+      }catch(err){
+        console.log(err)
+        setLoading(false);
+        setError("Something went wrong");
+      }
   };
 
   return (
@@ -64,6 +83,7 @@ export function AddEditCourse(): ReactElement {
               {loading ? "Submitting..." : "Add Course"}
             </Button>
             {error && <div className="error-message">{error}</div>}
+            {sucsses && <div className="">Succes</div>}
           </Form>
         </Col>
       </Row>
