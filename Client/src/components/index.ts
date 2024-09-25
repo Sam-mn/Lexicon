@@ -1,3 +1,4 @@
+export * from "./ActivityCard";
 export * from "./App";
 export * from "./ArtifactList";
 export * from "./BaseLayout";
