@@ -22,6 +22,10 @@ namespace LMS.API.Data
                     var courses = GenerateCourses(5);
                     await db.AddRangeAsync(courses);
                     await db.SaveChangesAsync();
+
+                    var modules = GenerateModules(courses);
+                    await db.AddRangeAsync(modules);
+                    await db.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {
@@ -49,6 +53,22 @@ namespace LMS.API.Data
             string courseCode = $"{f.Random.String2(2, "ABCDEFGHIJKLMNOPQRSTUVXYZ")}{f.Random.Number(100, 9999)}";
 
             return $"{subject}, {credits} hp ({courseCode})";
+        }
+
+        private static IEnumerable<Module> GenerateModules(IEnumerable<Course> courses)
+        {
+            var modules = new List<Module>();
+
+            foreach (var course in courses)
+            {
+                var moduleFaker = new Faker<Module>("sv")
+                    .RuleFor(m => m.ModuleName, f => f.Lorem.Words(3))
+                    .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
+                    .RuleFor(m => m.StartDate, f => f.Date.Between(course.StartDate, course.StartDate.AddMonths(2)))
+                    .RuleFor(m => m.EndDate, (f, m) => f.Date.Between(m.StartDate, m.StartDate.AddMonths(1)))
+                    .RuleFor(m => m.CourseId, course.Id);
+            }
+            return modules;
         }
     }
 }
