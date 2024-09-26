@@ -1,3 +1,4 @@
+export * from "./useActivities"
 export * from "./useActivityTypes"
 export * from "./useArtifacts"
 export * from "./useAuth"
