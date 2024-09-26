@@ -62,8 +62,8 @@ namespace LMS.API.Data
             foreach (var course in courses)
             {
                 var moduleFaker = new Faker<Module>("sv")
-                    .RuleFor(m => m.ModuleName, f => f.Lorem.Words(3))
-                    .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
+                    .RuleFor(m => m.ModuleName, f => string.Join(" ", f.Lorem.Words(3)))
+                    .RuleFor(m => m.Description, f => f.Lorem.Sentence())
                     .RuleFor(m => m.StartDate, f => f.Date.Between(course.StartDate, course.StartDate.AddMonths(2)))
                     .RuleFor(m => m.EndDate, (f, m) => f.Date.Between(m.StartDate, m.StartDate.AddMonths(1)))
                     .RuleFor(m => m.CourseId, course.Id);
