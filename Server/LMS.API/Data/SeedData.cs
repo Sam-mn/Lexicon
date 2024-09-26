@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using LMS.API.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace LMS.API.Data
 {
@@ -15,21 +16,33 @@ namespace LMS.API.Data
 
                 await db.Database.MigrateAsync();
 
-                if (await db.Courses.AnyAsync()) return;
-
+                //IMPORTANT: For testing purposes, this will always delete any module DB you create via postman, make sure you dont add any you want to save
                 try
                 {
-                    var courses = GenerateCourses(5);
-                    await db.AddRangeAsync(courses);
-                    await db.SaveChangesAsync();
+                    if (!await db.Courses.AnyAsync())
+                    {
+                        var courses = GenerateCourses(5);
+                        await db.AddRangeAsync(courses);
+                        await db.SaveChangesAsync();
+                    }
 
-                    var modules = GenerateModules(courses);
+                    if (await db.Module.AnyAsync())
+                    {
+                        db.Module.RemoveRange(db.Module);
+                        await db.SaveChangesAsync();
+                    }
+
+                    var existingCourses = await db.Courses.ToListAsync();
+
+                    var modules = GenerateModules(existingCourses).Take(5);
                     await db.AddRangeAsync(modules);
                     await db.SaveChangesAsync();
+
+
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine($"Error while seeding DB: {ex.Message}");
                     throw;
                 }
             }
@@ -62,11 +75,15 @@ namespace LMS.API.Data
             foreach (var course in courses)
             {
                 var moduleFaker = new Faker<Module>("sv")
-                    .RuleFor(m => m.ModuleName, f => string.Join(" ", f.Lorem.Words(3)))
+
+                    .RuleFor(m => m.ModuleName, f => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(string.Join(" ", f.Lorem.Words(3))))
                     .RuleFor(m => m.Description, f => f.Lorem.Sentence())
                     .RuleFor(m => m.StartDate, f => f.Date.Between(course.StartDate, course.StartDate.AddMonths(2)))
                     .RuleFor(m => m.EndDate, (f, m) => f.Date.Between(m.StartDate, m.StartDate.AddMonths(1)))
                     .RuleFor(m => m.CourseId, course.Id);
+
+                var module = moduleFaker.Generate();
+                modules.Add(module);
             }
             return modules;
         }

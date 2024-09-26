@@ -10,10 +10,6 @@ export function CourseDetailsPage(): ReactElement {
   if (loading) return <div>Loading course details ... </div>;
   if (error) return <div>Error: {error} </div>;
 
-  useEffect(() => {
-    console.log(courseId);
-  }, []);
-
   return (
     <div>
       <h1> {course?.courseName} </h1>
@@ -21,7 +17,7 @@ export function CourseDetailsPage(): ReactElement {
 
       <h2>Activities</h2>
       <div className="activity-list">
-        {activities.map((activity) => (
+        {activities?.map((activity) => (
           <ActivityCard key={activity.id} activity={activity} />
         ))}
       </div>

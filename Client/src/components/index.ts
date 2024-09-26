@@ -9,4 +9,5 @@ export * from "./LoginStatusChip";
 export * from "./ModuleList";
 export * from "./Navbar";
 export * from "./ParticipantList";
+export * from "./SideNavbar";
 export * from "./RequireAuth";
