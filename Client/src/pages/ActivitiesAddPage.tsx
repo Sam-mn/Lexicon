@@ -33,7 +33,6 @@ export function ActivitiesAddPage(): ReactElement {
         startTime,
         endTime,
         activityTypeId,
-        courseId,
         moduleId: "af469c39-0ed5-493a-b0fb-08dcde27da19",
       });
 
