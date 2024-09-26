@@ -1,7 +1,19 @@
+import { IconType } from "react-icons";
+
 export interface IAuthContext {
   isLoggedIn: boolean;  
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
+}
+
+export interface INavbarContext {
+  navBarName: string; 
+  setNavBarName: React.Dispatch<React.SetStateAction<string>>;
+  isCourse: boolean;
+  setIsCourse: React.Dispatch<React.SetStateAction<boolean>>;
+  teacherName: string;
+  setTeacherName: React.Dispatch<React.SetStateAction<string>>;
+  NavbarIcon: IconType;
 }
 
 export interface ITokens {

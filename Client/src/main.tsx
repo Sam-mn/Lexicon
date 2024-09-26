@@ -5,11 +5,14 @@ import { router } from "./router";
 import { AuthProvider } from "./context/authProvider";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/index.css";
+import { NavbarProvider } from "./context/navbarProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <NavbarProvider>
+        <RouterProvider router={router} />
+      </NavbarProvider>
     </AuthProvider>
   </React.StrictMode>
 );
