@@ -1,6 +1,6 @@
 import { BASE_URL, CustomError, ITokens } from ".";
 import axios from 'axios';
-import { ICourse, IModule, IActivity, IArtifact, IUser } from './interfaces';
+import { ICourse, IModule, IActivity, IArtifact, IUser, IActivityType } from './interfaces';
 
 export async function loginReq(username: string, password: string): Promise<ITokens> {
   const url = `${BASE_URL}/authentication/login`;
@@ -52,6 +52,20 @@ export async function getActivitiesReq(moduleId: number): Promise<IActivity[]> {
     return response.data;
   } catch (error) {
     console.error('Error fetching activities:', error);
+    throw error;
+  }
+}
+
+export async function getActivityTypesReq(): Promise<IActivityType[]> {
+  try {
+    const response = await axios.get<IActivityType[]>(`${BASE_URL}/activitytypes`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching activity types:', error);
     throw error;
   }
 }

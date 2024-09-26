@@ -10,40 +10,41 @@ export interface ITokens {
 }
 
 export interface ICourse {
-  id: number;
+  id: string;
   courseName: string;
   description: string;
   startDate: string;
 }
 
 export interface IModule {
-  id: number;
+  id: string;
   moduleName: string;
   description: string;
   startDate: string;
   endDate: string;
-  courseId: number;
+  courseId: string;
 }
 
 export interface IActivityType {
-  id: number;
+  id: string;
   activityTypeName: string;
   type: string;
   description: string;
+  moduleId: string;
 }
 
 export interface IActivity {
-  id: number;
+  id: string;
   name: string;
   description: string;
   startTime: string;
   endTime: string;
-  moduleId: number;
+  moduleId: string;
   activityType: IActivityType;
 }
 
 export interface IArtifact {
-  id: number;
+  id: string;
   fileName: string;
   filePath: string;
   description: string;
@@ -51,7 +52,7 @@ export interface IArtifact {
 }
 
 export interface IUser {
-  id: number;
+  id: string;
   name: string;
   email: string;
   role: string;
