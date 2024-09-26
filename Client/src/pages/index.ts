@@ -1,3 +1,4 @@
+export * from "./ActivitiesAddPage";
 export * from "./ActivitiesPage";
 export * from "./CourseDetailsPage";
 export * from "./DashboardPage";

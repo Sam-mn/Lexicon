@@ -12,6 +12,7 @@ import {
   DashboardPage,
   CoursesPage,
   AddEditCourse,
+  ActivitiesAddPage,
 } from "../pages";
 
 export const router = createBrowserRouter(
@@ -25,6 +26,7 @@ export const router = createBrowserRouter(
         <Route path="/courses/:courseId" element={<CourseDetailsPage />} />
         <Route path="/modules" element={<ModulesPage />} />
         <Route path="/activities" element={<ActivitiesPage />} />
+        <Route path="/courses/:courseId/addActivity" element={<ActivitiesAddPage />} />
       </Route>
     </Route>
   )
