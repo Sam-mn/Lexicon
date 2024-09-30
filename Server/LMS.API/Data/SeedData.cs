@@ -32,10 +32,30 @@ namespace LMS.API.Data
                         await db.SaveChangesAsync();
                     }
 
+                    if (!await db.ActivityType.AnyAsync())
+                    {
+                        var newActivityTypes = GenerateActivityTypes();
+                        await db.AddRangeAsync(newActivityTypes);
+                        await db.SaveChangesAsync();
+                    }
+
+                    if (await db.Activity.AnyAsync())
+                    {
+                        db.RemoveRange(db.Activity);
+                        await db.SaveChangesAsync();
+                    }
+
                     var existingCourses = await db.Courses.ToListAsync();
 
                     var modules = GenerateModules(existingCourses).Take(5);
                     await db.AddRangeAsync(modules);
+                    await db.SaveChangesAsync();
+
+                    var existingModules = await db.Module.ToListAsync();
+                    var activityTypes = await db.ActivityType.ToListAsync();
+
+                    var activities = GenerateActivities(existingModules, activityTypes);
+                    await db.AddRangeAsync(activities);
                     await db.SaveChangesAsync();
 
 
@@ -86,6 +106,36 @@ namespace LMS.API.Data
                 modules.Add(module);
             }
             return modules;
+        }
+
+
+        private static IEnumerable<Activity> GenerateActivities(IEnumerable<Module> modules, List<ActivityType> activityTypes)
+        {
+            var activitiesList = new List<Activity>();
+
+            foreach (var module in modules)
+            {
+                var activityFaker = new Faker<Activity>("sv")
+
+                    .RuleFor(a => a.Name, f => f.Lorem.Word())
+                    .RuleFor(a => a.StartTime, f => f.Date.Between(module.StartDate, module.EndDate))
+                    .RuleFor(a => a.EndTime, (f, a) => f.Date.Between(a.StartTime, a.StartTime.AddDays(1)))
+                    .RuleFor(a => a.ModuleId, module.Id)
+                    .RuleFor(a => a.ActivityTypeId, f => f.PickRandom(activityTypes).Id);
+
+                activitiesList.AddRange(activityFaker.Generate(3));
+            }
+            return activitiesList;
+        }
+
+        private static IEnumerable<ActivityType> GenerateActivityTypes()
+        {
+            var activityTypeFaker = new Faker<ActivityType>()
+                .RuleFor(at => at.ActivityTypeName, f => f.PickRandom("Lecture", "Assignment", "Quiz", "Workshop"))
+                .RuleFor(at => at.Type, f => f.Lorem.Word())
+                .RuleFor(at => at.Description, f => f.Lorem.Sentence());
+
+            return activityTypeFaker.Generate(4);
         }
     }
 }
