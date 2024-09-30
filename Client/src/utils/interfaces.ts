@@ -25,6 +25,13 @@ export interface IModule {
   courseId: string;
 }
 
+export interface IModuleFormData {
+  moduleName: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+}
+
 export interface IActivityType {
   id: string;
   activityTypeName: string;

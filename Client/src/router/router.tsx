@@ -7,6 +7,7 @@ import { Layout, RequireAuth, BaseLayout } from "../components";
 import {
   CourseDetailsPage,
   ModulesPage,
+  ModulesAddPage,
   ActivitiesPage,
   LoginPage,
   DashboardPage,
@@ -25,6 +26,7 @@ export const router = createBrowserRouter(
         <Route path="addCourse/:id?" element={<AddEditCourse />} />
         <Route path="/courses/:courseId" element={<CourseDetailsPage />} />
         <Route path="/modules" element={<ModulesPage />} />
+        <Route path="/courses/:courseId/addModule" element= {<ModulesAddPage/>} />
         <Route path="/activities" element={<ActivitiesPage />} />
         <Route path="/courses/:courseId/addActivity" element={<ActivitiesAddPage />} />
       </Route>

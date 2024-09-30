@@ -9,18 +9,24 @@ export function useActivities(moduleId: string) {
 
     useEffect(() => {
         async function fetchActivities() {
-            try {
-                const data = await getActivitiesReq(parseInt(moduleId));
-                setActivities(data);
-                setLoading(false);
-            } catch (err) {
-                setError("Failed to fetch activities");
-                setLoading(false);
-            }
+          if (!moduleId) {
+            setActivities([]);
+            setLoading(false);
+            return;
+          }
+    
+          try {
+            const data = await getActivitiesReq(moduleId);
+            setActivities(data);
+            setLoading(false);
+          } catch (err) {
+            setError('Failed to fetch activities');
+            setLoading(false);
+          }
         }
-
+    
         fetchActivities();
-    }, [moduleId]);
-
-    return { activities, loading, error };
-}
+      }, [moduleId]);
+    
+      return { activities, loading, error };
+    }
