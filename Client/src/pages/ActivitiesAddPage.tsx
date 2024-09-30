@@ -1,18 +1,19 @@
-import axios from 'axios';
-import { ReactElement, useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { BASE_URL } from '../utils';
-import { useParams } from 'react-router-dom';
-import { useActivityTypes } from '../hooks';
+import axios from "axios";
+import { ReactElement, useState } from "react";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { BASE_URL } from "../utils";
+import { useParams } from "react-router-dom";
+import { useActivityTypes } from "../hooks";
+import "../css/AddandEditPages.css";
 
 export function ActivitiesAddPage(): ReactElement {
   const { courseId } = useParams<{ courseId: string }>();
-  const [name, setName] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [startTime, setStartTime] = useState<string>('');
-  const [endTime, setEndTime] = useState<string>('');
-  const [activityTypeId, setActivityTypeId] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [startTime, setStartTime] = useState<string>("");
+  const [endTime, setEndTime] = useState<string>("");
+  const [activityTypeId, setActivityTypeId] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
 
@@ -38,18 +39,18 @@ export function ActivitiesAddPage(): ReactElement {
 
       if (res.status === 201) {
         setSuccess(true);
-        setName('');
-        setDescription('');
-        setStartTime('');
-        setEndTime('');
-        setActivityTypeId('');
-        setError('');
+        setName("");
+        setDescription("");
+        setStartTime("");
+        setEndTime("");
+        setActivityTypeId("");
+        setError("");
       } else {
-        setError('Something went wrong');
+        setError("Something went wrong");
       }
     } catch (err) {
       console.log(err);
-      setError('Something went wrong');
+      setError("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -60,7 +61,7 @@ export function ActivitiesAddPage(): ReactElement {
     return <div> Error loading activity types: {typesError} </div>;
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 maxHieht">
       <Row className="justify-content-md-center">
         <Col xs={12} md={6}>
           <h2 className="text-center">Lägg till en ny aktivitet</h2>
@@ -121,7 +122,7 @@ export function ActivitiesAddPage(): ReactElement {
               </Form.Control>
             </Form.Group>
             <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? 'Lägger till...' : 'Lägg till aktivitet'}
+              {loading ? "Lägger till..." : "Lägg till aktivitet"}
             </Button>
             {error && <div className="error-message mt-3">{error}</div>}
             {success && (

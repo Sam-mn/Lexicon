@@ -58,9 +58,10 @@ export interface IActivity {
 export interface IArtifact {
   id: string;
   fileName: string;
-  filePath: string;
+  fileContent: string;
   description: string;
   uploadTime: string;
+  ContentType: string
 }
 
 export interface IUser {

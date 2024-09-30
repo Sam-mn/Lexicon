@@ -10,7 +10,7 @@ export function useActivities(moduleId: string) {
     useEffect(() => {
         async function fetchActivities() {
             try {
-                const data = await getActivitiesReq(parseInt(moduleId));
+                const data = await getActivitiesReq(moduleId);
                 setActivities(data);
                 setLoading(false);
             } catch (err) {

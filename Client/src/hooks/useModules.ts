@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getModulesReq } from "../utils";
 import { IModule } from "../utils";
 
-export function useModules(courseId: number) {
+export function useModules(courseId: string) {
     const [modules, setModules] = useState<IModule[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);

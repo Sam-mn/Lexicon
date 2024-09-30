@@ -32,7 +32,7 @@ export async function getCoursesReq(): Promise<ICourse[]> {
   }
 }
 
-export async function getModulesReq(courseId: number): Promise<IModule[]> {
+export async function getModulesReq(courseId: string): Promise<IModule[]> {
   try {
     const response = await axios.get<IModule[]>(`${BASE_URL}/courses/${courseId}/modules`);
     return response.data;
@@ -42,7 +42,7 @@ export async function getModulesReq(courseId: number): Promise<IModule[]> {
   }
 }
 
-export async function getActivitiesReq(moduleId: number): Promise<IActivity[]> {
+export async function getActivitiesReq(moduleId: string): Promise<IActivity[]> {
   try {
     const response = await axios.get<IActivity[]>(`${BASE_URL}/modules/${moduleId}/activities`, {
       headers: {
@@ -84,8 +84,8 @@ export async function getCourseActivities(courseId: string): Promise<IActivity[]
   return response.data;
 }
 
-export async function getCourseArtifacts(courseId: string): Promise<IArtifact[]> {
-  const response = await axios.get(`${BASE_URL}/courses/${courseId}/artifacts`);
+export async function getCourseArtifacts(): Promise<IArtifact[]> {
+  const response = await axios.get(`${BASE_URL}/Artifacts`);
   return response.data;
 }
 

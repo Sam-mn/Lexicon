@@ -1,17 +1,17 @@
-import { ReactElement } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { ReactElement } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
 //import { useAuth, useCourseDetails } from '../hooks';
-import { useActivities } from '../hooks/useActivities';
+import { useActivities } from "../hooks/useActivities";
 //import { ArtifactList, ParticipantList } from '../components';
-import { ActivityCard } from '../components';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import '../css/CourseDetailsPage.css';
+import { ActivityCard } from "../components";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import "../css/CourseDetailsPage.css";
 
 // Mock data tas bort senare och ersätts med data från servern.
 const mockCourse = {
   id: 1,
-  name: 'Programmering 1',
-  description: 'Grundläggande programmeringskurs i Java',
+  name: "Programmering 1",
+  description: "Grundläggande programmeringskurs i Java",
 };
 
 // const mockActivities = [
@@ -21,21 +21,22 @@ const mockCourse = {
 // ];
 
 const mockArtifacts = [
-  { id: 1, name: 'Föreläsning 1', uploadDate: '2023-05-01' },
-  { id: 2, name: 'Övningsuppgifter', uploadDate: '2023-05-05' },
-  { id: 3, name: 'Projektbeskrivning', uploadDate: '2023-05-10' },
+  { id: 1, name: "Föreläsning 1", uploadDate: "2023-05-01" },
+  { id: 2, name: "Övningsuppgifter", uploadDate: "2023-05-05" },
+  { id: 3, name: "Projektbeskrivning", uploadDate: "2023-05-10" },
 ];
 
 const mockParticipants = [
-  { id: 1, name: 'Anna Andersson', course: 'Programmering 1' },
-  { id: 2, name: 'Björn Bergström', course: 'Programmering 1' },
-  { id: 3, name: 'Cecilia Carlsson', course: 'Programmering 1' },
+  { id: 1, name: "Anna Andersson", course: "Programmering 1" },
+  { id: 2, name: "Björn Bergström", course: "Programmering 1" },
+  { id: 3, name: "Cecilia Carlsson", course: "Programmering 1" },
 ];
 
 export function CourseDetailsPage(): ReactElement {
   const navigate = useNavigate();
   const { courseId } = useParams<{ courseId: string }>();
-  const { activities, loading, error } = useActivities(courseId || '');
+
+  const { activities, loading, error } = useActivities(courseId || "");
 
   return (
     <div className="course-detail-container">
@@ -55,6 +56,14 @@ export function CourseDetailsPage(): ReactElement {
 
       <section className="materials-section">
         <h2>Kursmaterial</h2>
+        <div className="mb-3">
+          <Link
+            to={`/addDocument/${courseId}?documentType=course`}
+            className="btn btn-primary"
+          >
+            Lägg till Kursmaterial
+          </Link>
+        </div>
         <ul className="materials-list">
           {mockArtifacts.map((artifact) => (
             <li key={artifact.id} className="material-item">
