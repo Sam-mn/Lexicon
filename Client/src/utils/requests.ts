@@ -32,7 +32,7 @@ export async function getCoursesReq(): Promise<ICourse[]> {
   }
 }
 
-export async function getModulesReq(courseId: number): Promise<IModule[]> {
+export async function getModulesReq(courseId: string): Promise<IModule[]> {
   try {
     const response = await axios.get<IModule[]>(`${BASE_URL}/courses/${courseId}/modules`);
     return response.data;
@@ -42,7 +42,21 @@ export async function getModulesReq(courseId: number): Promise<IModule[]> {
   }
 }
 
-export async function getActivitiesReq(moduleId: number): Promise<IActivity[]> {
+export async function addModuleReq(courseId:string, moduleData:Partial<IModule>):Promise<IModule> {
+  try {
+    const response = await axios.post<IModule>(`${BASE_URL}/courses/${courseId}/modules`, moduleData, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding module:', error);
+    throw error;
+  }
+}
+
+export async function getActivitiesReq(moduleId: string): Promise<IActivity[]> {
   try {
     const response = await axios.get<IActivity[]>(`${BASE_URL}/modules/${moduleId}/activities`, {
       headers: {
@@ -51,7 +65,7 @@ export async function getActivitiesReq(moduleId: number): Promise<IActivity[]> {
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching activities:', error);
+    console.error(`Error fetching activities for module ${moduleId}:`, error);
     throw error;
   }
 }
