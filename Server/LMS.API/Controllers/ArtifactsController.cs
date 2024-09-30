@@ -4,6 +4,7 @@ using LMS.API.Data;
 using LMS.API.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using LMS.API.Models.Dtos;
 
 namespace LMS.API.Controllers
 {
@@ -36,7 +37,15 @@ namespace LMS.API.Controllers
                 return NotFound();
             }
 
-            return artifact;
+            var base64FileContent = Convert.ToBase64String(artifact.FileContent);
+
+
+            return Ok(new
+            {
+                artifact.FileName,
+                fileContent = base64FileContent,
+                artifact.ContentType
+            });
         }
 
         // PUT: api/Artifacts/5
@@ -73,12 +82,35 @@ namespace LMS.API.Controllers
         // POST: api/Artifacts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Artifact>> PostActivity(Artifact artifact)
+        public async Task<ActionResult<Artifact>> PostArtifact(ArtifactCreateDto dto)
         {
+            if(dto.file == null)
+            {
+                return BadRequest("File is required.");
+            }
+
+            using var memoryStream = new MemoryStream();
+            await dto.file.CopyToAsync(memoryStream);
+
+            var fileBytes = memoryStream.ToArray();
+
+            var artifact = new Artifact
+            {
+                FileName = dto.fileName,
+                FileContent = fileBytes,
+                Description = dto.description,
+                UploadTime = DateTime.Now,
+                CourseId = dto.CourseId,
+                ModuleId = dto.ModuleId,
+                ActivityId = dto.ActivityId,
+                UserId = dto.UserId,
+                ContentType = dto.ContentType,
+            };
+
             _context.Artifact.Add(artifact);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetActivity", new { id = artifact.Id }, artifact);
+            return CreatedAtAction("GetArtifact", new { id = artifact.Id }, artifact);
         }
 
         // DELETE: api/Artifacts/5
