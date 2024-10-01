@@ -26,22 +26,27 @@ namespace LMS.API.Data
                         await db.SaveChangesAsync();
                     }
 
-                    if (await db.Module.AnyAsync())
+                    if (!await db.Module.AnyAsync())
                     {
-                        db.Module.RemoveRange(db.Module);
+                        var existingCoursesList = await db.Courses.ToListAsync();
+                        var generatedModules = GenerateModules(existingCoursesList).Take(5);
+                        await db.AddRangeAsync(generatedModules);
                         await db.SaveChangesAsync();
                     }
 
                     if (!await db.ActivityType.AnyAsync())
                     {
-                        var newActivityTypes = GenerateActivityTypes();
-                        await db.AddRangeAsync(newActivityTypes);
+                        var generatedActivityTypes = GenerateActivityTypes();
+                        await db.AddRangeAsync(generatedActivityTypes);
                         await db.SaveChangesAsync();
                     }
 
-                    if (await db.Activity.AnyAsync())
+                    if (!await db.Activity.AnyAsync())
                     {
-                        db.RemoveRange(db.Activity);
+                        var currentModulesList = await db.Module.ToListAsync();
+                        var activityTypesList = await db.ActivityType.ToListAsync();
+                        var generatedActivities = GenerateActivities(currentModulesList, activityTypesList);
+                        await db.AddRangeAsync(generatedActivities);
                         await db.SaveChangesAsync();
                     }
 
