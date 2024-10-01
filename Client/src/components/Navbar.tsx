@@ -4,14 +4,20 @@ import { useNavbar } from "../hooks/useNavbar";
 import IconComponent from "./IconComponent";
 
 export function Navbar(): ReactElement {
-  const { navBarName, isCourse, teacherName, NavbarIcon } = useNavbar();
+  const { navBarName, isCourse, teacherName, credits, courseCode, NavbarIcon } =
+    useNavbar();
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 py-3 d-flex justify-content-between">
       <div className="d-flex">
-         <IconComponent />
+        <IconComponent />
         <div className="d-flex flex-column justify-content-center">
           <h5 className="align-self-start m-0">{navBarName}</h5>
-          {isCourse && <h6 className="opacity-50 mt-2">DD1337 - 7.0 hp lärare: {teacherName}</h6>} 
+          {isCourse && (
+            <h6 className="opacity-50 mt-2">
+              {courseCode} - {credits} hp
+              {/* <br></br> Lärare: {teacherName} */}
+            </h6>
+          )}
         </div>
       </div>
       <div>

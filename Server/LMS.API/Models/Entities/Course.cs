@@ -17,6 +17,12 @@ namespace LMS.API.Models.Entities
 
         public DateTime StartDate {  get; set; }
 
+        public string CourseCode { get; set; }
+
+        public DateTime EndDate { get; set; }
+
+        public  double Credits { get; set; }
+
         //Navigation property for Artifacts
         public ICollection<Artifact>? Artifacts { get; set; }
 

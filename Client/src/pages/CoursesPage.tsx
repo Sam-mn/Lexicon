@@ -10,7 +10,10 @@ export function CoursesPage(): ReactElement {
   const { setNavBarName, setIsCourse } = useNavbar();
   return (
     <div className="dashboard-container p-3">
-      <Table striped>
+      <Link to="/addCourse" className="linkToNewCourse">
+        Lägg till en ny kurs
+      </Link>
+      <Table striped className="mt-3">
         <thead>
           <tr>
             <th style={{ width: "75%" }}>Kursnamn</th>
@@ -23,7 +26,7 @@ export function CoursesPage(): ReactElement {
               <td>
                 <Link
                   to={`/courses/${c.id}`}
-                  className="edit-link"
+                  className="edit-link text-dark"
                   onClick={() => {
                     setNavBarName(c.courseName);
                     setIsCourse(true);

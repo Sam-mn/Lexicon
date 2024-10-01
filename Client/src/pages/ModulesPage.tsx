@@ -27,8 +27,7 @@ const mockParticipants = [
 export function ModulesPage(): ReactElement {
   const navigate = useNavigate();
   const { moduleId } = useParams<{ moduleId: string }>();
-  const { activities, loading, error } = useActivities(moduleId || "");
-  const { artifacts } = useArtifacts();
+  const { activities, loading, error } = useActivities(moduleId);
 
   const downloadFile = async (documentId: string) => {
     try {
@@ -57,16 +56,16 @@ export function ModulesPage(): ReactElement {
     <div className="course-detail-container">
       <h1>{mockModule.name}</h1>
       <p>{mockModule.description}</p>
-      <div className="mb-3">
-        <Link
-          to={`/activities/${moduleId}/modulesActivities`}
-          className="btn btn-primary"
-        >
-          Lägg till aktivitet
-        </Link>
-      </div>
       <section className="activities-section">
         <h2>Aktiviteter</h2>
+        <div className="mb-3">
+          <Link
+            to={`/courses/${moduleId}/addActivity`}
+            className="btn btn-primary"
+          >
+            Lägg till aktivitet
+          </Link>
+        </div>
         {loading && <p>Loading activities ... </p>}
         {error && <p>Error: {error} </p>}
         <div className="activities-grid">
@@ -75,21 +74,6 @@ export function ModulesPage(): ReactElement {
           ))}
         </div>
       </section>
-
-      {artifacts && (
-        <ul className="materials-list">
-          {artifacts.map((artifact) => (
-            <li key={artifact.id} className="material-item">
-              <span>{artifact.fileName}</span>
-              <div className="material-actions">
-                <button onClick={() => downloadFile(artifact.id)}>
-                  Öpnna fil
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 }

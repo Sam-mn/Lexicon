@@ -7,7 +7,7 @@ import { useActivityTypes } from "../hooks";
 import "../css/AddandEditPages.css";
 
 export function ActivitiesAddPage(): ReactElement {
-  const { courseId } = useParams<{ courseId: string }>();
+  const { moduleId } = useParams<{ moduleId: string }>();
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [startTime, setStartTime] = useState<string>("");
@@ -34,7 +34,7 @@ export function ActivitiesAddPage(): ReactElement {
         startTime,
         endTime,
         activityTypeId,
-        moduleId: "af469c39-0ed5-493a-b0fb-08dcde27da19",
+        moduleId,
       });
 
       if (res.status === 201) {
@@ -107,8 +107,7 @@ export function ActivitiesAddPage(): ReactElement {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Aktivitetstyp*</Form.Label>
-              <Form.Control
-                as="select"
+              <Form.Select
                 value={activityTypeId}
                 required
                 onChange={(e) => setActivityTypeId(e.target.value)}
@@ -119,9 +118,14 @@ export function ActivitiesAddPage(): ReactElement {
                     {type.activityTypeName}
                   </option>
                 ))}
-              </Form.Control>
+              </Form.Select>
             </Form.Group>
-            <Button variant="primary" type="submit" disabled={loading}>
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={loading}
+              className="mb-3"
+            >
               {loading ? "Lägger till..." : "Lägg till aktivitet"}
             </Button>
             {error && <div className="error-message mt-3">{error}</div>}

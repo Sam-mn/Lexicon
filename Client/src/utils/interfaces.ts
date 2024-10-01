@@ -14,6 +14,10 @@ export interface INavbarContext {
   teacherName: string;
   setTeacherName: React.Dispatch<React.SetStateAction<string>>;
   NavbarIcon: IconType;
+  courseCode: string;
+  credits: number;
+  setCredits: React.Dispatch<React.SetStateAction<number>>;
+  setCourseCode: React.Dispatch<React.SetStateAction<string>>
 }
 
 export interface ITokens {
@@ -26,6 +30,9 @@ export interface ICourse {
   courseName: string;
   description: string;
   startDate: string;
+  endDate: string;
+  courseCode: string;
+  credits: number;
 }
 
 export interface IModule {
@@ -35,6 +42,13 @@ export interface IModule {
   startDate: string;
   endDate: string;
   courseId: string;
+}
+
+export interface IModuleFormData {
+  moduleName: string;
+  description: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface IActivityType {
@@ -53,6 +67,7 @@ export interface IActivity {
   endTime: string;
   moduleId: string;
   activityType: IActivityType;
+  activityTypeName: string
 }
 
 export interface IArtifact {

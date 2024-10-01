@@ -1,30 +1,10 @@
-import { ReactElement } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-//import { useAuth, useCourseDetails } from '../hooks';
-import { useActivities } from "../hooks/useActivities";
-//import { ArtifactList, ParticipantList } from '../components';
-import { ActivityCard } from "../components";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { useArtifacts, useCourseDetails, useModules } from "../hooks";
 import "../css/CourseDetailsPage.css";
-
-// Mock data tas bort senare och ersätts med data från servern.
-const mockCourse = {
-  id: 1,
-  name: "Programmering 1",
-  description: "Grundläggande programmeringskurs i Java",
-};
-
-// const mockActivities = [
-//   { id: 1, name: "Inlämning 1", dueDate: "2023-06-15", description: "Grundläggande syntax" },
-//   { id: 2, name: "Grupprojekt", dueDate: "2023-06-30", description: "Skapa en enkel applikation" },
-//   { id: 3, name: "Tentamen", dueDate: "2023-07-15", description: "Skriftlig tentamen" },
-// ];
-
-const mockArtifacts = [
-  { id: 1, name: "Föreläsning 1", uploadDate: "2023-05-01" },
-  { id: 2, name: "Övningsuppgifter", uploadDate: "2023-05-05" },
-  { id: 3, name: "Projektbeskrivning", uploadDate: "2023-05-10" },
-];
+import axios from "axios";
+import { BASE_URL } from "../utils";
+import { useNavbar } from "../hooks/useNavbar";
 
 const mockParticipants = [
   { id: 1, name: "Anna Andersson", course: "Programmering 1" },
@@ -35,22 +15,91 @@ const mockParticipants = [
 export function CourseDetailsPage(): ReactElement {
   const navigate = useNavigate();
   const { courseId } = useParams<{ courseId: string }>();
+  const {
+    modules,
+    loading: modulesLoading,
+    error: modulesError,
+  } = useModules(courseId);
+  const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
+  const {
+    course,
+    loading: courseLoading,
+    error: courseError,
+  } = useCourseDetails(courseId);
 
-  const { activities, loading, error } = useActivities(courseId || "");
+  useEffect(() => {
+    if (modules && modules.length > 0 && !selectedModuleId) {
+      setSelectedModuleId(modules[0].id);
+    }
+  }, [modules, selectedModuleId]);
+  const { artifacts } = useArtifacts();
+  const { setNavBarName } = useNavbar();
+
+  const downloadFile = async (documentId: string) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/Artifacts/${documentId}`);
+      if (res.data.fileContent) {
+        const byteCharacters = atob(res.data.fileContent);
+        const byteNumbers = Array.from(byteCharacters, (char) =>
+          char.charCodeAt(0)
+        );
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], {
+          type: res.data.contentType,
+        });
+        const blobUrl = URL.createObjectURL(blob);
+        window.open(blobUrl);
+        URL.revokeObjectURL(blobUrl);
+      } else {
+        console.error("File content not available");
+      }
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
 
   return (
     <div className="course-detail-container">
-      <h1>{mockCourse.name}</h1>
-      <p>{mockCourse.description}</p>
+      <h1>{course?.courseName}</h1>
+      <p>{course?.description}</p>
 
-      <section className="activities-section">
-        <h2>Aktiviteter</h2>
-        {loading && <p>Loading activities ... </p>}
-        {error && <p>Error: {error} </p>}
-        <div className="activities-grid">
-          {activities.map((activity) => (
-            <ActivityCard key={activity.id} activity={activity} />
-          ))}
+      <section className="modules-section mb-5">
+        <h2>Modules</h2>
+        <Link
+          to={`/courses/${courseId}/addModule`}
+          className="btn btn-primary mb-3"
+        >
+          Lägg till modul
+        </Link>
+        {modulesLoading && <p>Loading modules...</p>}
+        {modulesError && <p>Error: {modulesError}</p>}
+        <div className="mt-4 d-flex flex-wrap">
+          {modules &&
+            modules.map((module) => (
+              <div
+                key={module.id}
+                className="card bg-light mb-3"
+                style={{
+                  maxWidth: "20rem",
+                  marginRight: "2rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  navigate(`/modules/${module.id}`);
+                  course &&
+                    setNavBarName(
+                      `${course?.courseName} / ${module.moduleName}`
+                    );
+                }}
+              >
+                <div className="card-header d-flex justify-content-between">
+                  <span>{module.moduleName}</span>
+                </div>
+                <div className="card-body">
+                  <p className="card-text p-2">{module.description}</p>
+                </div>
+              </div>
+            ))}
         </div>
       </section>
 
@@ -65,23 +114,30 @@ export function CourseDetailsPage(): ReactElement {
           </Link>
         </div>
         <ul className="materials-list">
-          {mockArtifacts.map((artifact) => (
-            <li key={artifact.id} className="material-item">
-              <span>{artifact.name}</span>
-              <span>{artifact.uploadDate}</span>
-              <div className="material-actions">
-                <Link
-                  to={`/materials/${artifact.id}/edit`}
-                  className="edit-link"
-                >
-                  <FaEdit /> Redigera
-                </Link>
-                <button className="delete-button">
-                  <FaTrash /> Ta bort
-                </button>
-              </div>
-            </li>
-          ))}
+          {artifacts && (
+            <ul className="materials-list">
+              {artifacts.map((artifact) => (
+                <li key={artifact.id} className="material-item">
+                  <span>{artifact.fileName}</span>
+                  <span>
+                    Uppladdningsdatum:{" "}
+                    {artifact.uploadTime.substring(
+                      0,
+                      artifact.uploadTime.indexOf("T")
+                    )}
+                  </span>
+                  <div className="material-actions ">
+                    <button
+                      onClick={() => downloadFile(artifact.id)}
+                      className="btn btn-primary"
+                    >
+                      Öpnna fil
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </ul>
       </section>
 
@@ -97,7 +153,7 @@ export function CourseDetailsPage(): ReactElement {
         </ul>
       </section>
 
-      <div className="action-buttons">
+      {/* <div className="action-buttons">
         <Link
           to={`/courses/${courseId}/addActivity`}
           className="btn btn-primary"
@@ -110,7 +166,7 @@ export function CourseDetailsPage(): ReactElement {
         >
           Lägg till kursmaterial
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }
