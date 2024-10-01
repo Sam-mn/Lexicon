@@ -79,10 +79,9 @@ namespace LMS.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshTokenExpireTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -106,8 +105,7 @@ namespace LMS.API.Migrations
                         name: "FK_AspNetUsers_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -256,7 +254,7 @@ namespace LMS.API.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UploadTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UploadedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UploadedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ModuleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ActivityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -273,8 +271,7 @@ namespace LMS.API.Migrations
                         name: "FK_Artifact_AspNetUsers_UploadedById",
                         column: x => x.UploadedById,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Artifact_Courses_CourseId",
                         column: x => x.CourseId,

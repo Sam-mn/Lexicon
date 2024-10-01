@@ -1,0 +1,34 @@
+.SideNavbar {
+  width: 200px;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  background-color: var(--color-white);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #042c65;
+  z-index: 10000;
+}
+
+.SideNavbar-nav {
+  list-style-type: none;
+  padding: 0;
+  margin-left: 15px;
+}
+
+.SideNavbar-item {
+  margin-bottom: 15px;
+}
+
+.SideNavbar-link {
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
+  color: #fff;
+}
+
+.SideNavbar-link:hover {
+  color: var(--color-blue-dark);
+}

@@ -11,6 +11,10 @@ namespace LMS.API.Data
         public LmsContext(DbContextOptions<LmsContext> options) : base(options)
         {
         }
+        public DbSet<Activity> Activity => Set<Activity>();
+        public DbSet<ActivityType> ActivityType => Set<ActivityType>();
         public DbSet<Course> Courses => Set<Course>();
+        public DbSet<Module> Module => Set<Module>();
+        public DbSet<Artifact> Artifact => Set<Artifact>();
     }
 }

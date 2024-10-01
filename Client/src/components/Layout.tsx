@@ -1,23 +1,16 @@
-import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { ReactElement } from "react";
+import { Outlet } from "react-router-dom";
+import { SideNavbar, Navbar } from "../components";
+import "../css/Layout.css";
 
-export const Layout: React.FC = () => {
+export function Layout(): ReactElement {
   return (
-    <div>
-      <header>
-        <nav>
-          <ul>
-            <li><Link to="/">Dashboard</Link></li>
-            <li><Link to="/login">Login</Link></li>
-          </ul>
-        </nav>
-      </header>
-      <main>
+    <div className="layout">
+      <SideNavbar />
+      <main className="main-content">
+        <Navbar />
         <Outlet />
       </main>
-      <footer>
-        <p>&copy; 2024 Lexicon LMS</p>
-      </footer>
     </div>
   );
-};
+}

@@ -13,4 +13,7 @@ public record UserForRegistrationDto
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress]
     public string? Email { get; init; }
+
+    [Required]
+    public string? Role { get; init; }
 }

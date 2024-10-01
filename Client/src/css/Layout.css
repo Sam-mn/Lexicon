@@ -1,0 +1,9 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+}
+
+.main-content {
+  flex-grow: 1;
+  width: 80%;
+}

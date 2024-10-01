@@ -1,0 +1,12 @@
+.login-status-chip {
+  border-radius: 1rem;
+  padding: 0.5rem;
+  margin-top: auto;
+  background-color: #042c65;
+}
+
+.login-status-chip button {
+  border-radius: 0.25rem;
+  background-color: #042c65;
+  text-align: left;
+}
