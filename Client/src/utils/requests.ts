@@ -46,7 +46,8 @@ export async function addModuleReq(courseId:string, moduleData:Partial<IModule>)
   try {
     const response = await axios.post<IModule>(`${BASE_URL}/courses/${courseId}/modules`, moduleData, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        "Content-Type": "multipart/form-data",
       }
     });
     return response.data;
