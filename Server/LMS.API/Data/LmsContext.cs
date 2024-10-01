@@ -16,7 +16,5 @@ namespace LMS.API.Data
         public DbSet<Course> Courses => Set<Course>();
         public DbSet<Module> Module => Set<Module>();
         public DbSet<Artifact> Artifact => Set<Artifact>();
-
-        public DbSet<ActivityType> ActivityType => Set<ActivityType>();
     }
 }

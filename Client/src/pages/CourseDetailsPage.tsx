@@ -1,29 +1,15 @@
-import { ReactElement, useState, useEffect } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
-//import { useAuth, useCourseDetails } from '../hooks';
-import { useActivities, useModules } from '../hooks';
-//import { ArtifactList, ParticipantList } from '../components';
-import { ActivityCard } from '../components';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import '../css/CourseDetailsPage.css';
-
-// Mock data tas bort senare och ersätts med data från servern.
-const mockCourse = {
-  id: 1,
-  name: 'Programmering 1',
-  description: 'Grundläggande programmeringskurs i Java',
-};
-
-const mockArtifacts = [
-  { id: 1, name: 'Föreläsning 1', uploadDate: '2023-05-01' },
-  { id: 2, name: 'Övningsuppgifter', uploadDate: '2023-05-05' },
-  { id: 3, name: 'Projektbeskrivning', uploadDate: '2023-05-10' },
-];
+import { ReactElement, useState, useEffect } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { useArtifacts, useCourseDetails, useModules } from "../hooks";
+import "../css/CourseDetailsPage.css";
+import axios from "axios";
+import { BASE_URL } from "../utils";
+import { useNavbar } from "../hooks/useNavbar";
 
 const mockParticipants = [
-  { id: 1, name: 'Anna Andersson', course: 'Programmering 1' },
-  { id: 2, name: 'Björn Bergström', course: 'Programmering 1' },
-  { id: 3, name: 'Cecilia Carlsson', course: 'Programmering 1' },
+  { id: 1, name: "Anna Andersson", course: "Programmering 1" },
+  { id: 2, name: "Björn Bergström", course: "Programmering 1" },
+  { id: 3, name: "Cecilia Carlsson", course: "Programmering 1" },
 ];
 
 export function CourseDetailsPage(): ReactElement {
@@ -36,23 +22,48 @@ export function CourseDetailsPage(): ReactElement {
   } = useModules(courseId);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const {
-    activities,
-    loading: activitiesLoading,
-    error: activitiesError,
-  } = useActivities(selectedModuleId || '');
+    course,
+    loading: courseLoading,
+    error: courseError,
+  } = useCourseDetails(courseId);
 
   useEffect(() => {
     if (modules && modules.length > 0 && !selectedModuleId) {
       setSelectedModuleId(modules[0].id);
     }
   }, [modules, selectedModuleId]);
+  const { artifacts } = useArtifacts();
+  const { setNavBarName } = useNavbar();
+
+  const downloadFile = async (documentId: string) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/Artifacts/${documentId}`);
+      if (res.data.fileContent) {
+        const byteCharacters = atob(res.data.fileContent);
+        const byteNumbers = Array.from(byteCharacters, (char) =>
+          char.charCodeAt(0)
+        );
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], {
+          type: res.data.contentType,
+        });
+        const blobUrl = URL.createObjectURL(blob);
+        window.open(blobUrl);
+        URL.revokeObjectURL(blobUrl);
+      } else {
+        console.error("File content not available");
+      }
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
 
   return (
     <div className="course-detail-container">
-      <h1>{mockCourse.name}</h1>
-      <p>{mockCourse.description}</p>
+      <h1>{course?.courseName}</h1>
+      <p>{course?.description}</p>
 
-      <section className="modules-section">
+      <section className="modules-section mb-5">
         <h2>Modules</h2>
         <Link
           to={`/courses/${courseId}/addModule`}
@@ -62,53 +73,71 @@ export function CourseDetailsPage(): ReactElement {
         </Link>
         {modulesLoading && <p>Loading modules...</p>}
         {modulesError && <p>Error: {modulesError}</p>}
-        <select
-          value={selectedModuleId || ''}
-          onChange={(e) => setSelectedModuleId(e.target.value)}
-        >
-          <option value="">Select a module</option>
-          {modules.map((module) => (
-            <option key={module.id} value={module.id}>
-              {module.moduleName}
-            </option>
-          ))}
-        </select>
-      </section>
-
-      <section className="activities-section">
-        <h2>Activities</h2>
-        {activitiesLoading && <p>Loading activities...</p>}
-        {activitiesError && <p>Error: {activitiesError}</p>}
-        {!activitiesLoading && !activitiesError && activities.length === 0 && (
-          <p>No activities found for this module.</p>
-        )}
-        <div className="activities-grid">
-          {activities.map((activity) => (
-            <ActivityCard key={activity.id} activity={activity} />
-          ))}
+        <div className="mt-4 d-flex flex-wrap">
+          {modules &&
+            modules.map((module) => (
+              <div
+                key={module.id}
+                className="card bg-light mb-3"
+                style={{
+                  maxWidth: "20rem",
+                  marginRight: "2rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  navigate(`/modules/${module.id}`);
+                  course &&
+                    setNavBarName(
+                      `${course?.courseName} / ${module.moduleName}`
+                    );
+                }}
+              >
+                <div className="card-header d-flex justify-content-between">
+                  <span>{module.moduleName}</span>
+                </div>
+                <div className="card-body">
+                  <p className="card-text p-2">{module.description}</p>
+                </div>
+              </div>
+            ))}
         </div>
       </section>
 
       <section className="materials-section">
         <h2>Kursmaterial</h2>
+        <div className="mb-3">
+          <Link
+            to={`/addDocument/${courseId}?documentType=course`}
+            className="btn btn-primary"
+          >
+            Lägg till Kursmaterial
+          </Link>
+        </div>
         <ul className="materials-list">
-          {mockArtifacts.map((artifact) => (
-            <li key={artifact.id} className="material-item">
-              <span>{artifact.name}</span>
-              <span>{artifact.uploadDate}</span>
-              <div className="material-actions">
-                <Link
-                  to={`/materials/${artifact.id}/edit`}
-                  className="edit-link"
-                >
-                  <FaEdit /> Redigera
-                </Link>
-                <button className="delete-button">
-                  <FaTrash /> Ta bort
-                </button>
-              </div>
-            </li>
-          ))}
+          {artifacts && (
+            <ul className="materials-list">
+              {artifacts.map((artifact) => (
+                <li key={artifact.id} className="material-item">
+                  <span>{artifact.fileName}</span>
+                  <span>
+                    Uppladdningsdatum:{" "}
+                    {artifact.uploadTime.substring(
+                      0,
+                      artifact.uploadTime.indexOf("T")
+                    )}
+                  </span>
+                  <div className="material-actions ">
+                    <button
+                      onClick={() => downloadFile(artifact.id)}
+                      className="btn btn-primary"
+                    >
+                      Öpnna fil
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </ul>
       </section>
 
@@ -124,7 +153,7 @@ export function CourseDetailsPage(): ReactElement {
         </ul>
       </section>
 
-      <div className="action-buttons">
+      {/* <div className="action-buttons">
         <Link
           to={`/courses/${courseId}/addActivity`}
           className="btn btn-primary"
@@ -137,7 +166,7 @@ export function CourseDetailsPage(): ReactElement {
         >
           Lägg till kursmaterial
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }

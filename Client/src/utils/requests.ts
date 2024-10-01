@@ -46,7 +46,8 @@ export async function addModuleReq(courseId:string, moduleData:Partial<IModule>)
   try {
     const response = await axios.post<IModule>(`${BASE_URL}/courses/${courseId}/modules`, moduleData, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        "Content-Type": "multipart/form-data",
       }
     });
     return response.data;
@@ -98,8 +99,8 @@ export async function getCourseActivities(courseId: string): Promise<IActivity[]
   return response.data;
 }
 
-export async function getCourseArtifacts(courseId: string): Promise<IArtifact[]> {
-  const response = await axios.get(`${BASE_URL}/courses/${courseId}/artifacts`);
+export async function getCourseArtifacts(): Promise<IArtifact[]> {
+  const response = await axios.get(`${BASE_URL}/Artifacts`);
   return response.data;
 }
 

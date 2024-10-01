@@ -1,18 +1,19 @@
-import axios from 'axios';
-import { ReactElement, useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { BASE_URL } from '../utils';
-import { useParams } from 'react-router-dom';
-import { useActivityTypes } from '../hooks';
+import axios from "axios";
+import { ReactElement, useState } from "react";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { BASE_URL } from "../utils";
+import { useParams } from "react-router-dom";
+import { useActivityTypes } from "../hooks";
+import "../css/AddandEditPages.css";
 
 export function ActivitiesAddPage(): ReactElement {
-  const { courseId } = useParams<{ courseId: string }>();
-  const [name, setName] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [startTime, setStartTime] = useState<string>('');
-  const [endTime, setEndTime] = useState<string>('');
-  const [activityTypeId, setActivityTypeId] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  const { moduleId } = useParams<{ moduleId: string }>();
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [startTime, setStartTime] = useState<string>("");
+  const [endTime, setEndTime] = useState<string>("");
+  const [activityTypeId, setActivityTypeId] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
 
@@ -33,23 +34,23 @@ export function ActivitiesAddPage(): ReactElement {
         startTime,
         endTime,
         activityTypeId,
-        moduleId: "af469c39-0ed5-493a-b0fb-08dcde27da19",
+        moduleId,
       });
 
       if (res.status === 201) {
         setSuccess(true);
-        setName('');
-        setDescription('');
-        setStartTime('');
-        setEndTime('');
-        setActivityTypeId('');
-        setError('');
+        setName("");
+        setDescription("");
+        setStartTime("");
+        setEndTime("");
+        setActivityTypeId("");
+        setError("");
       } else {
-        setError('Something went wrong');
+        setError("Something went wrong");
       }
     } catch (err) {
       console.log(err);
-      setError('Something went wrong');
+      setError("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -60,7 +61,7 @@ export function ActivitiesAddPage(): ReactElement {
     return <div> Error loading activity types: {typesError} </div>;
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 maxHieht">
       <Row className="justify-content-md-center">
         <Col xs={12} md={6}>
           <h2 className="text-center">Lägg till en ny aktivitet</h2>
@@ -106,8 +107,7 @@ export function ActivitiesAddPage(): ReactElement {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Aktivitetstyp*</Form.Label>
-              <Form.Control
-                as="select"
+              <Form.Select
                 value={activityTypeId}
                 required
                 onChange={(e) => setActivityTypeId(e.target.value)}
@@ -118,10 +118,15 @@ export function ActivitiesAddPage(): ReactElement {
                     {type.activityTypeName}
                   </option>
                 ))}
-              </Form.Control>
+              </Form.Select>
             </Form.Group>
-            <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? 'Lägger till...' : 'Lägg till aktivitet'}
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={loading}
+              className="mb-3"
+            >
+              {loading ? "Lägger till..." : "Lägg till aktivitet"}
             </Button>
             {error && <div className="error-message mt-3">{error}</div>}
             {success && (

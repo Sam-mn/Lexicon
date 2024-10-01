@@ -70,23 +70,27 @@ namespace LMS.API.Data
 
         private static IEnumerable<Course> GenerateCourses(int nrOfCourses)
         {
+            double[] creditOptions = { 3, 7.5, 15, 30 };
             var courseFaker = new Faker<Course>("sv")
-                .RuleFor(c => c.CourseName, f => GenerateCourseName(f))
+                .RuleFor(c => c.CourseName, f => string.Join(" ", f.Random.WordsArray(3)))
                 .RuleFor(c => c.StartDate, f => f.Date.Future())
+                .RuleFor(c => c.EndDate, f => f.Date.Future())
+                .RuleFor(c => c.Credits, f => f.PickRandom(creditOptions))
+                .RuleFor(c => c.CourseCode, f => $"{f.Random.String2(2, "ABCDEFGHIJKLMNOPQRSTUVXYZ")}{f.Random.Number(100, 9999)}")
                 .RuleFor(c => c.Description, f => f.Lorem.Paragraph());
 
             return courseFaker.Generate(nrOfCourses);
         }
 
-        static string GenerateCourseName(Faker f)
-        {
-            string subject = string.Join(" ",f.Random.WordsArray(3));
-            double[] creditOptions = { 3, 7.5, 15, 30 };
-            double credits = f.PickRandom(creditOptions);
-            string courseCode = $"{f.Random.String2(2, "ABCDEFGHIJKLMNOPQRSTUVXYZ")}{f.Random.Number(100, 9999)}";
+        //static string GenerateCourseName(Faker f)
+        //{
+        //    string subject = string.Join(" ",f.Random.WordsArray(3));
+        //    double[] creditOptions = { 3, 7.5, 15, 30 };
+        //    double credits = f.PickRandom(creditOptions);
+        //    string courseCode = $"{f.Random.String2(2, "ABCDEFGHIJKLMNOPQRSTUVXYZ")}{f.Random.Number(100, 9999)}";
 
-            return $"{subject}, {credits} hp ({courseCode})";
-        }
+        //    return $"{subject}, {credits} hp ({courseCode})";
+        //}
 
         private static IEnumerable<Module> GenerateModules(IEnumerable<Course> courses)
         {

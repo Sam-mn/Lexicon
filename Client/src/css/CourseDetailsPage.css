@@ -1,7 +1,8 @@
 .course-detail-container {
-    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    max-height: 82vh;
+    overflow: scroll;
   }
   
   h1, h2 {
@@ -75,6 +76,10 @@
   
   .delete-button {
     color: var(--color-error);
+  }
+
+  .delete-button:hover {
+    background-color: inherit;
   }
   
   .action-buttons {

@@ -8,7 +8,7 @@ interface ParticipantsHookResult {
   error: string | null;
 }
 
-export function useParticipants(courseId: number): ParticipantsHookResult {
+export function useParticipants(courseId: string): ParticipantsHookResult {
     const [participants, setParticipants] = useState<IUser[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);

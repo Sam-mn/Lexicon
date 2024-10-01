@@ -1,7 +1,23 @@
+import { IconType } from "react-icons";
+
 export interface IAuthContext {
   isLoggedIn: boolean;  
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
+}
+
+export interface INavbarContext {
+  navBarName: string; 
+  setNavBarName: React.Dispatch<React.SetStateAction<string>>;
+  isCourse: boolean;
+  setIsCourse: React.Dispatch<React.SetStateAction<boolean>>;
+  teacherName: string;
+  setTeacherName: React.Dispatch<React.SetStateAction<string>>;
+  NavbarIcon: IconType;
+  courseCode: string;
+  credits: number;
+  setCredits: React.Dispatch<React.SetStateAction<number>>;
+  setCourseCode: React.Dispatch<React.SetStateAction<string>>
 }
 
 export interface ITokens {
@@ -14,6 +30,9 @@ export interface ICourse {
   courseName: string;
   description: string;
   startDate: string;
+  endDate: string;
+  courseCode: string;
+  credits: number;
 }
 
 export interface IModule {
@@ -48,14 +67,16 @@ export interface IActivity {
   endTime: string;
   moduleId: string;
   activityType: IActivityType;
+  activityTypeName: string
 }
 
 export interface IArtifact {
   id: string;
   fileName: string;
-  filePath: string;
+  fileContent: string;
   description: string;
   uploadTime: string;
+  ContentType: string
 }
 
 export interface IUser {

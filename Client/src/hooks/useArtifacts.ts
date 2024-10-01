@@ -8,7 +8,7 @@ interface ArtifactsHookResult {
   error: string | null;
 }
 
-export function useArtifacts(courseId: number): ArtifactsHookResult {
+export function useArtifacts(): ArtifactsHookResult {
   const [artifacts, setArtifacts] = useState<IArtifact[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +16,7 @@ export function useArtifacts(courseId: number): ArtifactsHookResult {
   useEffect(() => {
     async function fetchArtifacts() {
       try {
-        const data = await getCourseArtifacts(courseId);
+        const data = await getCourseArtifacts();
         setArtifacts(data);
         setLoading(false);
       } catch (err) {
@@ -26,7 +26,7 @@ export function useArtifacts(courseId: number): ArtifactsHookResult {
     }
 
     fetchArtifacts();
-  }, [courseId]);
+  }, []);
 
   return { artifacts, loading, error };
 }

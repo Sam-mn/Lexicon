@@ -1,7 +1,7 @@
-import { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
+import { ReactElement } from "react";
+import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
-import { IActivity } from '../utils/';
+import { IActivity } from "../utils/";
 
 interface ActivityCardProps {
   activity: IActivity;
@@ -16,7 +16,7 @@ export function ActivityCard({ activity }: ActivityCardProps): ReactElement {
       </div>
       <div className="activity-body">
         <p>{activity.description}</p>
-        <p>Type: {activity.activityType.activityTypeName}</p>
+        <p>Type: {activity.activityTypeName}</p>
       </div>
       <div className="activity-footer">
         <Link to={`/activities/${activity.id}/edit`} className="edit-link">

@@ -39,6 +39,20 @@ namespace LMS.API.Controllers
             return course;
         }
 
+        //GET: api/Courses/5/modules
+        [HttpGet("{id}/modules")]
+        public async Task<ActionResult<IEnumerable<Module>>> GetCourseModules(Guid id)
+        {
+            var module = await _context.Module.Where(c=> c.CourseId == id).ToListAsync();
+
+            if (module == null)
+            {
+                return NotFound();
+            }
+
+            return module;
+        }
+
         // PUT: api/Courses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
