@@ -1,45 +1,48 @@
 import axios from "axios";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import { BASE_URL } from "../utils";
+import { BASE_URL, ICourse } from "../utils";
+import { useParams } from "react-router-dom";
 
 export function AddEditCourse(): ReactElement {
-  const [courseName, setCourseName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [credits, setCredits] = useState<number>(0);
-  const [courseCode, setCourseCode] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
+  const { id } = useParams<{ id: string }>();
+  const [courseData, setCourseData] = useState<ICourse | null>();
   const [error, setError] = useState<string>("");
   const [sucsses, setSucsses] = useState<boolean>(false);
-
   const [loading, setLoading] = useState(false);
+
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCourseData((prevalue: any) => {
+      return {
+        ...prevalue,
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setSucsses(false);
-      const res = await axios.post(`${BASE_URL}/courses`, {
-        description,
-        courseName,
-        startDate,
-        credits,
-        courseCode,
-        endDate,
-      });
-      setLoading(true);
+      let res;
 
-      console.log(res);
-      if (res.status === 201) {
+      if (id !== undefined) {
+        res = await axios.put(`${BASE_URL}/courses/${id}`, courseData);
+      } else {
+        res = await axios.post(`${BASE_URL}/courses`, courseData);
+      }
+      setLoading(true);
+      if (res.status === 201 || res.status === 204) {
         setSucsses(true);
-        setCourseName("");
-        setDescription("");
-        setStartDate("");
+
         setError("");
         setLoading(false);
       } else {
         setLoading(false);
         setError("Something went wrong");
+      }
+      if (res.status === 201) {
+        setCourseData(null);
       }
     } catch (err) {
       console.log(err);
@@ -47,6 +50,17 @@ export function AddEditCourse(): ReactElement {
       setError("Something went wrong");
     }
   };
+
+  const getCourse = async () => {
+    const response = await axios.get(`${BASE_URL}/courses/${id}`);
+    setCourseData(response.data);
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      getCourse();
+    }
+  }, []);
 
   return (
     <Container className="mt-4 maxHieht">
@@ -59,9 +73,10 @@ export function AddEditCourse(): ReactElement {
               <Form.Control
                 type="text"
                 placeholder="Ange kursnamn"
-                value={courseName}
+                value={courseData?.courseName || ""}
                 required
-                onChange={(e) => setCourseName(e.target.value)}
+                name="courseName"
+                onChange={handleOnChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -69,10 +84,11 @@ export function AddEditCourse(): ReactElement {
               <Form.Control
                 as="textarea"
                 placeholder="Ange kursbeskrivning"
-                value={description}
+                value={courseData?.description || ""}
                 required
                 rows={5}
-                onChange={(e) => setDescription(e.target.value)}
+                name="description"
+                onChange={handleOnChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -80,9 +96,10 @@ export function AddEditCourse(): ReactElement {
               <Form.Control
                 type="number"
                 placeholder="Ange kursnamn"
-                value={credits}
+                value={courseData?.credits || 0}
                 required
-                onChange={(e) => setCredits(parseInt(e.target.value))}
+                name="credits"
+                onChange={handleOnChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -90,27 +107,30 @@ export function AddEditCourse(): ReactElement {
               <Form.Control
                 type="text"
                 placeholder="Ange kursnamn"
-                value={courseCode}
+                value={courseData?.courseCode || ""}
                 required
-                onChange={(e) => setCourseCode(e.target.value)}
+                name="courseCode"
+                onChange={handleOnChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Startdatum*</Form.Label>
               <Form.Control
-                type="date"
-                value={startDate}
+                type="datetime-local"
+                value={courseData?.startDate || ""}
                 required
-                onChange={(e) => setStartDate(e.target.value)}
+                name="startDate"
+                onChange={handleOnChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Slut Datum*</Form.Label>
               <Form.Control
-                type="date"
-                value={endDate}
+                type="datetime-local"
+                value={courseData?.endDate || ""}
                 required
-                onChange={(e) => setEndDate(e.target.value)}
+                name="endDate"
+                onChange={handleOnChange}
               />
             </Form.Group>
             <Button

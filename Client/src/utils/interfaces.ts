@@ -2,8 +2,9 @@ import { IconType } from "react-icons";
 
 export interface IAuthContext {
   isLoggedIn: boolean;  
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<IUser | undefined>;
   logout: () => void;
+  userData: IUser | null;
 }
 
 export interface INavbarContext {
@@ -33,6 +34,7 @@ export interface ICourse {
   endDate: string;
   courseCode: string;
   credits: number;
+  artifacts : IArtifact[] | null
 }
 
 export interface IModule {
@@ -82,6 +84,8 @@ export interface IArtifact {
 export interface IUser {
   id: string;
   name: string;
-  email: string;
-  role: string;
+  email?: string;
+  UserRole: "student"| "teacher";
+  courseId?: string
 }
+

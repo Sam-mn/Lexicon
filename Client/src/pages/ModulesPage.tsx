@@ -1,10 +1,10 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useActivities } from "../hooks/useActivities";
 import { ActivityCard } from "../components";
-import { useArtifacts } from "../hooks";
+import { useArtifacts, useAuth } from "../hooks";
 import axios from "axios";
-import { BASE_URL, IArtifact } from "../utils";
+import { BASE_URL, IArtifact, IModule } from "../utils";
 
 const mockModule = {
   id: 1,
@@ -12,22 +12,12 @@ const mockModule = {
   description: "module name desc",
 };
 
-const mockArtifacts = [
-  { id: 1, name: "Föreläsning 1", uploadDate: "2023-05-01" },
-  { id: 2, name: "Övningsuppgifter", uploadDate: "2023-05-05" },
-  { id: 3, name: "Projektbeskrivning", uploadDate: "2023-05-10" },
-];
-
-const mockParticipants = [
-  { id: 1, name: "Anna Andersson", course: "Programmering 1" },
-  { id: 2, name: "Björn Bergström", course: "Programmering 1" },
-  { id: 3, name: "Cecilia Carlsson", course: "Programmering 1" },
-];
-
 export function ModulesPage(): ReactElement {
   const navigate = useNavigate();
   const { moduleId } = useParams<{ moduleId: string }>();
   const { activities, loading, error } = useActivities(moduleId);
+  const { userData } = useAuth();
+  const [moduleData, setModuleData] = useState<IModule | null>(null);
 
   const downloadFile = async (documentId: string) => {
     try {
@@ -52,19 +42,30 @@ export function ModulesPage(): ReactElement {
     }
   };
 
+  const getModuleData = async () => {
+    const res = await axios.get(`${BASE_URL}/modules/${moduleId}`);
+    setModuleData(res.data);
+  };
+
+  useEffect(() => {
+    getModuleData();
+  }, []);
+
   return (
     <div className="course-detail-container">
-      <h1>{mockModule.name}</h1>
-      <p>{mockModule.description}</p>
+      <h1>{moduleData?.moduleName}</h1>
+      <p>{moduleData?.description}</p>
       <section className="activities-section">
         <h2>Aktiviteter</h2>
         <div className="mb-3">
-          <Link
-            to={`/courses/${moduleId}/addActivity`}
-            className="btn btn-primary"
-          >
-            Lägg till aktivitet
-          </Link>
+          {userData?.UserRole === "teacher" && (
+            <Link
+              to={`/courses/${moduleId}/addActivity`}
+              className="btn btn-primary"
+            >
+              Lägg till aktivitet
+            </Link>
+          )}
         </div>
         {loading && <p>Loading activities ... </p>}
         {error && <p>Error: {error} </p>}

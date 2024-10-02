@@ -18,15 +18,15 @@ export function useCourseDetails(courseId: string | undefined): CourseDetailsHoo
 
   useEffect(() => {
     async function fetchCourseDetails() {
+      console.log(course)
       if (!courseId) {
         setError('Invalid course ID');
         setLoading(false);
         return;
       }
       try {
-        console.log(courseId)
         const courseData = await getCourseDetails(courseId);
-        console.log(courseData)
+        // console.log(courseData)
         //const activitiesData = await getCourseActivities(courseId);
         setCourse(courseData);
         //setActivities(activitiesData);

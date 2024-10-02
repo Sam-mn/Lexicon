@@ -29,7 +29,7 @@ namespace LMS.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(Guid id)
         {
-            var course = await _context.Courses.FindAsync(id);
+            var course = await _context.Courses.Include(c=> c.users).Include(c=>c.Artifacts).Include(c => c.Modules).FirstOrDefaultAsync(c=> c.Id == id);
 
             if (course == null)
             {

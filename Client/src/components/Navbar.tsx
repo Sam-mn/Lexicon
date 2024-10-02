@@ -2,10 +2,12 @@ import { ReactElement } from "react";
 import "../css/SideNavbar.css";
 import { useNavbar } from "../hooks/useNavbar";
 import IconComponent from "./IconComponent";
+import { useAuth } from "../hooks";
 
 export function Navbar(): ReactElement {
   const { navBarName, isCourse, teacherName, credits, courseCode, NavbarIcon } =
     useNavbar();
+  const { userData } = useAuth();
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 py-3 d-flex justify-content-between">
       <div className="d-flex">
@@ -23,9 +25,11 @@ export function Navbar(): ReactElement {
       <div>
         <h5>
           Inloggad{" "}
-          <span className="bg-primary p-1 text-light rounded">Elev</span>
+          <span className="bg-primary p-1 text-light rounded">
+            {userData?.UserRole === "student" ? "Elev" : "Lärare"}
+          </span>
         </h5>
-        <h6 className="opacity-50">Carl Gustav</h6>
+        <h6 className="opacity-50">{userData?.name}</h6>
       </div>
     </nav>
   );

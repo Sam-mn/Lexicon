@@ -26,5 +26,8 @@ namespace LMS.API.Models.Entities
         //Navigation property for Artifacts
         public ICollection<Artifact>? Artifacts { get; set; }
 
+        public ICollection<ApplicationUser>? users { get; set; }
+
+        public ICollection<Module>? Modules { get; set; }
     }
 }

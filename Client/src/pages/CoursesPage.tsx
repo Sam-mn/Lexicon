@@ -7,7 +7,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 export function CoursesPage(): ReactElement {
   const { courses, error, loading } = useCourses();
-  const { setNavBarName, setIsCourse } = useNavbar();
+  const { setCredits, setCourseCode, setNavBarName, setIsCourse } = useNavbar();
   return (
     <div className="dashboard-container p-3">
       <Link to="/addCourse" className="linkToNewCourse">
@@ -29,6 +29,8 @@ export function CoursesPage(): ReactElement {
                   className="edit-link text-dark"
                   onClick={() => {
                     setNavBarName(c.courseName);
+                    setCourseCode(c.courseCode);
+                    setCredits(c.credits);
                     setIsCourse(true);
                   }}
                 >
@@ -36,7 +38,7 @@ export function CoursesPage(): ReactElement {
                 </Link>
               </td>
               <td className="d-flex justify-content-between">
-                <Link to="" className="edit-link">
+                <Link to={`/addCourse/${c.id}`} className="edit-link">
                   <FaEdit />
                   Redigera
                 </Link>

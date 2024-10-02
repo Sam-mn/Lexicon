@@ -8,11 +8,9 @@ import "./css/index.css";
 import { NavbarProvider } from "./context/navbarProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <NavbarProvider>
-        <RouterProvider router={router} />
-      </NavbarProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  <AuthProvider>
+    <NavbarProvider>
+      <RouterProvider router={router} />
+    </NavbarProvider>
+  </AuthProvider>
 );

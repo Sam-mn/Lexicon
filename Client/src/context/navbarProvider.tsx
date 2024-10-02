@@ -44,7 +44,6 @@ export function NavbarProvider({
   };
 
   useEffect(() => {
-    console.log(navBarName);
     if (navBarName === "Hem") {
       setNavbarIcon(FiHome);
     }

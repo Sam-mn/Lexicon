@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import "../css/LoginPage.css";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import logo from "../assets/images/logo-lexicon.gif";
+import { IUser } from "../utils";
 
 export function LoginPage(): ReactElement {
   const [username, setUsername] = useState<string>("");
@@ -23,8 +24,12 @@ export function LoginPage(): ReactElement {
     setIsLoading(true);
 
     try {
-      await login(username, password);
-      navigate("/");
+      const userData: IUser | undefined = await login(username, password);
+      if (userData?.UserRole === "student") {
+        navigate(`/courses/${userData.courseId}`);
+      } else if (userData?.UserRole === "teacher") {
+        navigate("/");
+      }
     } catch (err) {
       setError("Invalid username or password");
     } finally {
@@ -32,38 +37,6 @@ export function LoginPage(): ReactElement {
     }
   };
 
-  // return (
-  //   <div className="login-container">
-  //     <form className="login-form" onSubmit={handleOnSubmit}>
-  //       <h1>Welcome Back</h1>
-  //       <div className="input-group">
-  //         <label htmlFor="username">Username</label>
-  //         <input
-  //           id="username"
-  //           onChange={(e) => setUsername(e.target.value)}
-  //           type="text"
-  //           value={username}
-  //           required
-  //           autoFocus
-  //         />
-  //       </div>
-  //       <div className="input-group">
-  //         <label htmlFor="password">Password</label>
-  //         <input
-  //           id="password"
-  //           onChange={(e) => setPassword(e.target.value)}
-  //           type="password"
-  //           value={password}
-  //           required
-  //         />
-  //       </div>
-  //       {error && <div className="error-message">{error}</div>}
-  //       <button type="submit" disabled={isLoading}>
-  //         {isLoading ? 'Logging in...' : 'Log In'}
-  //       </button>
-  //     </form>
-  //   </div>
-  // );
   return (
     <div className="w-100">
       <Row className="justify-content-md-center mt-5">
@@ -81,6 +54,7 @@ export function LoginPage(): ReactElement {
                 placeholder="Enter username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                required
               />
             </Form.Group>
 
@@ -91,6 +65,7 @@ export function LoginPage(): ReactElement {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </Form.Group>
 

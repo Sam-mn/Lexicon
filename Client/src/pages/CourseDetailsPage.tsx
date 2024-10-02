@@ -1,6 +1,6 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { useArtifacts, useCourseDetails, useModules } from "../hooks";
+import { useArtifacts, useAuth, useCourseDetails, useModules } from "../hooks";
 import "../css/CourseDetailsPage.css";
 import axios from "axios";
 import { BASE_URL } from "../utils";
@@ -20,6 +20,7 @@ export function CourseDetailsPage(): ReactElement {
     loading: modulesLoading,
     error: modulesError,
   } = useModules(courseId);
+  const { userData } = useAuth();
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const {
     course,
@@ -31,7 +32,8 @@ export function CourseDetailsPage(): ReactElement {
     if (modules && modules.length > 0 && !selectedModuleId) {
       setSelectedModuleId(modules[0].id);
     }
-  }, [modules, selectedModuleId]);
+    if (course) setNavBarName(course?.courseName);
+  }, [modules, selectedModuleId, course]);
   const { artifacts } = useArtifacts();
   const { setNavBarName } = useNavbar();
 
@@ -65,12 +67,16 @@ export function CourseDetailsPage(): ReactElement {
 
       <section className="modules-section mb-5">
         <h2>Modules</h2>
-        <Link
-          to={`/courses/${courseId}/addModule`}
-          className="btn btn-primary mb-3"
-        >
-          Lägg till modul
-        </Link>
+        {userData?.UserRole === "teacher" && (
+          <Link
+            to={`/courses/${courseId}/addModule`}
+            className="btn btn-primary mb-3"
+          >
+            Lägg till modul
+          </Link>
+        )}
+        {userData?.UserRole === "teacher"}
+
         {modulesLoading && <p>Loading modules...</p>}
         {modulesError && <p>Error: {modulesError}</p>}
         <div className="mt-4 d-flex flex-wrap">
@@ -106,12 +112,14 @@ export function CourseDetailsPage(): ReactElement {
       <section className="materials-section">
         <h2>Kursmaterial</h2>
         <div className="mb-3">
-          <Link
-            to={`/addDocument/${courseId}?documentType=course`}
-            className="btn btn-primary"
-          >
-            Lägg till Kursmaterial
-          </Link>
+          {userData?.UserRole === "teacher" && (
+            <Link
+              to={`/addDocument/${courseId}?documentType=course`}
+              className="btn btn-primary"
+            >
+              Lägg till Kursmaterial
+            </Link>
+          )}
         </div>
         <ul className="materials-list">
           {artifacts && (
@@ -152,21 +160,6 @@ export function CourseDetailsPage(): ReactElement {
           ))}
         </ul>
       </section>
-
-      {/* <div className="action-buttons">
-        <Link
-          to={`/courses/${courseId}/addActivity`}
-          className="btn btn-primary"
-        >
-          Lägg till aktivitet
-        </Link>
-        <Link
-          to={`/courses/${courseId}/addMaterial`}
-          className="btn btn-secondary"
-        >
-          Lägg till kursmaterial
-        </Link>
-      </div> */}
     </div>
   );
 }

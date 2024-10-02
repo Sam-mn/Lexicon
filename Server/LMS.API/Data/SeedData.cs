@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using LMS.API.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -15,7 +16,11 @@ namespace LMS.API.Data
                 var db = servicesProvider.GetRequiredService<LmsContext>();
 
                 await db.Database.MigrateAsync();
+                
+                var roleManager = servicesProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                string[] roleNames = { "Student", "Teacher" };
 
+                
                 //IMPORTANT: For testing purposes, this will always delete any module DB you create via postman, make sure you dont add any you want to save
                 try
                 {
@@ -34,9 +39,7 @@ namespace LMS.API.Data
 
                     if (!await db.ActivityType.AnyAsync())
                     {
-                        var newActivityTypes = GenerateActivityTypes();
-                        await db.AddRangeAsync(newActivityTypes);
-                        await db.SaveChangesAsync();
+                        await GenerateActivityTypes(db);
                     }
 
                     if (await db.Activity.AnyAsync())
@@ -57,8 +60,13 @@ namespace LMS.API.Data
                     var activities = GenerateActivities(existingModules, activityTypes);
                     await db.AddRangeAsync(activities);
                     await db.SaveChangesAsync();
-
-
+                    foreach (var roleName in roleNames)
+                    {
+                        if(!await roleManager.RoleExistsAsync(roleName))
+                        {
+                            await roleManager.CreateAsync(new IdentityRole(roleName));
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -72,7 +80,7 @@ namespace LMS.API.Data
         {
             double[] creditOptions = { 3, 7.5, 15, 30 };
             var courseFaker = new Faker<Course>("sv")
-                .RuleFor(c => c.CourseName, f => string.Join(" ", f.Random.WordsArray(3)))
+                .RuleFor(c => c.CourseName, f => string.Join(" ", f.Random.WordsArray(3))) 
                 .RuleFor(c => c.StartDate, f => f.Date.Future())
                 .RuleFor(c => c.EndDate, f => f.Date.Future())
                 .RuleFor(c => c.Credits, f => f.PickRandom(creditOptions))
@@ -132,14 +140,20 @@ namespace LMS.API.Data
             return activitiesList;
         }
 
-        private static IEnumerable<ActivityType> GenerateActivityTypes()
+        private static async Task GenerateActivityTypes(LmsContext db)
         {
+            var predefinedActivityTypes =new List<string> { "Lecture", "Assignment" , "Quiz", "Workshop"};
             var activityTypeFaker = new Faker<ActivityType>()
-                .RuleFor(at => at.ActivityTypeName, f => f.PickRandom("Lecture", "Assignment", "Quiz", "Workshop"))
                 .RuleFor(at => at.Type, f => f.Lorem.Word())
                 .RuleFor(at => at.Description, f => f.Lorem.Sentence());
 
-            return activityTypeFaker.Generate(4);
+            foreach(var activityTypeName in predefinedActivityTypes)
+            {
+                var activityType = activityTypeFaker.Clone().RuleFor(at => at.ActivityTypeName, _=> activityTypeName).Generate();
+                db.ActivityType.Add(activityType);
+            }
+
+            db.SaveChanges();
         }
     }
 }

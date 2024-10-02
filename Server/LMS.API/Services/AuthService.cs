@@ -68,8 +68,10 @@ public class AuthService : IAuthService
 
         var claims = new List<Claim>()
         {
-            new Claim(ClaimTypes.Name, user.UserName!),
+            new Claim(ClaimTypes.Name, user.Name!),
             new Claim(ClaimTypes.NameIdentifier, user.Id!),
+            new Claim(ClaimTypes.Role, user.UserRole),
+            new Claim(ClaimTypes.Version, user.CourseId.ToString()!)
             //Add more if needed
         };
 
@@ -96,6 +98,9 @@ public class AuthService : IAuthService
         {
             UserName = userForRegistration.UserName,
             Email = userForRegistration.Email,
+            UserRole = userForRegistration.UserRole,
+            Name = userForRegistration.Name,
+            CourseId = userForRegistration.CourseId,
         };
 
         IdentityResult result = await userManager.CreateAsync(user, userForRegistration.Password!);

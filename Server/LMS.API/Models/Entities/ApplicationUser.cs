@@ -12,11 +12,11 @@ public class ApplicationUser : IdentityUser
     [Required(ErrorMessage = "Email is a required field.")]
     [MaxLength(ErrorMessage = "Maximum length is 20.")]
     public string Email { get; set; }
-
+    public string UserRole { get; set; }
+    
     //Foreign key Guid
     [ForeignKey("Course")]
     public Guid? CourseId { get; set; }
-    public virtual Course Course { get; set; }
 
     //Navigation property for Artifacts
     public ICollection<Artifact>? Artifacts { get; set; }
