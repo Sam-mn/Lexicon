@@ -5,12 +5,7 @@ import "../css/CourseDetailsPage.css";
 import axios from "axios";
 import { BASE_URL } from "../utils";
 import { useNavbar } from "../hooks/useNavbar";
-
-const mockParticipants = [
-  { id: 1, name: "Anna Andersson", course: "Programmering 1" },
-  { id: 2, name: "Björn Bergström", course: "Programmering 1" },
-  { id: 3, name: "Cecilia Carlsson", course: "Programmering 1" },
-];
+import { ParticipantList } from "../components";
 
 export function CourseDetailsPage(): ReactElement {
   const navigate = useNavigate();
@@ -59,6 +54,9 @@ export function CourseDetailsPage(): ReactElement {
       console.error("Error fetching file:", error);
     }
   };
+
+  if (courseLoading) return <div>Loading course details...</div>;
+  if (courseError) return <div>Error: {courseError}</div>;
 
   return (
     <div className="course-detail-container">
@@ -150,15 +148,9 @@ export function CourseDetailsPage(): ReactElement {
       </section>
 
       <section className="participants-section">
-        <h2>Deltagare</h2>
-        <ul className="participants-list">
-          {mockParticipants.map((participant) => (
-            <li key={participant.id} className="participant-item">
-              <span>{participant.name}</span>
-              <span>{participant.course}</span>
-            </li>
-          ))}
-        </ul>
+        {course && (
+          <ParticipantList courseUser={course.users} courseId={course.id} />
+        )}
       </section>
     </div>
   );

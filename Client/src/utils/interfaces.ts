@@ -1,4 +1,4 @@
-import { IconType } from "react-icons";
+import { IconType } from 'react-icons';
 
 export interface IAuthContext {
   isLoggedIn: boolean;  
@@ -8,7 +8,7 @@ export interface IAuthContext {
 }
 
 export interface INavbarContext {
-  navBarName: string; 
+  navBarName: string;
   setNavBarName: React.Dispatch<React.SetStateAction<string>>;
   isCourse: boolean;
   setIsCourse: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +18,7 @@ export interface INavbarContext {
   courseCode: string;
   credits: number;
   setCredits: React.Dispatch<React.SetStateAction<number>>;
-  setCourseCode: React.Dispatch<React.SetStateAction<string>>
+  setCourseCode: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface ITokens {
@@ -35,6 +35,7 @@ export interface ICourse {
   courseCode: string;
   credits: number;
   artifacts : IArtifact[] | null
+  users : IUser[]
 }
 
 export interface IModule {
@@ -69,7 +70,7 @@ export interface IActivity {
   endTime: string;
   moduleId: string;
   activityType: IActivityType;
-  activityTypeName: string
+  activityTypeName: string;
 }
 
 export interface IArtifact {
@@ -78,7 +79,7 @@ export interface IArtifact {
   fileContent: string;
   description: string;
   uploadTime: string;
-  ContentType: string
+  ContentType: string;
 }
 
 export interface IUser {
@@ -89,3 +90,7 @@ export interface IUser {
   courseId?: string
 }
 
+
+export interface ISubmission extends IArtifact {
+  status: 'pending' | 'approved' | 'rejected';
+}

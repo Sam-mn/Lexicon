@@ -1,16 +1,11 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useActivities } from "../hooks/useActivities";
-import { ActivityCard } from "../components";
 import { useArtifacts, useAuth } from "../hooks";
+// import { useActivities, useSubmissions, useModules} from "../hooks";
+import { ActivityCard, SubmissionForm, SubmissionList } from "../components";
 import axios from "axios";
 import { BASE_URL, IArtifact, IModule } from "../utils";
-
-const mockModule = {
-  id: 1,
-  name: "module name",
-  description: "module name desc",
-};
 
 export function ModulesPage(): ReactElement {
   const navigate = useNavigate();
@@ -51,6 +46,18 @@ export function ModulesPage(): ReactElement {
     getModuleData();
   }, []);
 
+  // const handleSubmit = (file: File, description: string) => {
+  //   addSubmission(file, description);
+  // };
+
+  // if (modulesLoading) {
+  //   return <div>Laddar moduldata...</div>;
+  // }
+
+  // if (modulesError) {
+  //   return <div>Modulen hittades inte.</div>;
+  // }
+
   return (
     <div className="course-detail-container">
       <h1>{moduleData?.moduleName}</h1>
@@ -67,13 +74,21 @@ export function ModulesPage(): ReactElement {
             </Link>
           )}
         </div>
-        {loading && <p>Loading activities ... </p>}
-        {error && <p>Error: {error} </p>}
+        {/* {activitiesLoading && <p>Laddar aktiviteter ... </p>}
+        {activitiesError && <p>Fel: {activitiesError} </p>} */}
         <div className="activities-grid">
           {activities.map((activity) => (
             <ActivityCard key={activity.id} activity={activity} />
           ))}
         </div>
+      </section>
+
+      <section className="submissions-section">
+        <h2>Inlämningsuppgifter</h2>
+        {/* {submissionsLoading && <p>Laddar inlämningsuppgifter ... </p>}
+        {submissionsError && <p>Fel: {submissionsError} </p>}
+        <SubmissionList submissions={submissions} onDownload={downloadFile} />
+        <SubmissionForm onSubmit={handleSubmit} /> */}
       </section>
     </div>
   );

@@ -1,8 +1,7 @@
 import { ReactElement } from "react";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
-import { useCourses } from "../hooks";
-import { useNavbar } from "../hooks/useNavbar";
+import { useCourses, useNavbar } from "../hooks";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 export function CoursesPage(): ReactElement {
