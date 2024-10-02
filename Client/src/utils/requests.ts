@@ -1,20 +1,31 @@
-import { BASE_URL, CustomError, ITokens } from ".";
+import { BASE_URL, CustomError, ITokens } from '.';
 import axios from 'axios';
-import { ICourse, IModule, IActivity, IArtifact, IUser, IActivityType } from './interfaces';
+import {
+  ICourse,
+  IModule,
+  IActivity,
+  IArtifact,
+  IUser,
+  IActivityType,
+  ISubmission,
+} from './interfaces';
 
-export async function loginReq(username: string, password: string): Promise<ITokens> {
+export async function loginReq(
+  username: string,
+  password: string
+): Promise<ITokens> {
   const url = `${BASE_URL}/authentication/login`;
 
   const response: Response = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ username, password }),
   });
 
   if (response.ok === false) {
-    throw new CustomError(response.status, "Could not login");
+    throw new CustomError(response.status, 'Could not login');
   }
 
   return (await response.json()) as ITokens;
@@ -34,7 +45,9 @@ export async function getCoursesReq(): Promise<ICourse[]> {
 
 export async function getModulesReq(courseId: string): Promise<IModule[]> {
   try {
-    const response = await axios.get<IModule[]>(`${BASE_URL}/courses/${courseId}/modules`);
+    const response = await axios.get<IModule[]>(
+      `${BASE_URL}/courses/${courseId}/modules`
+    );
     return response.data;
   } catch (error) {
     console.error(`Error fetching modules for course ${courseId}:`, error);
@@ -42,14 +55,21 @@ export async function getModulesReq(courseId: string): Promise<IModule[]> {
   }
 }
 
-export async function addModuleReq(courseId:string, moduleData:Partial<IModule>):Promise<IModule> {
+export async function addModuleReq(
+  courseId: string,
+  moduleData: Partial<IModule>
+): Promise<IModule> {
   try {
-    const response = await axios.post<IModule>(`${BASE_URL}/courses/${courseId}/modules`, moduleData, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        "Content-Type": "multipart/form-data",
+    const response = await axios.post<IModule>(
+      `${BASE_URL}/courses/${courseId}/modules`,
+      moduleData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data',
+        },
       }
-    });
+    );
     return response.data;
   } catch (error) {
     console.error('Error adding module:', error);
@@ -59,11 +79,14 @@ export async function addModuleReq(courseId:string, moduleData:Partial<IModule>)
 
 export async function getActivitiesReq(moduleId: string): Promise<IActivity[]> {
   try {
-    const response = await axios.get<IActivity[]>(`${BASE_URL}/modules/${moduleId}/activities`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const response = await axios.get<IActivity[]>(
+      `${BASE_URL}/modules/${moduleId}/activities`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       }
-    });
+    );
     return response.data;
   } catch (error) {
     console.error(`Error fetching activities for module ${moduleId}:`, error);
@@ -73,11 +96,14 @@ export async function getActivitiesReq(moduleId: string): Promise<IActivity[]> {
 
 export async function getActivityTypesReq(): Promise<IActivityType[]> {
   try {
-    const response = await axios.get<IActivityType[]>(`${BASE_URL}/activitytypes`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const response = await axios.get<IActivityType[]>(
+      `${BASE_URL}/activitytypes`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       }
-    });
+    );
     return response.data;
   } catch (error) {
     console.error('Error fetching activity types:', error);
@@ -88,14 +114,18 @@ export async function getActivityTypesReq(): Promise<IActivityType[]> {
 export async function getCourseDetails(courseId: string): Promise<ICourse> {
   const response = await axios.get(`${BASE_URL}/courses/${courseId}`, {
     headers: {
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  }) ;
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
   return response.data;
 }
 
-export async function getCourseActivities(courseId: string): Promise<IActivity[]> {
-  const response = await axios.get(`${BASE_URL}/courses/${courseId}/activities`);
+export async function getCourseActivities(
+  courseId: string
+): Promise<IActivity[]> {
+  const response = await axios.get(
+    `${BASE_URL}/courses/${courseId}/activities`
+  );
   return response.data;
 }
 
@@ -104,7 +134,31 @@ export async function getCourseArtifacts(): Promise<IArtifact[]> {
   return response.data;
 }
 
-export async function getCourseParticipants(courseId: string): Promise<IUser[]> {
-  const response = await axios.get(`${BASE_URL}/courses/${courseId}/participants`);
+export async function getCourseParticipants(
+  courseId: string
+): Promise<IUser[]> {
+  const response = await axios.get(
+    `${BASE_URL}/courses/${courseId}/participants`
+  );
+  return response.data;
+}
+
+export async function getModuleSubmissions(
+  moduleId: string
+): Promise<ISubmission[]> {
+  const response = await axios.get(`${BASE_URL}/modules/${moduleId}/Submissions`);
+  return response.data;
+}
+
+export async function submitArtifact(moduleId: string, file: File, description: string): Promise<ISubmission> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("description", description);
+
+  const response = await axios.post(`${BASE_URL}/modules/${moduleId}/Submissions`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 }
