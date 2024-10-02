@@ -1,33 +1,17 @@
-import { ReactElement, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
-import { useActivities } from "../hooks/useActivities";
-import { ActivityCard } from "../components";
-import { useArtifacts } from "../hooks";
+import { ReactElement } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useActivities, useSubmissions, useModules} from "../hooks";
+import { ActivityCard, SubmissionForm, SubmissionList } from "../components";
 import axios from "axios";
-import { BASE_URL, IArtifact } from "../utils";
+import { BASE_URL } from "../utils";
 
-const mockModule = {
-  id: 1,
-  name: "module name",
-  description: "module name desc",
-};
+export function ModulesPage(): ReactElement {  
+  const { moduleId, courseId } = useParams<{ moduleId: string; courseId: string; }>();
+  const { modules, loading: modulesLoading, error: modulesError } = useModules(courseId);
+  const { activities, loading: activitiesLoading, error: activitiesError } = useActivities(moduleId);
+  const { submissions, loading: submissionsLoading, error: submissionsError, addSubmission } = useSubmissions(moduleId ?? '');
 
-const mockArtifacts = [
-  { id: 1, name: "Föreläsning 1", uploadDate: "2023-05-01" },
-  { id: 2, name: "Övningsuppgifter", uploadDate: "2023-05-05" },
-  { id: 3, name: "Projektbeskrivning", uploadDate: "2023-05-10" },
-];
-
-const mockParticipants = [
-  { id: 1, name: "Anna Andersson", course: "Programmering 1" },
-  { id: 2, name: "Björn Bergström", course: "Programmering 1" },
-  { id: 3, name: "Cecilia Carlsson", course: "Programmering 1" },
-];
-
-export function ModulesPage(): ReactElement {
-  const navigate = useNavigate();
-  const { moduleId } = useParams<{ moduleId: string }>();
-  const { activities, loading, error } = useActivities(moduleId);
+  const currentModule = modules.find(module=> module.id === moduleId );
 
   const downloadFile = async (documentId: string) => {
     try {
@@ -52,28 +36,53 @@ export function ModulesPage(): ReactElement {
     }
   };
 
+  const handleSubmit = (file: File, description: string) => {
+    addSubmission(file, description);
+  };
+
+  if (modulesLoading) {
+    return <div>Laddar moduldata...</div>
+  }
+
+  if (modulesError) {
+    return <div>Modulen hittades inte.</div>
+  }
+
   return (
     <div className="course-detail-container">
-      <h1>{mockModule.name}</h1>
-      <p>{mockModule.description}</p>
+      <h1>{currentModule?.moduleName}</h1>
+      <p>{currentModule?.description}</p>
+      <p>Startdatum: {new Date(currentModule.startDate).toLocaleDateString()}</p>
+      <p>Slutdatum: {new Date(currentModule.endDate).toLocaleDateString()}</p>
+      
       <section className="activities-section">
         <h2>Aktiviteter</h2>
         <div className="mb-3">
           <Link
-            to={`/courses/${moduleId}/addActivity`}
+            to={`/courses/${courseId}/modules/${moduleId}/addActivity`}
             className="btn btn-primary"
           >
             Lägg till aktivitet
           </Link>
         </div>
-        {loading && <p>Loading activities ... </p>}
-        {error && <p>Error: {error} </p>}
+        {activitiesLoading && <p>Laddar aktiviteter ... </p>}
+        {activitiesError && <p>Fel: {activitiesError} </p>}
         <div className="activities-grid">
           {activities.map((activity) => (
             <ActivityCard key={activity.id} activity={activity} />
           ))}
         </div>
       </section>
+
+      <section className="submissions-section">
+        <h2>Inlämningsuppgifter</h2>
+        {submissionsLoading && <p>Laddar inlämningsuppgifter ... </p>}
+        {submissionsError && <p>Fel: {submissionsError} </p>}
+        <SubmissionList submissions={submissions} onDownload={downloadFile} />
+        <SubmissionForm onSubmit={handleSubmit} />
+      </section>
+
+      
     </div>
   );
 }

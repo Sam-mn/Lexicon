@@ -1,16 +1,16 @@
-import { ReactElement, useState, useEffect } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
-import { useArtifacts, useCourseDetails, useModules } from "../hooks";
-import "../css/CourseDetailsPage.css";
-import axios from "axios";
-import { BASE_URL } from "../utils";
-import { useNavbar } from "../hooks/useNavbar";
+import { ReactElement, useState, useEffect } from 'react';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import {
+  useArtifacts,
+  useCourseDetails,
+  useModules,
+  useNavbar,
+} from '../hooks';
+import { ParticipantList } from '../components';
+import '../css/CourseDetailsPage.css';
+import axios from 'axios';
+import { BASE_URL } from '../utils';
 
-const mockParticipants = [
-  { id: 1, name: "Anna Andersson", course: "Programmering 1" },
-  { id: 2, name: "Björn Bergström", course: "Programmering 1" },
-  { id: 3, name: "Cecilia Carlsson", course: "Programmering 1" },
-];
 
 export function CourseDetailsPage(): ReactElement {
   const navigate = useNavigate();
@@ -51,12 +51,15 @@ export function CourseDetailsPage(): ReactElement {
         window.open(blobUrl);
         URL.revokeObjectURL(blobUrl);
       } else {
-        console.error("File content not available");
+        console.error('File content not available');
       }
     } catch (error) {
-      console.error("Error fetching file:", error);
+      console.error('Error fetching file:', error);
     }
   };
+
+  if (courseLoading) return <div>Loading course details...</div>;
+  if (courseError) return <div>Error: {courseError}</div>;
 
   return (
     <div className="course-detail-container">
@@ -80,9 +83,9 @@ export function CourseDetailsPage(): ReactElement {
                 key={module.id}
                 className="card bg-light mb-3"
                 style={{
-                  maxWidth: "20rem",
-                  marginRight: "2rem",
-                  cursor: "pointer",
+                  maxWidth: '20rem',
+                  marginRight: '2rem',
+                  cursor: 'pointer',
                 }}
                 onClick={() => {
                   navigate(`/modules/${module.id}`);
@@ -120,10 +123,10 @@ export function CourseDetailsPage(): ReactElement {
                 <li key={artifact.id} className="material-item">
                   <span>{artifact.fileName}</span>
                   <span>
-                    Uppladdningsdatum:{" "}
+                    Uppladdningsdatum:{' '}
                     {artifact.uploadTime.substring(
                       0,
-                      artifact.uploadTime.indexOf("T")
+                      artifact.uploadTime.indexOf('T')
                     )}
                   </span>
                   <div className="material-actions ">
@@ -142,15 +145,7 @@ export function CourseDetailsPage(): ReactElement {
       </section>
 
       <section className="participants-section">
-        <h2>Deltagare</h2>
-        <ul className="participants-list">
-          {mockParticipants.map((participant) => (
-            <li key={participant.id} className="participant-item">
-              <span>{participant.name}</span>
-              <span>{participant.course}</span>
-            </li>
-          ))}
-        </ul>
+        {courseId && <ParticipantList courseId={courseId} />}
       </section>
 
       {/* <div className="action-buttons">

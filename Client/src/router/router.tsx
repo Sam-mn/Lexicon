@@ -5,15 +5,16 @@ import {
 } from "react-router-dom";
 import { Layout, RequireAuth, BaseLayout } from "../components";
 import {
-  CourseDetailsPage,
-  ModulesPage,
-  ModulesAddPage,
-  ActivitiesPage,
-  LoginPage,
-  DashboardPage,
-  CoursesPage,
-  AddEditCourse,
   ActivitiesAddPage,
+  ActivitiesPage,
+  AddEditCourse,
+  CourseDetailsPage,
+  CoursesPage,
+  DashboardPage,
+  LoginPage, 
+  ModulesPage,
+  ModulesAddPage,     
+  ParticipantsAddPage,
 } from "../pages";
 import { DocumentAddPage } from "../pages/DocumentAddPage";
 
@@ -43,6 +44,8 @@ export const router = createBrowserRouter(
           element={<ActivitiesAddPage />}
         />
         <Route path="/addDocument/:id?" element={<DocumentAddPage />} />
+        <Route path="/courses/:courseId/addParticipant" element={<ParticipantsAddPage />}
+        />
       </Route>
     </Route>
   )
