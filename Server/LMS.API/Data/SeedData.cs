@@ -133,6 +133,7 @@ namespace LMS.API.Data
                     .RuleFor(a => a.StartTime, f => f.Date.Between(module.StartDate, module.EndDate))
                     .RuleFor(a => a.EndTime, (f, a) => f.Date.Between(a.StartTime, a.StartTime.AddDays(1)))
                     .RuleFor(a => a.ModuleId, module.Id)
+                    .RuleFor(a => a.CourseId, module.CourseId)
                     .RuleFor(a => a.ActivityTypeId, f => f.PickRandom(activityTypes).Id);
 
                 activitiesList.AddRange(activityFaker.Generate(3));

@@ -3,7 +3,7 @@ import { ReactElement, useState } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { BASE_URL } from "../utils";
 import { useParams } from "react-router-dom";
-import { useActivityTypes } from "../hooks";
+import { useActivityTypes, useAuth } from "../hooks";
 import "../css/AddandEditPages.css";
 
 export function ActivitiesAddPage(): ReactElement {
@@ -16,7 +16,7 @@ export function ActivitiesAddPage(): ReactElement {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
-
+  const { userData } = useAuth();
   const {
     activityTypes,
     loading: typesLoading,
@@ -35,6 +35,7 @@ export function ActivitiesAddPage(): ReactElement {
         endTime,
         activityTypeId,
         moduleId,
+        courseId: userData?.courseId,
       });
 
       if (res.status === 201) {

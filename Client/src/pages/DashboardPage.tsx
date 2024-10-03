@@ -1,18 +1,22 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import "../css/DashboardPage.css";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useCourses } from "../hooks";
+import { useAuth, useCourses } from "../hooks";
 import { useNavbar } from "../hooks/useNavbar";
 
 export function DashboardPage(): ReactElement {
   const navigate = useNavigate();
   const { courses, error, loading } = useCourses();
   const { setNavBarName, setIsCourse, setCourseCode, setCredits } = useNavbar();
+  const { userData } = useAuth();
+  useEffect(() => {
+    setNavBarName("Hem");
+  }, []);
 
   return (
     <div className="dashboard-container p-3">
-      <h1>Välkommen Carl!</h1>
+      <h1>Välkommen {userData?.name}!</h1>
       <div className="mt-4 d-flex flex-wrap">
         <div
           className="card bg-light mb-3"

@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { IUser } from "../utils";
+import { useAuth } from "../hooks";
 
 interface ParticipantListProps {
   courseUser: IUser[];
@@ -11,16 +12,19 @@ export function ParticipantList({
   courseUser,
   courseId,
 }: ParticipantListProps): ReactElement {
+  const { userData } = useAuth();
   return (
     <div>
       <div className="mb-3">
         <h2>Deltagare</h2>
-        <Link
-          to={`/courses/${courseId}/addParticipant`}
-          className="btn btn-primary"
-        >
-          Lägg till Deltagare
-        </Link>
+        {userData?.UserRole === "teacher" && (
+          <Link
+            to={`/courses/${courseId}/addParticipant`}
+            className="btn btn-primary"
+          >
+            Lägg till Deltagare
+          </Link>
+        )}
       </div>
       {
         <ul className="participant-list list-group">

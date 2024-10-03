@@ -44,7 +44,7 @@ export function SideNavbar(): ReactElement {
             </li>
             <li className="SideNavbar-item">
               <Link
-                to="/courses"
+                to="/assignment"
                 className="SideNavbar-link"
                 onClick={() => handleNavbar("Inlämning / Betyg")}
               >
@@ -59,7 +59,6 @@ export function SideNavbar(): ReactElement {
             <Link
               to={`/courses/${userData.courseId}`}
               className="SideNavbar-link"
-              onClick={() => handleNavbar("Inlämning / Betyg")}
             >
               <BsJournalBookmark style={{ marginRight: "0.5rem" }} /> Min kurs
             </Link>

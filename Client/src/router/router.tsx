@@ -11,12 +11,13 @@ import {
   CourseDetailsPage,
   CoursesPage,
   DashboardPage,
-  LoginPage, 
+  LoginPage,
   ModulesPage,
-  ModulesAddPage,     
+  ModulesAddPage,
   ParticipantsAddPage,
 } from "../pages";
 import { DocumentAddPage } from "../pages/DocumentAddPage";
+import { AssignmentsPage } from "../pages/AssignmentsPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,8 +45,11 @@ export const router = createBrowserRouter(
           element={<ActivitiesAddPage />}
         />
         <Route path="/addDocument/:id?" element={<DocumentAddPage />} />
-        <Route path="/courses/:courseId/addParticipant" element={<ParticipantsAddPage />}
+        <Route
+          path="/courses/:courseId/addParticipant"
+          element={<ParticipantsAddPage />}
         />
+        <Route path="/assignment" element={<AssignmentsPage />} />
       </Route>
     </Route>
   )

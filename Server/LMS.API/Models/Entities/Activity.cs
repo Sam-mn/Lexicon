@@ -20,7 +20,9 @@ namespace LMS.API.Models.Entities
         public DateTime EndTime { get; set; }
 
         public Guid ModuleId { get; set; }
-        public Module? Module { get; set; }
+        public Module Module { get; set; }
+
+        public Guid CourseId { get; set; }
 
         //Navigation property for Artifacts
         public virtual ICollection<Artifact>? Artifacts { get; set; }

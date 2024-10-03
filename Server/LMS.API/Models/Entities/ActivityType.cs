@@ -14,7 +14,5 @@ namespace LMS.API.Models.Entities
         public string Type { get; set; }
 
         public string Description { get; set; }
-
-        public ICollection<Activity>? Activities { get; set; }
     }
 }

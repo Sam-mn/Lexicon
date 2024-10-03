@@ -25,6 +25,15 @@ namespace LMS.API.Controllers
             return await _context.Activity.ToListAsync();
         }
 
+        // GET: api/Activities
+        [HttpGet("courseActivity")]
+        public async Task<ActionResult<IEnumerable<Activity>>> GetAssignments()
+        {
+            var test = await _context.Activity.Include(c=>c.ActivityType).Where( a=>a.ActivityType!.ActivityTypeName == "Assignment").ToListAsync();
+            return await _context.Activity.Include(c=>c.ActivityType).Where( a=>a.ActivityType!.ActivityTypeName == "Assignment").ToListAsync();
+
+        }
+
         //GET: api/Activities/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivity(Guid id)
