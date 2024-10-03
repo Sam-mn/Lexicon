@@ -1,11 +1,11 @@
-import { ReactElement, useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
-import { useActivities } from "../hooks/useActivities";
-import { useArtifacts, useAuth } from "../hooks";
+import { ReactElement, useEffect, useState } from 'react';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useActivities } from '../hooks/useActivities';
+import { useArtifacts, useAuth } from '../hooks';
 // import { useActivities, useSubmissions, useModules} from "../hooks";
-import { ActivityCard, SubmissionForm, SubmissionList } from "../components";
-import axios from "axios";
-import { BASE_URL, IArtifact, IModule } from "../utils";
+import { ActivityCard, SubmissionForm, SubmissionList } from '../components';
+import axios from 'axios';
+import { BASE_URL, IArtifact, IModule } from '../utils';
 
 export function ModulesPage(): ReactElement {
   const navigate = useNavigate();
@@ -30,16 +30,18 @@ export function ModulesPage(): ReactElement {
         window.open(blobUrl);
         URL.revokeObjectURL(blobUrl);
       } else {
-        console.error("File content not available");
+        console.error('File content not available');
       }
     } catch (error) {
-      console.error("Error fetching file:", error);
+      console.error('Error fetching file:', error);
     }
   };
 
   const getModuleData = async () => {
     const res = await axios.get(`${BASE_URL}/modules/${moduleId}`);
     setModuleData(res.data);
+
+    console.log(res.data);
   };
 
   useEffect(() => {
@@ -62,10 +64,10 @@ export function ModulesPage(): ReactElement {
     <div className="course-detail-container">
       <h1>{moduleData?.moduleName}</h1>
       <p>{moduleData?.description}</p>
-      <section className="activities-section">
+      <section className="activities-section mb-5">
         <h2>Aktiviteter</h2>
         <div className="mb-3">
-          {userData?.UserRole === "teacher" && (
+          {userData?.UserRole === 'teacher' && (
             <Link
               to={`/courses/${moduleId}/addActivity`}
               className="btn btn-primary"
@@ -76,7 +78,7 @@ export function ModulesPage(): ReactElement {
         </div>
         {/* {activitiesLoading && <p>Laddar aktiviteter ... </p>}
         {activitiesError && <p>Fel: {activitiesError} </p>} */}
-        <div className="activities-grid">
+        <div className="mt-4 d-flex flex-wrap">
           {activities.map((activity) => (
             <ActivityCard key={activity.id} activity={activity} />
           ))}
@@ -84,11 +86,14 @@ export function ModulesPage(): ReactElement {
       </section>
 
       <section className="submissions-section">
-        <h2>Inlämningsuppgifter</h2>
         {/* {submissionsLoading && <p>Laddar inlämningsuppgifter ... </p>}
         {submissionsError && <p>Fel: {submissionsError} </p>}
         <SubmissionList submissions={submissions} onDownload={downloadFile} />
         <SubmissionForm onSubmit={handleSubmit} /> */}
+        <SubmissionList
+          submissions={moduleData?.artifacts}
+          onDownload={downloadFile}
+        />
       </section>
     </div>
   );

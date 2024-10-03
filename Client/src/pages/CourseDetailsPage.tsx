@@ -1,10 +1,9 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { useArtifacts, useAuth, useCourseDetails, useModules } from "../hooks";
+import { useArtifacts, useAuth, useCourseDetails, useModules, useNavbar } from "../hooks";
 import "../css/CourseDetailsPage.css";
 import axios from "axios";
 import { BASE_URL } from "../utils";
-import { useNavbar } from "../hooks/useNavbar";
 import { ParticipantList } from "../components";
 
 export function CourseDetailsPage(): ReactElement {
