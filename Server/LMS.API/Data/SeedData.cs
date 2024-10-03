@@ -41,9 +41,7 @@ namespace LMS.API.Data
 
                     if (!await db.ActivityType.AnyAsync())
                     {
-                        var generatedActivityTypes = GenerateActivityTypes();
-                        await db.AddRangeAsync(generatedActivityTypes);
-                        await db.SaveChangesAsync();
+                        await GenerateActivityTypes(db);
                     }
 
                     if (!await db.Activity.AnyAsync())
