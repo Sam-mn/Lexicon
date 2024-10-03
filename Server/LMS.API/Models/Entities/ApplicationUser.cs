@@ -18,6 +18,9 @@ public class ApplicationUser : IdentityUser
     [ForeignKey("Course")]
     public Guid? CourseId { get; set; }
 
+    //Navigation property for Course
+    public Course? Course { get; set; }
+
     //Navigation property for Artifacts
     public ICollection<Artifact>? Artifacts { get; set; }
 
