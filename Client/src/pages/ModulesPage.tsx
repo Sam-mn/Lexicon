@@ -85,7 +85,7 @@ export function ModulesPage(): ReactElement {
         </div>
       </section>
 
-      <section className="submissions-section">
+      <section className="submissions-section mb-5">
         {/* {submissionsLoading && <p>Laddar inlämningsuppgifter ... </p>}
         {submissionsError && <p>Fel: {submissionsError} </p>}
         <SubmissionList submissions={submissions} onDownload={downloadFile} />
