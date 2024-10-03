@@ -8,15 +8,17 @@ import {
   ActivitiesAddPage,
   ActivitiesPage,
   AddEditCourse,
+  ArtifactsDetailPage,
   CourseDetailsPage,
   CoursesPage,
   DashboardPage,
+  DocumentAddPage,
   LoginPage, 
   ModulesPage,
   ModulesAddPage,     
   ParticipantsAddPage,
 } from "../pages";
-import { DocumentAddPage } from "../pages/DocumentAddPage";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,6 +48,7 @@ export const router = createBrowserRouter(
         <Route path="/addDocument/:id?" element={<DocumentAddPage />} />
         <Route path="/courses/:courseId/addParticipant" element={<ParticipantsAddPage />}
         />
+        <Route path="/activities/:activityId" element={<ArtifactsDetailPage />} />
       </Route>
     </Route>
   )

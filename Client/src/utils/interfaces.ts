@@ -45,6 +45,8 @@ export interface IModule {
   startDate: string;
   endDate: string;
   courseId: string;
+  artifacts: IArtifact[]
+  activities: IActivity[]
 }
 
 export interface IModuleFormData {

@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
-import { ISubmission } from '../utils';
+import { IArtifact } from '../utils';
 
 interface SubmissionListProps {
-  submissions: ISubmission[];
+  submissions: IArtifact[] | undefined;
   onDownload: (submissionId: string) => void;
 }
 
@@ -12,12 +12,12 @@ export function SubmissionList({
 }: SubmissionListProps): ReactElement {
   return (
     <div className='submission-list'>
-      <h3>Inlämningsuppgifter</h3>
-      {submissions.length === 0 ? (
+      <h2>Inlämningsuppgifter</h2>
+      {submissions?.length === 0 ? (
         <p>Inga inlämningsuppgifter tillgängliga.</p>
       ) : (
         <ul>
-          {submissions.map((submission) => (
+          {submissions?.map((submission) => (
             <li key={submission.id}>
               <span> {submission.fileName} </span>
               <span>

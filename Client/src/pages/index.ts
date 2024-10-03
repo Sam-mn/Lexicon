@@ -1,6 +1,7 @@
 export * from "./ActivitiesAddPage";
 export * from "./ActivitiesPage";
 export * from "./AddEditCourse";
+export * from "./ArtifactsDetailPage";
 export * from "./CourseDetailsPage";
 export * from "./DashboardPage";
 export * from "./DocumentAddPage";
