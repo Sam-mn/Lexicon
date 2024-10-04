@@ -30,7 +30,7 @@ namespace LMS.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Module>> GetModule(Guid id)
         {
-            var module = await _context.Module.FindAsync(id);
+            var module = await _context.Module.Include(c=>c.Activities).Include(c=>c.Artifacts).FirstOrDefaultAsync(c=>c.Id == id);
 
             if (module == null)
             {

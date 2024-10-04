@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
 import "../css/SideNavbar.css";
-import { useNavbar } from "../hooks/useNavbar";
+import { useNavbar, useAuth } from "../hooks";
 import IconComponent from "./IconComponent";
-import { useAuth } from "../hooks";
+
 
 export function Navbar(): ReactElement {
   const { navBarName, isCourse, teacherName, credits, courseCode, NavbarIcon } =

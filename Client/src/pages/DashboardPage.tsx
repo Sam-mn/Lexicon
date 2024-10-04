@@ -1,70 +1,39 @@
-import { ReactElement } from "react";
-import "../css/DashboardPage.css";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { useCourses } from "../hooks";
-import { useNavbar } from "../hooks/useNavbar";
+import { ReactElement } from 'react';
+import '../css/DashboardPage.css';
+import { useNavigate, Link } from 'react-router-dom';
+import { useCourses, useNavbar, useWeeklyActivities, useAuth} from '../hooks';
+import { ActivityCard } from '../components';
 
 export function DashboardPage(): ReactElement {
   const navigate = useNavigate();
-  const { courses, error, loading } = useCourses();
+  const { courses, error: coursesError, loading: coursesLoading } = useCourses();
   const { setNavBarName, setIsCourse, setCourseCode, setCredits } = useNavbar();
+  const { activities, error: activitiesError, loading: activitiesLoading } = useWeeklyActivities();
+  const { userData } = useAuth();
 
   return (
     <div className="dashboard-container p-3">
-      <h1>Välkommen Carl!</h1>
-      <div className="mt-4 d-flex flex-wrap">
-        <div
-          className="card bg-light mb-3"
-          style={{ maxWidth: "20rem", marginRight: "2rem" }}
-        >
-          <div className="card-header d-flex justify-content-between">
-            <span>Inlämning Programmering 1</span>
-            <span>idag</span>
-          </div>
-          <div className="card-body">
-            <p className="card-text p-2">
-              Deadline för inlämning programmering 1. glöm inte att ladda upp
-              era projectfiller.
-            </p>
-          </div>
+      <h1>Välkommen {userData?.name}</h1>
+      <hr />      
+      <section className="activities-section mb-5">
+        <h2>Den här veckans aktiviteter:</h2>
+        {activitiesLoading && <p>Laddar aktiviteter...</p>}
+        {activitiesError && <p>Fel vid hämtning av aktiviteter: {activitiesError}</p>}
+        {activities.length === 0 && <p>Det finns inga aktiviteter planerade för denna vecka.</p>}
+        <div className="mt-4 d-flex flex-wrap">
+          {activities.map((activity) => (
+            <ActivityCard key={activity.id} activity={activity} />
+          ))}
         </div>
-        <div
-          className="card bg-light mb-3"
-          style={{ maxWidth: "20rem", marginRight: "2rem" }}
-        >
-          <div className="card-header d-flex justify-content-between">
-            <span>Inlämning Programmering 1</span>
-            <span>idag</span>
-          </div>
-          <div className="card-body">
-            <p className="card-text p-2">
-              Deadline för inlämning programmering 1. glöm inte att ladda upp
-              era projectfiller.
-            </p>
-          </div>
-        </div>
-        <div
-          className="card bg-light mb-3"
-          style={{ maxWidth: "20rem", marginRight: "2rem" }}
-        >
-          <div className="card-header d-flex justify-content-between">
-            <span>Inlämning Programmering 1</span>
-            <span>idag</span>
-          </div>
-          <div className="card-body">
-            <p className="card-text p-2">
-              Deadline för inlämning programmering 1. glöm inte att ladda upp
-              era projectfiller.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="mt-4 ">
-        <h1>Kurser</h1>
+      </section>
+
+      <section className="courses-section">
+        <h2>Kurser</h2>
         <Link to="/addCourse" className="linkToNewCourse">
           Lägg till en ny kurs
         </Link>
+        {coursesLoading && <p>Laddar kurser...</p>}
+        {coursesError && <p>Fel vid hämtning av kurser: {coursesError}</p>}
         {courses?.map((c) => (
           <div
             key={c.id}
@@ -80,7 +49,7 @@ export function DashboardPage(): ReactElement {
             <h4>{c.courseName}</h4>
           </div>
         ))}
-      </div>
+      </section>
     </div>
   );
 }
