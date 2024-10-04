@@ -40,6 +40,7 @@
 
 .logout-button:hover {
   background-color: #9b000a;
+  color: var(--color-white); 
 }
 
 .logout-icon {

@@ -1,15 +1,14 @@
-import { FormEventHandler, ReactElement, useState } from "react";
-import { useAuth } from "../hooks";
-import { Navigate, useNavigate } from "react-router-dom";
-import "../css/LoginPage.css";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import logo from "../assets/images/logo-lexicon.gif";
-import { IUser } from "../utils";
+import { FormEventHandler, ReactElement, useState } from 'react';
+import { useAuth } from '../hooks';
+import { Navigate, useNavigate } from 'react-router-dom';
+import '../css/LoginPage.css';
+import { Form, Button, Row, Col, Container } from 'react-bootstrap';
+import { IUser } from '../utils';
 
 export function LoginPage(): ReactElement {
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isLoggedIn, login } = useAuth();
   const navigate = useNavigate();
@@ -20,67 +19,66 @@ export function LoginPage(): ReactElement {
 
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setIsLoading(true);
 
     try {
       const userData: IUser | undefined = await login(username, password);
-      if (userData?.UserRole === "student") {
+      if (userData?.UserRole === 'student') {
         navigate(`/courses/${userData.courseId}`);
-      } else if (userData?.UserRole === "teacher") {
-        navigate("/");
+      } else if (userData?.UserRole === 'teacher') {
+        navigate('/');
       }
     } catch (err) {
-      setError("Invalid username or password");
+      setError('Invalid username or password');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="w-100">
-      <Row className="justify-content-md-center mt-5">
-        <Col xs={12} md={4}>
-          <img src={logo} className="login-logo" />
-          <h2 className="text-center mt-4">Log in to your account</h2>
-          <h5 className="text-center mb-5 opacity-50">
-            Welcome back! Please enter your details
-          </h5>
-          <Form onSubmit={handleOnSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Username</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </Form.Group>
+    <Container fluid className="login-container">
+      <Row className="justify-content-center align-items-center min-vh-100">
+        <Col xs={12} sm={8} md={6} lg={4}>
+          <div className="login-form-wrapper">
+            <h1 className="login-title">LMS</h1>
+            <h2 className="text-center mb-4">Log in to your account</h2>
+            <Form onSubmit={handleOnSubmit}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-            <Button
-              variant="primary"
-              type="submit"
-              className="w-100"
-              disabled={isLoading}
-            >
-              {isLoading ? "Logging in..." : "Log In"}
-            </Button>
-            {error && <div className="error-message">{error}</div>}
-          </Form>
+              <Button
+                variant="primary"
+                type="submit"
+                className="w-100"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Logging in...' : 'Log In'}
+              </Button>
+              {error && <div className="error-message mt-3">{error}</div>}
+            </Form>
+          </div>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }
