@@ -6,6 +6,8 @@ import { useArtifacts, useAuth } from "../hooks";
 import { ActivityCard, SubmissionForm, SubmissionList } from "../components";
 import axios from "axios";
 import { BASE_URL, IArtifact, IModule } from "../utils";
+import { ActivitiesAddPage } from "./ActivitiesAddPage";
+import { Button } from "react-bootstrap";
 
 export function ModulesPage(): ReactElement {
   const navigate = useNavigate();
@@ -13,6 +15,10 @@ export function ModulesPage(): ReactElement {
   const { activities, loading, error } = useActivities(moduleId);
   const { userData } = useAuth();
   const [moduleData, setModuleData] = useState<IModule | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleShow = () => setShowPopup(true);
+  const handleClose = () => setShowPopup(false);
 
   const downloadFile = async (documentId: string) => {
     try {
@@ -40,56 +46,47 @@ export function ModulesPage(): ReactElement {
   const getModuleData = async () => {
     const res = await axios.get(`${BASE_URL}/modules/${moduleId}`);
     setModuleData(res.data);
+
+    console.log(res.data);
   };
 
   useEffect(() => {
     getModuleData();
   }, []);
 
-  // const handleSubmit = (file: File, description: string) => {
-  //   addSubmission(file, description);
-  // };
-
-  // if (modulesLoading) {
-  //   return <div>Laddar moduldata...</div>;
-  // }
-
-  // if (modulesError) {
-  //   return <div>Modulen hittades inte.</div>;
-  // }
-
   return (
     <div className="course-detail-container">
+      {showPopup && (
+        <ActivitiesAddPage
+          edit={false}
+          handleClose={handleClose}
+          show={showPopup}
+          moduleId={moduleId}
+        />
+      )}
       <h1>{moduleData?.moduleName}</h1>
       <p>{moduleData?.description}</p>
-      <section className="activities-section">
+      <section className="activities-section mb-5">
         <h2>Aktiviteter</h2>
         <div className="mb-3">
           {userData?.UserRole === "teacher" && (
-            <Link
-              to={`/courses/${moduleId}/addActivity`}
-              className="btn btn-primary"
-            >
+            <Button variant="primary" className="w-25" onClick={handleShow}>
               Lägg till aktivitet
-            </Link>
+            </Button>
           )}
         </div>
-        {/* {activitiesLoading && <p>Laddar aktiviteter ... </p>}
-        {activitiesError && <p>Fel: {activitiesError} </p>} */}
-        <div className="activities-grid">
+        <div className="mt-4 d-flex flex-wrap">
           {activities.map((activity) => (
             <ActivityCard key={activity.id} activity={activity} />
           ))}
         </div>
       </section>
-
-      <section className="submissions-section">
-        <h2>Inlämningsuppgifter</h2>
-        {/* {submissionsLoading && <p>Laddar inlämningsuppgifter ... </p>}
-        {submissionsError && <p>Fel: {submissionsError} </p>}
-        <SubmissionList submissions={submissions} onDownload={downloadFile} />
-        <SubmissionForm onSubmit={handleSubmit} /> */}
-      </section>
+      {/* <section className="submissions-section">
+        <SubmissionList
+          submissions={moduleData?.artifacts}
+          onDownload={downloadFile}
+        />
+      </section> */}
     </div>
   );
 }

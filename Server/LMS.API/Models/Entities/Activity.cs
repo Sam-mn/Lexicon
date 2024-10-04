@@ -10,6 +10,9 @@ namespace LMS.API.Models.Entities
 
         [Required]
         public string Name { get; set; }
+
+        public string? Description { get; set; }
+
         //Foreign key
         [ForeignKey("ActivityType")]
         public Guid ActivityTypeId { get; set; }

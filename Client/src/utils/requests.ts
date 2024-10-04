@@ -61,14 +61,8 @@ export async function addModuleReq(
 ): Promise<IModule> {
   try {
     const response = await axios.post<IModule>(
-      `${BASE_URL}/courses/${courseId}/modules`,
-      moduleData,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      }
+      `${BASE_URL}/modules`,
+      moduleData
     );
     return response.data;
   } catch (error) {
@@ -87,6 +81,7 @@ export async function getActivitiesReq(moduleId: string): Promise<IActivity[]> {
         },
       }
     );
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error(`Error fetching activities for module ${moduleId}:`, error);

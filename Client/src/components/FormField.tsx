@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form } from 'react-bootstrap';
+import React from "react";
+import { Form, Placeholder } from "react-bootstrap";
 
 interface FormFieldProps {
   label: string;
@@ -10,8 +10,9 @@ interface FormFieldProps {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   required?: boolean;
-  as?: 'input' | 'textarea';
+  as?: "input" | "textarea";
   rows?: number;
+  placeholder?: string;
 }
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -19,9 +20,10 @@ export const FormField: React.FC<FormFieldProps> = ({
   name,
   type,
   value,
+  placeholder = "",
   onChange,
   required = false,
-  as = 'input',
+  as = "input",
   rows,
 }) => (
   <Form.Group className="mb-3">
@@ -33,6 +35,7 @@ export const FormField: React.FC<FormFieldProps> = ({
       value={value}
       onChange={onChange}
       required={required}
+      placeholder={placeholder}
       rows={rows}
     />
   </Form.Group>

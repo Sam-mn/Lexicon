@@ -45,6 +45,8 @@ export interface IModule {
   startDate: string;
   endDate: string;
   courseId: string;
+  artifacts: IArtifact[]
+  activities: IActivity[]
 }
 
 export interface IModuleFormData {
@@ -52,6 +54,7 @@ export interface IModuleFormData {
   description: string;
   startDate: string;
   endDate: string;
+  courseId: string
 }
 
 export interface IActivityType {
@@ -69,6 +72,8 @@ export interface IActivity {
   startTime: string;
   endTime: string;
   moduleId: string;
+  activityTypeId: string;
+
   activityType: IActivityType;
   activityTypeName: string;
 }

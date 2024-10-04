@@ -8,15 +8,16 @@ import {
   ActivitiesAddPage,
   ActivitiesPage,
   AddEditCourse,
+  ArtifactsDetailPage,
   CourseDetailsPage,
   CoursesPage,
   DashboardPage,
+  DocumentAddPage,
   LoginPage,
   ModulesPage,
   ModulesAddPage,
   ParticipantsAddPage,
 } from "../pages";
-import { DocumentAddPage } from "../pages/DocumentAddPage";
 import { AssignmentsPage } from "../pages/AssignmentsPage";
 
 export const router = createBrowserRouter(
@@ -32,24 +33,28 @@ export const router = createBrowserRouter(
       >
         <Route path="/" element={<DashboardPage />} />
         <Route path="/courses" element={<CoursesPage />} />
-        <Route path="addCourse/:id?" element={<AddEditCourse />} />
+        {/* <Route path="addCourse/:id?" element={<AddEditCourse />} /> */}
         <Route path="/courses/:courseId" element={<CourseDetailsPage />} />
         <Route path="/modules/:moduleId" element={<ModulesPage />} />
-        <Route
+        {/* <Route
           path="/courses/:courseId/addModule"
           element={<ModulesAddPage />}
-        />
+        /> */}
         <Route path="/activities" element={<ActivitiesPage />} />
-        <Route
+        {/* <Route
           path="/courses/:moduleId/addActivity"
           element={<ActivitiesAddPage />}
-        />
-        <Route path="/addDocument/:id?" element={<DocumentAddPage />} />
-        <Route
+        /> */}
+        {/* <Route path="/addDocument/:id?" element={<DocumentAddPage />} /> */}
+        {/* <Route
           path="/courses/:courseId/addParticipant"
           element={<ParticipantsAddPage />}
-        />
+        /> */}
         <Route path="/assignment" element={<AssignmentsPage />} />
+        <Route
+          path="/activities/:activityId"
+          element={<ArtifactsDetailPage />}
+        />
       </Route>
     </Route>
   )

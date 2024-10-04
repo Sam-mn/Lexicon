@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.API.Migrations
 {
     [DbContext(typeof(LmsContext))]
-    [Migration("20240920122526_init")]
+    [Migration("20241004082149_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -33,6 +33,12 @@ namespace LMS.API.Migrations
 
                     b.Property<Guid>("ActivityTypeId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
@@ -145,6 +151,10 @@ namespace LMS.API.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("UserRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
@@ -169,20 +179,22 @@ namespace LMS.API.Migrations
                     b.Property<Guid?>("ActivityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileName")
+                    b.Property<string>("ContentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Filepath")
+                    b.Property<Guid?>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("FileContent")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -197,6 +209,9 @@ namespace LMS.API.Migrations
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -217,13 +232,23 @@ namespace LMS.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CourseCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CourseName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Credits")
+                        .HasColumnType("float");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -399,7 +424,7 @@ namespace LMS.API.Migrations
             modelBuilder.Entity("LMS.API.Models.Entities.Activity", b =>
                 {
                     b.HasOne("LMS.API.Models.Entities.ActivityType", "ActivityType")
-                        .WithMany("Activities")
+                        .WithMany()
                         .HasForeignKey("ActivityTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -418,7 +443,7 @@ namespace LMS.API.Migrations
             modelBuilder.Entity("LMS.API.Models.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("LMS.API.Models.Entities.Course", "Course")
-                        .WithMany()
+                        .WithMany("users")
                         .HasForeignKey("CourseId");
 
                     b.Navigation("Course");
@@ -453,13 +478,11 @@ namespace LMS.API.Migrations
 
             modelBuilder.Entity("LMS.API.Models.Entities.Module", b =>
                 {
-                    b.HasOne("LMS.API.Models.Entities.Course", "Course")
-                        .WithMany()
+                    b.HasOne("LMS.API.Models.Entities.Course", null)
+                        .WithMany("Modules")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -518,11 +541,6 @@ namespace LMS.API.Migrations
                     b.Navigation("Artifacts");
                 });
 
-            modelBuilder.Entity("LMS.API.Models.Entities.ActivityType", b =>
-                {
-                    b.Navigation("Activities");
-                });
-
             modelBuilder.Entity("LMS.API.Models.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Artifacts");
@@ -531,6 +549,10 @@ namespace LMS.API.Migrations
             modelBuilder.Entity("LMS.API.Models.Entities.Course", b =>
                 {
                     b.Navigation("Artifacts");
+
+                    b.Navigation("Modules");
+
+                    b.Navigation("users");
                 });
 
             modelBuilder.Entity("LMS.API.Models.Entities.Module", b =>

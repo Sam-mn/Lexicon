@@ -1,11 +1,27 @@
 import axios from "axios";
 import { ReactElement, useEffect, useState } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Container,
+  Row,
+  Col,
+  Modal,
+  Alert,
+} from "react-bootstrap";
 import { BASE_URL, ICourse } from "../utils";
-import { useParams } from "react-router-dom";
-
-export function AddEditCourse(): ReactElement {
-  const { id } = useParams<{ id: string }>();
+interface PopupProps {
+  show: boolean;
+  handleClose: () => void;
+  edit: boolean;
+  courseId?: string | null;
+}
+export const AddEditCourse: React.FC<PopupProps> = ({
+  show,
+  handleClose,
+  edit,
+  courseId,
+}) => {
   const [courseData, setCourseData] = useState<ICourse | null>();
   const [error, setError] = useState<string>("");
   const [sucsses, setSucsses] = useState<boolean>(false);
@@ -26,14 +42,14 @@ export function AddEditCourse(): ReactElement {
       setSucsses(false);
       let res;
 
-      if (id !== undefined) {
-        res = await axios.put(`${BASE_URL}/courses/${id}`, courseData);
+      if (edit) {
+        res = await axios.put(`${BASE_URL}/courses/${courseId}`, courseData);
       } else {
         res = await axios.post(`${BASE_URL}/courses`, courseData);
       }
       setLoading(true);
       if (res.status === 201 || res.status === 204) {
-        setSucsses(true);
+        handleClose();
 
         setError("");
         setLoading(false);
@@ -52,100 +68,113 @@ export function AddEditCourse(): ReactElement {
   };
 
   const getCourse = async () => {
-    const response = await axios.get(`${BASE_URL}/courses/${id}`);
+    const response = await axios.get(`${BASE_URL}/courses/${courseId}`);
     setCourseData(response.data);
   };
 
   useEffect(() => {
-    if (id !== undefined) {
+    console.log("test");
+
+    if (edit) {
+      console.log("test");
       getCourse();
     }
   }, []);
 
   return (
-    <Container className="mt-4 maxHieht">
-      <Row className="justify-content-md-center">
-        <Col xs={12} md={6}>
-          <h2 className="text-center">Lägg till en ny kurs</h2>
-          <Form onSubmit={onSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Kursnamn*</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ange kursnamn"
-                value={courseData?.courseName || ""}
-                required
-                name="courseName"
-                onChange={handleOnChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Beskrivning*</Form.Label>
-              <Form.Control
-                as="textarea"
-                placeholder="Ange kursbeskrivning"
-                value={courseData?.description || ""}
-                required
-                rows={5}
-                name="description"
-                onChange={handleOnChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Poäng*</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Ange kursnamn"
-                value={courseData?.credits || 0}
-                required
-                name="credits"
-                onChange={handleOnChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>kurs kod*</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ange kursnamn"
-                value={courseData?.courseCode || ""}
-                required
-                name="courseCode"
-                onChange={handleOnChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Startdatum*</Form.Label>
-              <Form.Control
-                type="datetime-local"
-                value={courseData?.startDate || ""}
-                required
-                name="startDate"
-                onChange={handleOnChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Slut Datum*</Form.Label>
-              <Form.Control
-                type="datetime-local"
-                value={courseData?.endDate || ""}
-                required
-                name="endDate"
-                onChange={handleOnChange}
-              />
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              disabled={loading}
-              className="mb-4"
-            >
-              {loading ? "Submitting..." : "Add Course"}
-            </Button>
-            {error && <div className="error-message mb-3">{error}</div>}
-            {sucsses && <div className="mb-3">Succes</div>}
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>
+          {edit ? "Redigera kurs" : "Lägg till en ny kurs"}
+        </Modal.Title>
+      </Modal.Header>
+      <Container className="mt-3">
+        <Row className="justify-content-md-center">
+          <Col xs={11}>
+            <Form onSubmit={onSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>Kursnamn*</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Ange kursnamn"
+                  value={courseData?.courseName || ""}
+                  required
+                  name="courseName"
+                  onChange={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Beskrivning*</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  placeholder="Ange kursbeskrivning"
+                  value={courseData?.description || ""}
+                  required
+                  rows={3}
+                  name="description"
+                  onChange={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Poäng*</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Ange kursnamn"
+                  value={courseData?.credits || 0}
+                  required
+                  name="credits"
+                  onChange={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>kurs kod*</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Ange kursnamn"
+                  value={courseData?.courseCode || ""}
+                  required
+                  name="courseCode"
+                  onChange={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Startdatum*</Form.Label>
+                <Form.Control
+                  type="datetime-local"
+                  value={courseData?.startDate || ""}
+                  required
+                  name="startDate"
+                  onChange={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Slut Datum*</Form.Label>
+                <Form.Control
+                  type="datetime-local"
+                  value={courseData?.endDate || ""}
+                  required
+                  name="endDate"
+                  onChange={handleOnChange}
+                />
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={loading}
+                className="mb-4 w-50"
+              >
+                {loading ? "Submitting..." : "Add Course"}
+              </Button>
+
+              {error && (
+                <Alert variant="danger" className="mt-3">
+                  {error}
+                </Alert>
+              )}
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </Modal>
   );
-}
+};

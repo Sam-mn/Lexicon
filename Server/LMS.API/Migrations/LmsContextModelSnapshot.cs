@@ -34,6 +34,9 @@ namespace LMS.API.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
@@ -203,6 +206,9 @@ namespace LMS.API.Migrations
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -415,7 +421,7 @@ namespace LMS.API.Migrations
             modelBuilder.Entity("LMS.API.Models.Entities.Activity", b =>
                 {
                     b.HasOne("LMS.API.Models.Entities.ActivityType", "ActivityType")
-                        .WithMany("Activities")
+                        .WithMany()
                         .HasForeignKey("ActivityTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -433,9 +439,11 @@ namespace LMS.API.Migrations
 
             modelBuilder.Entity("LMS.API.Models.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("LMS.API.Models.Entities.Course", null)
+                    b.HasOne("LMS.API.Models.Entities.Course", "Course")
                         .WithMany("users")
                         .HasForeignKey("CourseId");
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("LMS.API.Models.Entities.Artifact", b =>
@@ -528,11 +536,6 @@ namespace LMS.API.Migrations
             modelBuilder.Entity("LMS.API.Models.Entities.Activity", b =>
                 {
                     b.Navigation("Artifacts");
-                });
-
-            modelBuilder.Entity("LMS.API.Models.Entities.ActivityType", b =>
-                {
-                    b.Navigation("Activities");
                 });
 
             modelBuilder.Entity("LMS.API.Models.Entities.ApplicationUser", b =>

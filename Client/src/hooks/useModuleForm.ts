@@ -11,6 +11,7 @@ export const useModuleForm = (courseId: string) => {
     description: '',
     startDate: '',
     endDate: '',
+    courseId
   });
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
@@ -60,8 +61,9 @@ export const useModuleForm = (courseId: string) => {
         description: '',
         startDate: '',
         endDate: '',
+        courseId
       });
-      setTimeout(() => navigate(`/courses/${courseId}`), 2000);
+      // setTimeout(() => navigate(`/courses/${courseId}`), 2000);
     } catch (err) {
       setError('Något gick fel vid tillägg av modul. Försök igen.');
     } finally {

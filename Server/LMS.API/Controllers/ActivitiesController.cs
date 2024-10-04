@@ -4,6 +4,7 @@ using LMS.API.Data;
 using LMS.API.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using LMS.API.Models.Dtos;
 
 namespace LMS.API.Controllers
 {
@@ -36,9 +37,17 @@ namespace LMS.API.Controllers
 
         //GET: api/Activities/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Activity>> GetActivity(Guid id)
+        public async Task<ActionResult<ActivitiesDto>> GetActivity(Guid id)
         {
-            var activity = await _context.Activity.FindAsync(id);
+            var activity = await _context.Activity.Include(c => c.ActivityType).Select((a) => new ActivitiesDto
+            {
+                Id = a.Id,
+                Description = a.Description,
+                Name = a.Name,
+                StartTime = a.StartTime,
+                EndTime = a.EndTime,
+                ActivityTypeName = a.ActivityType.ActivityTypeName
+            }).FirstOrDefaultAsync(a => a.Id == id);
 
             if (activity == null)
             {

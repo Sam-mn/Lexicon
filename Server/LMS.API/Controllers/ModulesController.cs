@@ -46,6 +46,8 @@ namespace LMS.API.Controllers
         {
             var activity = await _context.Activity.Where(c => c.ModuleId == id).Include(c=> c.ActivityType).Select((a) =>  new ActivitiesDto
             {
+                Id = a.Id,
+                Description= a.Description,
                 Name = a.Name,
                 StartTime = a.StartTime,
                 EndTime = a.EndTime,

@@ -35,5 +35,8 @@ namespace LMS.API.Models.Entities
 
         public Guid? ActivityId { get; set; }
         public Activity? PartOf { get; set; }
+
+        public string? status { get; set; }
+
     }
 }

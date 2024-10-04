@@ -20,8 +20,8 @@ namespace LMS.API.Data
                 var roleManager = servicesProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 string[] roleNames = { "Student", "Teacher" };
 
-                
-                //IMPORTANT: For testing purposes, this will always delete any module DB you create via postman, make sure you dont add any you want to save
+
+                //Checks for existing DB and generates if there are none
                 try
                 {
                     if (!await db.Courses.AnyAsync())
@@ -31,9 +31,11 @@ namespace LMS.API.Data
                         await db.SaveChangesAsync();
                     }
 
-                    if (await db.Module.AnyAsync())
+                    if (!await db.Module.AnyAsync())
                     {
-                        db.Module.RemoveRange(db.Module);
+                        var existingCoursesList = await db.Courses.ToListAsync();
+                        var generatedModules = GenerateModules(existingCoursesList).Take(5);
+                        await db.AddRangeAsync(generatedModules);
                         await db.SaveChangesAsync();
                     }
 
@@ -42,9 +44,12 @@ namespace LMS.API.Data
                         await GenerateActivityTypes(db);
                     }
 
-                    if (await db.Activity.AnyAsync())
+                    if (!await db.Activity.AnyAsync())
                     {
-                        db.RemoveRange(db.Activity);
+                        var currentModulesList = await db.Module.ToListAsync();
+                        var activityTypesList = await db.ActivityType.ToListAsync();
+                        var generatedActivities = GenerateActivities(currentModulesList, activityTypesList);
+                        await db.AddRangeAsync(generatedActivities);
                         await db.SaveChangesAsync();
                     }
 
@@ -60,13 +65,7 @@ namespace LMS.API.Data
                     var activities = GenerateActivities(existingModules, activityTypes);
                     await db.AddRangeAsync(activities);
                     await db.SaveChangesAsync();
-                    foreach (var roleName in roleNames)
-                    {
-                        if(!await roleManager.RoleExistsAsync(roleName))
-                        {
-                            await roleManager.CreateAsync(new IdentityRole(roleName));
-                        }
-                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -130,6 +129,7 @@ namespace LMS.API.Data
                 var activityFaker = new Faker<Activity>("sv")
 
                     .RuleFor(a => a.Name, f => f.Lorem.Word())
+                    .RuleFor(a => a.Description, f => f.Lorem.Sentence())
                     .RuleFor(a => a.StartTime, f => f.Date.Between(module.StartDate, module.EndDate))
                     .RuleFor(a => a.EndTime, (f, a) => f.Date.Between(a.StartTime, a.StartTime.AddDays(1)))
                     .RuleFor(a => a.ModuleId, module.Id)

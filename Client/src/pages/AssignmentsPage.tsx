@@ -34,7 +34,7 @@ export function AssignmentsPage(): ReactElement {
             <tr key={c.id}>
               <td>
                 <Link
-                  to={`/courses/${c.id}`}
+                  to={`/activities/${c.id}`}
                   className="edit-link text-dark"
                   onClick={() => {
                     // setNavBarName(c.courseName);

@@ -1,11 +1,19 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { useArtifacts, useAuth, useCourseDetails, useModules } from "../hooks";
+import {
+  useArtifacts,
+  useAuth,
+  useCourseDetails,
+  useModules,
+  useNavbar,
+} from "../hooks";
 import "../css/CourseDetailsPage.css";
 import axios from "axios";
 import { BASE_URL } from "../utils";
-import { useNavbar } from "../hooks/useNavbar";
 import { ParticipantList } from "../components";
+import { ModulesAddPage } from "./ModulesAddPage";
+import { Button } from "react-bootstrap";
+import { DocumentAddPage } from "./DocumentAddPage";
 
 export function CourseDetailsPage(): ReactElement {
   const navigate = useNavigate();
@@ -22,6 +30,13 @@ export function CourseDetailsPage(): ReactElement {
     loading: courseLoading,
     error: courseError,
   } = useCourseDetails(courseId);
+  const [showModulesPopup, setShowModulesPopup] = useState(false);
+  const handleShowModulesPopup = () => setShowModulesPopup(true);
+  const handleCloseModulesPopup = () => setShowModulesPopup(false);
+
+  const [showDocPopup, setShowDocPopup] = useState(false);
+  const handleShowDocPopup = () => setShowDocPopup(true);
+  const handleCloseDocPopup = () => setShowDocPopup(false);
 
   useEffect(() => {
     if (modules && modules.length > 0 && !selectedModuleId) {
@@ -62,16 +77,33 @@ export function CourseDetailsPage(): ReactElement {
     <div className="course-detail-container">
       <h1>{course?.courseName}</h1>
       <p>{course?.description}</p>
-
+      {showModulesPopup && (
+        <ModulesAddPage
+          edit={false}
+          show={showModulesPopup}
+          handleClose={handleCloseModulesPopup}
+          courseId={courseId}
+        />
+      )}
+      {showDocPopup && (
+        <DocumentAddPage
+          handleClose={handleCloseDocPopup}
+          show={showDocPopup}
+          id={courseId}
+          documentType="course"
+          edit={false}
+        />
+      )}
       <section className="modules-section mb-5">
         <h2>Modules</h2>
         {userData?.UserRole === "teacher" && (
-          <Link
-            to={`/courses/${courseId}/addModule`}
-            className="btn btn-primary mb-3"
+          <Button
+            variant="primary"
+            className="w-25"
+            onClick={handleShowModulesPopup}
           >
             Lägg till modul
-          </Link>
+          </Button>
         )}
         {userData?.UserRole === "teacher"}
 
@@ -111,12 +143,13 @@ export function CourseDetailsPage(): ReactElement {
         <h2>Kursmaterial</h2>
         <div className="mb-3">
           {userData?.UserRole === "teacher" && (
-            <Link
-              to={`/addDocument/${courseId}?documentType=course`}
-              className="btn btn-primary"
+            <Button
+              variant="primary"
+              className="w-25"
+              onClick={handleShowDocPopup}
             >
               Lägg till Kursmaterial
-            </Link>
+            </Button>
           )}
         </div>
         <ul className="materials-list">
