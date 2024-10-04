@@ -1,34 +1,78 @@
 .SideNavbar {
-  width: 200px;
+  width: 240px;
   height: 100vh;
-  left: 0;
-  top: 0;
-  background-color: var(--color-white);
-
+  background-color: var(--background-color);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  background-color: #042c65;
-  z-index: 10000;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
+}
+
+.SideNavbar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--primary-black);
+  color: var(--color-white);
+}
+
+.SideNavbar-title {
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 2px;
 }
 
 .SideNavbar-nav {
   list-style-type: none;
   padding: 0;
-  margin-left: 15px;
+  margin: 0;
+  flex-grow: 1;
 }
 
 .SideNavbar-item {
-  margin-bottom: 15px;
+  margin: 0;
 }
 
 .SideNavbar-link {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
   text-decoration: none;
-  font-size: 18px;
-  transition: color 0.3s ease;
-  color: #fff;
+  color: var(--primary-black);
+  transition: background-color 0.3s ease;
 }
 
 .SideNavbar-link:hover {
-  color: var(--color-blue-dark);
+  background-color: var(--primary-grey);
+}
+
+.SideNavbar-link.active {
+  background-color: var(--color-blue-dark);
+  color: var(--color-white);
+}
+
+.SideNavbar-icon {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.login-status-chip {
+  margin-top: auto;
+  margin-bottom: 45px; 
+}
+
+@media (max-width: 768px) {
+  .SideNavbar {
+    width: 60px;
+  }
+
+  .SideNavbar-title,
+  .SideNavbar-link span {
+    display: none;
+  }
+
+  .SideNavbar-icon {
+    margin-right: 0;
+  }
 }
