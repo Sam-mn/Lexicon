@@ -1,10 +1,10 @@
-/* ActivityCard.css */
 .activity-card {
     max-width: 20rem;
     margin-right: 2rem;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-white);
   }
   
   .activity-card:hover {
@@ -17,7 +17,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 1.25rem;
-    background-color: var(--primary-offwhite);    
+    background-color: var(--primary-offwhite);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);    
   }
   
   .activity-card-body {
