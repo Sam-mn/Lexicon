@@ -21,6 +21,7 @@
   border: 1px solid var(--primary-black);
   border-radius: 0.25rem;
   margin-bottom: 0.5rem;
+  text-transform: capitalize;  
 }
 
 .course-item:hover {
@@ -29,8 +30,8 @@
 }
 
 .course-item h5 {
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 500;   
 }
 
 .add-course-button {
