@@ -11,9 +11,9 @@ import "../css/CourseDetailsPage.css";
 import axios from "axios";
 import { BASE_URL, IModule } from "../utils";
 import { ParticipantList } from "../components";
-import { ModulesAddPage } from "./ModulesAddPage";
+import { ModulesAddPage, DocumentAddPage } from "../pages";
 import { Button } from "react-bootstrap";
-import { DocumentAddPage } from "./DocumentAddPage";
+
 
 export function CourseDetailsPage(): ReactElement {
   const navigate = useNavigate();
@@ -101,30 +101,25 @@ export function CourseDetailsPage(): ReactElement {
         />
       )}
       <section className="modules-section mb-5">
-        <h2>Modules</h2>
+        <h2>Moduler</h2>
         {userData?.UserRole === "teacher" && (
           <Button
             variant="primary"
-            className="w-25"
+            className="w-25 mb-3"
             onClick={handleShowModulesPopup}
           >
             Lägg till modul
           </Button>
         )}
 
-        {modulesLoading && <p>Loading modules...</p>}
-        {modulesError && <p>Error: {modulesError}</p>}
-        <div className="mt-4 d-flex flex-wrap">
+        {modulesLoading && <p>Laddar moduler...</p>}
+        {modulesError && <p>Fel: {modulesError}</p>}
+        <div className="modules-grid">
           {modules &&
             modules.map((module) => (
               <div
                 key={module.id}
-                className="card bg-light mb-3"
-                style={{
-                  maxWidth: "20rem",
-                  marginRight: "2rem",
-                  cursor: "pointer",
-                }}
+                className="module-card"                
                 onClick={() => {
                   navigate(`/modules/${module.id}`);
                   course &&
@@ -133,11 +128,17 @@ export function CourseDetailsPage(): ReactElement {
                     );
                 }}
               >
-                <div className="card-header d-flex justify-content-between">
+                <div className="module-card-header">
                   <span>{module.moduleName}</span>
                 </div>
-                <div className="card-body">
-                  <p className="card-text p-2">{module.description}</p>
+                <div className="module-card-body">
+                  <p className="module-card-text">{module.description}</p>
+                  <p className="module-card-date">
+                    Startdatum: {new Date(module.startDate).toLocaleDateString('sv-SE')}
+                  </p>
+                  <p className="module-card-date">
+                    Slutdatum: {new Date(module.endDate).toLocaleDateString('sv-SE')}
+                  </p>
                 </div>
               </div>
             ))}
