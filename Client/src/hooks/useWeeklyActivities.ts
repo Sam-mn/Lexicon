@@ -14,16 +14,18 @@ export const useWeeklyActivities = () => {
         const allActivities: IActivity[] = response.data;
 
         const now = new Date();
-        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
-        const endOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 6));
-        endOfWeek.setHours(23, 59, 59, 999);
+        now.setHours(0,0,0,0);
+        
+        const endOfWeek = new Date(now);
+        endOfWeek.setDate(now.getDate() + (6-now.getDay()));
+        endOfWeek.setHours(23,59,59,999);
 
-        const filteredActivities = allActivities.filter(activity => {
+        const filteredAndSortedActivities = allActivities.filter(activity => {
           const activityEndTime = new Date(activity.endTime);
-          return activityEndTime >= startOfWeek && activityEndTime <= endOfWeek;
-        });
+          return activityEndTime >= now && activityEndTime <= endOfWeek;
+        }).sort((a, b) => new Date(a.endTime).getTime() - new Date(b.endTime).getTime());
 
-        setActivities(filteredActivities);
+        setActivities(filteredAndSortedActivities);
         setLoading(false);
       } catch (err) {
         setError('Error fetching weekly activities');
