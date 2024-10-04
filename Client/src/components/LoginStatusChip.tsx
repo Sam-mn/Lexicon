@@ -9,7 +9,7 @@ export function LoginStatusChip(): ReactElement {
     <div className="login-status-chip">
       <div className="user-info">
         <span className="user-name">{userData?.name}</span>
-        <span className="user-role">{userData?.UserRole}</span>
+        <span className="user-role">{userData?.UserRole === "student" ? "Elev" : "Lärare"}</span>        
       </div>
       <button onClick={logout} className="logout-button">
         <PiDoorOpenLight className="logout-icon" />
