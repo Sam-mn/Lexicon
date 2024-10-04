@@ -6,6 +6,7 @@ import { ReactElement, useEffect, useState } from "react";
 import "../css/DashboardPage.css";
 import { AddEditCourse } from "./AddEditCourse";
 import { Button } from "react-bootstrap";
+import { ICourse } from "../utils";
 
 export function DashboardPage(): ReactElement {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export function DashboardPage(): ReactElement {
     courses,
     error: coursesError,
     loading: coursesLoading,
+    setCourses,
   } = useCourses();
   const { setNavBarName, setIsCourse, setCourseCode, setCredits } = useNavbar();
   const [showPopup, setShowPopup] = useState(false);
@@ -29,6 +31,10 @@ export function DashboardPage(): ReactElement {
     setNavBarName("Hem");
   }, []);
 
+  const handleUpdateCourses = (NewCourseData: ICourse) => {
+    setCourses([NewCourseData, ...courses]);
+  };
+
   return (
     <div className="dashboard-container p-3">
       {showPopup && (
@@ -36,6 +42,7 @@ export function DashboardPage(): ReactElement {
           handleClose={handleClose}
           show={showPopup}
           edit={false}
+          handleUpdateCourses={handleUpdateCourses}
         />
       )}
       <div className="mt-4 ">

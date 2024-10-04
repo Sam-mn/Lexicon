@@ -6,6 +6,7 @@ interface ArtifactsHookResult {
   artifacts: IArtifact[];
   loading: boolean;
   error: string | null;
+  setArtifacts: React.Dispatch<React.SetStateAction<IArtifact[]>>
 }
 
 export function useArtifacts(): ArtifactsHookResult {
@@ -28,5 +29,5 @@ export function useArtifacts(): ArtifactsHookResult {
     fetchArtifacts();
   }, []);
 
-  return { artifacts, loading, error };
+  return { artifacts, loading , setArtifacts, error };
 }

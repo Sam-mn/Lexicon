@@ -39,14 +39,14 @@ export interface ICourse {
 }
 
 export interface IModule {
-  id: string;
+  id?: string;
   moduleName: string;
   description: string;
   startDate: string;
   endDate: string;
   courseId: string;
-  artifacts: IArtifact[]
-  activities: IActivity[]
+  artifacts?: IArtifact[]
+  activities?: IActivity[]
 }
 
 export interface IModuleFormData {

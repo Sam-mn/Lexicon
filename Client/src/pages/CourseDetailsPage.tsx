@@ -9,7 +9,7 @@ import {
 } from "../hooks";
 import "../css/CourseDetailsPage.css";
 import axios from "axios";
-import { BASE_URL } from "../utils";
+import { BASE_URL, IModule } from "../utils";
 import { ParticipantList } from "../components";
 import { ModulesAddPage } from "./ModulesAddPage";
 import { Button } from "react-bootstrap";
@@ -22,9 +22,10 @@ export function CourseDetailsPage(): ReactElement {
     modules,
     loading: modulesLoading,
     error: modulesError,
+    setModules,
   } = useModules(courseId);
   const { userData } = useAuth();
-  const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
+  const [selectedModuleId, setSelectedModuleId] = useState<string>();
   const {
     course,
     loading: courseLoading,
@@ -70,6 +71,10 @@ export function CourseDetailsPage(): ReactElement {
     }
   };
 
+  const handleUpdateModule = (newModuleData: IModule) => {
+    setModules([newModuleData, ...modules]);
+  };
+
   if (courseLoading) return <div>Loading course details...</div>;
   if (courseError) return <div>Error: {courseError}</div>;
 
@@ -83,6 +88,7 @@ export function CourseDetailsPage(): ReactElement {
           show={showModulesPopup}
           handleClose={handleCloseModulesPopup}
           courseId={courseId}
+          handleUpdateModule={handleUpdateModule}
         />
       )}
       {showDocPopup && (
@@ -105,7 +111,6 @@ export function CourseDetailsPage(): ReactElement {
             Lägg till modul
           </Button>
         )}
-        {userData?.UserRole === "teacher"}
 
         {modulesLoading && <p>Loading modules...</p>}
         {modulesError && <p>Error: {modulesError}</p>}

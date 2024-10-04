@@ -5,15 +5,20 @@ import { useCourses, useNavbar } from "../hooks";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { AddEditCourse } from "./AddEditCourse";
 import { Button } from "react-bootstrap";
+import { ICourse } from "../utils";
 
 export function CoursesPage(): ReactElement {
-  const { courses, error, loading } = useCourses();
+  const { courses, error, loading, setCourses } = useCourses();
   const { setCredits, setCourseCode, setNavBarName, setIsCourse } = useNavbar();
   const [showPopup, setShowPopup] = useState(false);
   const [edit, setEdit] = useState(false);
   const [courseId, setCourseId] = useState<string | null>(null);
   const handleShow = () => setShowPopup(true);
   const handleClose = () => setShowPopup(false);
+
+  const handleUpdateCourses = (NewCourseData: ICourse) => {
+    setCourses([NewCourseData, ...courses]);
+  };
 
   return (
     <div className="dashboard-container p-3">
@@ -23,6 +28,7 @@ export function CoursesPage(): ReactElement {
           show={showPopup}
           edit={edit}
           courseId={courseId}
+          handleUpdateCourses={handleUpdateCourses}
         />
       )}
 
@@ -39,7 +45,7 @@ export function CoursesPage(): ReactElement {
       <Table striped className="mt-3">
         <thead>
           <tr>
-            <th style={{ width: "75%" }}>Kursnamn</th>
+            <th style={{ width: "85%" }}>Kursnamn</th>
             <th></th>
           </tr>
         </thead>
@@ -72,9 +78,9 @@ export function CoursesPage(): ReactElement {
                   <FaEdit />
                   Redigera
                 </div>
-                <button className="delete-button w-50">
+                {/* <button className="delete-button w-50">
                   <FaTrash /> Ta bort
-                </button>
+                </button> */}
               </td>
             </tr>
           ))}

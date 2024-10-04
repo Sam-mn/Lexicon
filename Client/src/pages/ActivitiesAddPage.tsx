@@ -19,6 +19,7 @@ interface PopupProps {
   handleClose: () => void;
   edit: boolean;
   moduleId?: string | null;
+  handleUpdateActivities?: (NewCourseData: IActivity) => void | undefined;
 }
 
 export const ActivitiesAddPage: React.FC<PopupProps> = ({
@@ -26,6 +27,7 @@ export const ActivitiesAddPage: React.FC<PopupProps> = ({
   handleClose,
   edit,
   moduleId,
+  handleUpdateActivities,
 }) => {
   // const { moduleId } = useParams<{ moduleId: string }>();
   const [activityeData, setActivityData] = useState<IActivity | null>();
@@ -61,6 +63,8 @@ export const ActivitiesAddPage: React.FC<PopupProps> = ({
 
       if (res.status === 201) {
         setSuccess(true);
+        handleUpdateActivities(res.data);
+        handleClose();
         setActivityData(null);
         setError("");
       } else {
@@ -165,9 +169,6 @@ export const ActivitiesAddPage: React.FC<PopupProps> = ({
                 <Alert variant="danger" className="mt-3">
                   {error}
                 </Alert>
-              )}
-              {success && (
-                <div className="success-message mt-3">Aktivitet tillagd!</div>
               )}
             </Form>
           </Col>

@@ -2,11 +2,11 @@
 import { useState } from 'react';
 import { addModuleReq } from '../utils/requests';
 import { useNavigate } from 'react-router-dom';
-import { IModuleFormData } from '../utils/interfaces';
+import { IModule, IModuleFormData } from '../utils/interfaces';
 
 export const useModuleForm = (courseId: string) => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<IModuleFormData>({
+  const [formData, setFormData] = useState<IModule>({
     moduleName: '',
     description: '',
     startDate: '',
@@ -56,13 +56,13 @@ export const useModuleForm = (courseId: string) => {
       setError('');
       await addModuleReq(courseId, formData);
       setSuccess(true);
-      setFormData({
-        moduleName: '',
-        description: '',
-        startDate: '',
-        endDate: '',
-        courseId
-      });
+      // setFormData({
+      //   moduleName: '',
+      //   description: '',
+      //   startDate: '',
+      //   endDate: '',
+      //   courseId
+      // });
       // setTimeout(() => navigate(`/courses/${courseId}`), 2000);
     } catch (err) {
       setError('Något gick fel vid tillägg av modul. Försök igen.');
@@ -71,5 +71,5 @@ export const useModuleForm = (courseId: string) => {
     }
   };
 
-  return { formData, handleChange, handleSubmit, error, success, loading };
+  return { formData, handleChange, handleSubmit,setFormData, error, success, loading };
 };
