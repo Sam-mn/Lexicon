@@ -1,8 +1,9 @@
-import { ReactElement } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaEdit } from "react-icons/fa";
-import { IActivity } from "../utils/";
-import { useAuth } from "../hooks";
+import { ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaEdit } from 'react-icons/fa';
+import { IActivity } from '../utils/';
+import { useAuth } from '../hooks';
+import '../css/ActivityCard.css';
 
 interface ActivityCardProps {
   activity: IActivity;
@@ -21,36 +22,44 @@ export function ActivityCard({ activity }: ActivityCardProps): ReactElement {
     navigate(`/activities/${activity.id}/edit`);
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('sv-SE', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
+  const isDeadlineToday = () => {
+    const today = new Date();
+    const deadline = new Date(activity.endTime);
+    return (
+      today.getDate() === deadline.getDate() &&
+      today.getMonth() === deadline.getMonth() &&
+      today.getFullYear() === deadline.getFullYear()
+    );
+  };
+
   return (
-    <div
-      className="card bg-light mb-3"
-      style={{
-        maxWidth: "20rem",
-        marginRight: "2rem",
-        cursor: "pointer",
-      }}
-      onClick={handleClick}
-    >
-      <div className="card-header d-flex justify-content-between align-items-center">
+    <div className="activity-card" onClick={handleClick}>
+      <div className="activity-card-header">
         <span>{activity.name}</span>
-        {/* userData?.UserRole === "teacher" && (
-          <button
-            onClick={handleEditClick}
-            className="btn btn-sm btn-outline-secondary"
-          >
-            <FaEdit /> Redigera
-          </button>
-        )*/}
       </div>
-      <div className="card-body">
-        <p className="card-text p-2">{activity.description}</p>
-        <p className="card-text">
-          <small className="text-muted">Typ: {activity.activityTypeName}</small>
+      <div className="activity-card-body">
+        <p className="activity-card-text">
+          <small>Typ: {activity.activityTypeName}</small>
         </p>
-        <p className="card-text">
-          <small className="text-muted">
-            Datum: {new Date(activity.startTime).toLocaleDateString()}
-          </small>
+        <p className="activity-card-text activity-card-date">
+          Start: {formatDate(activity.startTime)}
+        </p>
+        <p
+          className={`activity-card-text activity-card-date activity-card-deadline ${
+            isDeadlineToday() ? 'activity-card-deadline-today' : ''
+          }`}
+        >
+          Inlämning: {formatDate(activity.endTime)}
         </p>
       </div>
     </div>
