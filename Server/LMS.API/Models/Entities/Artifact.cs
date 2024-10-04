@@ -31,7 +31,7 @@ namespace LMS.API.Models.Entities
         public Course? RelatedTo { get; set; }
 
         public Guid? ModuleId { get; set; }
-        public Module AssociatedWith { get; set; }
+        
 
         public Guid? ActivityId { get; set; }
         public Activity? PartOf { get; set; }
