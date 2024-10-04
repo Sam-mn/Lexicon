@@ -29,5 +29,5 @@ export function useModules(courseId: string | undefined) {
     fetchModules();
   }, [courseId]);
 
-  return { modules, loading, error };
+  return { modules, loading, error, setModules };
 }

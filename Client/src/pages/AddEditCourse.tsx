@@ -15,12 +15,15 @@ interface PopupProps {
   handleClose: () => void;
   edit: boolean;
   courseId?: string | null;
+  handleUpdateCourses?: (NewCourseData: ICourse) => void | undefined;
 }
+
 export const AddEditCourse: React.FC<PopupProps> = ({
   show,
   handleClose,
   edit,
   courseId,
+  handleUpdateCourses,
 }) => {
   const [courseData, setCourseData] = useState<ICourse | null>();
   const [error, setError] = useState<string>("");
@@ -50,7 +53,7 @@ export const AddEditCourse: React.FC<PopupProps> = ({
       setLoading(true);
       if (res.status === 201 || res.status === 204) {
         handleClose();
-
+        handleUpdateCourses(res.data);
         setError("");
         setLoading(false);
       } else {

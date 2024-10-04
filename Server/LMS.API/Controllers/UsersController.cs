@@ -32,7 +32,6 @@ namespace LMS.API.Controllers
         {
             var user = await _context.Users
                 .Include(u => u.Artifacts)
-                .Include(u => u.Course)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)

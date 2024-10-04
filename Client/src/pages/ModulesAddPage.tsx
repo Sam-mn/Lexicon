@@ -11,6 +11,7 @@ import {
 import { useParams } from "react-router-dom";
 import { FormField } from "../components";
 import { useModuleForm } from "../hooks";
+import { IModule } from "../utils";
 
 interface PopupProps {
   show: boolean;
@@ -18,6 +19,7 @@ interface PopupProps {
   edit: boolean;
   moduleId?: string | null;
   courseId?: string | null;
+  handleUpdateModule?: (newModuleData: IModule) => void | undefined;
 }
 
 export const ModulesAddPage: React.FC<PopupProps> = ({
@@ -26,13 +28,31 @@ export const ModulesAddPage: React.FC<PopupProps> = ({
   edit,
   moduleId,
   courseId,
+  handleUpdateModule,
 }) => {
   // const { courseId } = useParams<{ courseId: string }>();
-  const { formData, handleChange, handleSubmit, error, success, loading } =
-    useModuleForm(courseId!);
+  const {
+    formData,
+    handleChange,
+    handleSubmit,
+    setFormData,
+    error,
+    success,
+    loading,
+  } = useModuleForm(courseId!);
 
   useEffect(() => {
-    if (success) handleClose();
+    if (success) {
+      handleUpdateModule(formData);
+      setFormData({
+        moduleName: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        courseId: "",
+      });
+      handleClose();
+    }
   }, [success]);
   return (
     <Modal show={show} onHide={handleClose}>

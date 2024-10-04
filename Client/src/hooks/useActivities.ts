@@ -33,5 +33,5 @@ export function useActivities(moduleId: string | undefined) {
         fetchActivities();
       }, [moduleId]);
     
-      return { activities, loading, error };
+      return { activities,setActivities, loading, error };
     }

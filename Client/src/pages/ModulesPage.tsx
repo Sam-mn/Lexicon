@@ -3,7 +3,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { useActivities, useAuth, useArtifacts } from "../hooks";
 import { ActivityCard, SubmissionForm, SubmissionList } from "../components";
 import axios from "axios";
-import { BASE_URL, IArtifact, IModule } from "../utils";
+import { BASE_URL, IActivity, IArtifact, IModule } from "../utils";
 import { ActivitiesAddPage } from "./ActivitiesAddPage";
 import { Button } from "react-bootstrap";
 import "../css/ModulesPage.css"
@@ -11,7 +11,7 @@ import "../css/ModulesPage.css"
 export function ModulesPage(): ReactElement {
   const navigate = useNavigate();
   const { moduleId } = useParams<{ moduleId: string }>();
-  const { activities, loading, error } = useActivities(moduleId);
+  const { activities, setActivities, loading, error } = useActivities(moduleId);
   const { userData } = useAuth();
   const [moduleData, setModuleData] = useState<IModule | null>(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -42,6 +42,10 @@ export function ModulesPage(): ReactElement {
     }
   };
 
+  const handleUpdateActivitie = (newActivityData: IActivity) => {
+    setActivities([newActivityData, ...activities]);
+  };
+
   const getModuleData = async () => {
     const res = await axios.get(`${BASE_URL}/modules/${moduleId}`);
     setModuleData(res.data);
@@ -61,6 +65,7 @@ export function ModulesPage(): ReactElement {
           handleClose={handleClose}
           show={showPopup}
           moduleId={moduleId}
+          handleUpdateActivities={handleUpdateActivitie}
         />
       )}
       <h1>{moduleData?.moduleName}</h1>
