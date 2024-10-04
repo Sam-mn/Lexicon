@@ -1,3 +1,10 @@
+import '../css/DashboardPage.css';
+import { useNavigate, Link } from 'react-router-dom';
+import { useCourses, useNavbar, useWeeklyActivities, useAuth } from '../hooks';
+import { ActivityCard } from '../components';
+import { ReactElement, useEffect, useState } from 'react';
+import { AddEditCourse } from '../pages';
+import { Button } from 'react-bootstrap';
 import "../css/DashboardPage.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useCourses, useNavbar, useWeeklyActivities, useAuth } from "../hooks";
@@ -28,11 +35,19 @@ export function DashboardPage(): ReactElement {
   const handleShow = () => setShowPopup(true);
   const handleClose = () => setShowPopup(false);
   useEffect(() => {
-    setNavBarName("Hem");
+    setNavBarName('Hem');
   }, []);
 
   const handleUpdateCourses = (NewCourseData: ICourse) => {
     setCourses([NewCourseData, ...courses]);
+  };
+
+  const currentDate = new Date();
+  const endOfWeek = new Date(currentDate);
+  endOfWeek.setDate(currentDate.getDate() + (5-currentDate.getDay()));
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('sv-SE', { weekday:'long', year:'numeric', month:'long', day:'numeric'});
   };
 
   return (
@@ -46,16 +61,17 @@ export function DashboardPage(): ReactElement {
         />
       )}
       <div className="mt-4 ">
-        <h1>Välkommen {userData?.name}</h1>
+        <h1>Välkommen {userData?.name}!</h1>
+        <p className='text-muted'>{formatDate(currentDate)} </p>
         <hr />
         <section className="activities-section mb-5">
-          <h2>Den här veckans aktiviteter:</h2>
+          <h4>Aktiviteter du har fram till slutet av veckan ({formatDate(endOfWeek)}):</h4>
           {activitiesLoading && <p>Laddar aktiviteter...</p>}
           {activitiesError && (
             <p>Fel vid hämtning av aktiviteter: {activitiesError}</p>
           )}
           {activities.length === 0 && (
-            <p>Det finns inga aktiviteter planerade för denna vecka.</p>
+            <p>Det finns inga aktiviteter planerade för resten av veckan.</p>
           )}
           <div className="mt-4 d-flex flex-wrap">
             {activities.map((activity) => (
@@ -65,9 +81,9 @@ export function DashboardPage(): ReactElement {
         </section>
       </div>
       <section className="courses-section">
-        <h1>Kurser</h1>
+        <h4>Kurser</h4>
         <Button variant="primary" className="w-25" onClick={handleShow}>
-          {" "}
+          {' '}
           Lägg till en ny kurs
         </Button>
 

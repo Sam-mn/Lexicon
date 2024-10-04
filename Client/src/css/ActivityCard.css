@@ -1,0 +1,42 @@
+/* ActivityCard.css */
+.activity-card {
+    max-width: 20rem;
+    margin-right: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .activity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .activity-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--primary-offwhite);    
+  }
+  
+  .activity-card-body {
+    padding: 1.25rem;
+  }
+  
+  .activity-card-text {
+    margin-bottom: 0.5rem;
+  }
+  
+  .activity-card-date {
+    font-size: 0.875rem;
+    color: var(--primary-grey-dark);
+  }
+  
+  .activity-card-deadline {
+    font-weight: bold;    
+  }
+  
+  .activity-card-deadline-today {
+    color: var(--color-error);
+  }
