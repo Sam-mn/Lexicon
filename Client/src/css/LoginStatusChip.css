@@ -1,12 +1,67 @@
 .login-status-chip {
-  border-radius: 1rem;
-  padding: 0.5rem;
-  margin-top: auto;
-  background-color: #042c65;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  
 }
 
-.login-status-chip button {
-  border-radius: 0.25rem;
-  background-color: #042c65;
-  text-align: left;
+.user-info {
+  display: flex;  
+  flex-direction: column;
+  margin-bottom: 10px;
+  text-align: center;
+  border-top: 1px solid var(--primary-grey);
+  padding-top: 15px;
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.user-role {
+  font-size: 14px;
+  color: var(--primary-grey-dark);
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 8px;
+  border: none;
+  background-color: var(--color-error);
+  color: var(color-white);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;  
+}
+
+.logout-button:hover {
+  background-color: #9b000a;
+  color: var(--color-white); 
+}
+
+.logout-icon {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .login-status-chip {
+    padding: 10px;
+  }
+
+  .user-info, .logout-button span {
+    display: none;
+  }
+
+  .logout-button {
+    padding: 8px;
+  }
+
+  .logout-icon {
+    margin-right: 0;
+  }
 }

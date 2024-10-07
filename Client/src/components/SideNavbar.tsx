@@ -1,55 +1,59 @@
 import { ReactElement } from "react";
-import { Link } from "react-router-dom";
-import { LoginStatusChip } from "./LoginStatusChip";
-import "../css/SideNavbar.css";
-import logo from "../assets/images/logo-lexicon.gif";
-import { BsJournalBookmark } from "react-icons/bs";
+import { Link, useLocation } from "react-router-dom";
+import { LoginStatusChip } from "../components";
+import { BsJournalBookmark, BsHouseDoor } from "react-icons/bs";
 import { GoPencil } from "react-icons/go";
-import { FiActivity, FiSettings, FiHome } from "react-icons/fi";
-import { useNavbar } from "../hooks/useNavbar";
-import { useAuth } from "../hooks";
+import { useNavbar, useAuth } from "../hooks";
+import "../css/SideNavbar.css";
 
 export function SideNavbar(): ReactElement {
   const { setNavBarName, setIsCourse } = useNavbar();
   const { userData } = useAuth();
+  const location = useLocation();
+
   const handleNavbar = (name: string) => {
     setNavBarName(name);
     setIsCourse(false);
   };
+
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <nav className="SideNavbar">
-      <img src={logo} className="w-100" />
-      <ul className="SideNavbar-nav mt-5">
+      <div className="SideNavbar-header">
+        <span className="SideNavbar-title">LMS</span>
+      </div>      
+      <ul className="SideNavbar-nav">
         {userData?.UserRole === "teacher" && (
           <>
             <li className="SideNavbar-item">
               <Link
                 to="/"
-                className="SideNavbar-link"
+                className={`SideNavbar-link ${isActive("/") ? "active" : ""}`}
                 onClick={() => handleNavbar("Hem")}
               >
-                <FiHome style={{ marginRight: "0.5rem" }} />
-                Hem
+                <BsHouseDoor className="SideNavbar-icon" />
+                <span>Hem</span>
               </Link>
             </li>
             <li className="SideNavbar-item">
               <Link
                 to="/courses"
-                className="SideNavbar-link"
+                className={`SideNavbar-link ${isActive("/courses") ? "active" : ""}`}
                 onClick={() => handleNavbar("Kurser")}
               >
-                <BsJournalBookmark style={{ marginRight: "0.5rem" }} />
-                Kurser
+                <BsJournalBookmark className="SideNavbar-icon" />
+                <span>Kurser</span>
               </Link>
             </li>
             <li className="SideNavbar-item">
               <Link
                 to="/assignment"
-                className="SideNavbar-link"
+                className={`SideNavbar-link ${isActive("/assignment") ? "active" : ""}`}
                 onClick={() => handleNavbar("Inlämning / Betyg")}
               >
-                <GoPencil style={{ marginRight: "0.5rem" }} />
-                Inlämning / Betyg
+                <GoPencil className="SideNavbar-icon" />
+                <span>Inlämning / Betyg</span>
               </Link>
             </li>
           </>
@@ -58,28 +62,13 @@ export function SideNavbar(): ReactElement {
           <li className="SideNavbar-item">
             <Link
               to={`/courses/${userData.courseId}`}
-              className="SideNavbar-link"
+              className={`SideNavbar-link ${isActive(`/courses/${userData.courseId}`) ? "active" : ""}`}
             >
-              <BsJournalBookmark style={{ marginRight: "0.5rem" }} /> Min kurs
+              <BsJournalBookmark className="SideNavbar-icon" />
+              <span>Min kurs</span>
             </Link>
           </li>
         )}
-        {/* <li className="SideNavbar-item">
-          <Link to="/activities" className="SideNavbar-link" onClick={()=>handleNavbar("Aktiviteter")}>
-            <FiActivity style={{ marginRight: "0.5rem" }} />
-            Aktiviteter
-          </Link>
-        </li> */}
-        {/* <li className="SideNavbar-item">
-          <Link
-            to="/modules"
-            className="SideNavbar-link"
-            onClick={() => handleNavbar("Inställningar")}
-          >
-            <FiSettings style={{ marginRight: "0.5rem" }} />
-            Inställningar
-          </Link>
-        </li> */}
       </ul>
       <LoginStatusChip />
     </nav>

@@ -1,13 +1,12 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { useActivities } from "../hooks/useActivities";
-import { useArtifacts, useAuth } from "../hooks";
-// import { useActivities, useSubmissions, useModules} from "../hooks";
+import { useActivities, useAuth, useArtifacts } from "../hooks";
 import { ActivityCard, SubmissionForm, SubmissionList } from "../components";
 import axios from "axios";
 import { BASE_URL, IActivity, IArtifact, IModule } from "../utils";
 import { ActivitiesAddPage } from "./ActivitiesAddPage";
 import { Button } from "react-bootstrap";
+import "../css/ModulesPage.css"
 
 export function ModulesPage(): ReactElement {
   const navigate = useNavigate();
@@ -80,7 +79,7 @@ export function ModulesPage(): ReactElement {
             </Button>
           )}
         </div>
-        <div className="mt-4 d-flex flex-wrap">
+        <div className="activities-grid">
           {activities.map((activity) => (
             <ActivityCard key={activity.id} activity={activity} />
           ))}

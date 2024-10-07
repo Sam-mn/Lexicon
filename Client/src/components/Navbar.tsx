@@ -23,12 +23,12 @@ export function Navbar(): ReactElement {
         </div>
       </div>
       <div>
-        <h5>
-          Inloggad{" "}
-          <span className="bg-primary p-1 text-light rounded">
+        <h6>
+          Inloggad som: {" "}
+          <span className="primary p-1 text-light rounded">
             {userData?.UserRole === "student" ? "Elev" : "Lärare"}
           </span>
-        </h5>
+        </h6>
         <h6 className="opacity-50">{userData?.name}</h6>
       </div>
     </nav>

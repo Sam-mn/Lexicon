@@ -6,11 +6,11 @@
   --primary-grey: #ddd;
   --primary-grey-dark: #555;
   --color-white: #fffefa;
-  --color-blue: #4a90e2;
-  --color-blue-dark: #357ae8;
+  --color-blue: #81b7ff;
+  --color-blue-dark: #4482cc;
   --background-color: #f0f2f5;
   --color-success: #9acd32;
-  --color-error: #ee544c;
+  --color-error: #FF6961;
 
 }
 
@@ -28,3 +28,22 @@ body {
   min-height: 100vh;
 }
 
+.btn-primary {
+  background-color: var(--color-blue);
+  border-color: var(--color-blue);
+  color: var(--color-white);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--color-blue-dark);
+  border-color: var(--color-blue-dark);
+  color: var(--color-white);
+}
+
+.primary {
+  background-color: var(--color-blue);
+  border-color: var(--color-blue);
+  color: var(--color-white);
+}

@@ -1,26 +1,60 @@
 .dashboard-container {
-  overflow: scroll;
+  overflow-y: auto;
   max-height: 82vh;
+  padding: 1rem;
 }
-.dashBoardCourseList {
-  border: 1px solid black;
-  border-radius: 0.25rem;
-  padding: 0.5rem;
-  width: 80%;
+
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
   margin-top: 1rem;
+}
+
+.courses-list {
+  margin-top: 1rem;
+}
+
+.course-item {
   cursor: pointer;
-  h4 {
-    font-size: 1.5rem;
-    font-weight: 300;
-    margin-bottom: 0;
-  }
+  transition: all 0.3s ease;
+  border: 1px solid var(--primary-black);
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;  
 }
 
-.dashBoardCourseList:hover {
-  background-color: #042c65;
-  color: #fff;
+.course-item:hover {
+  background-color: var(--primary-grey);
+  color: var(--primary-offwhite);
 }
 
-.linkToNewCourse {
-  color: #000;
+.course-item h5 {
+  font-size: 1rem;
+  font-weight: 500;   
+}
+
+.add-course-button {
+  padding: 0.5rem 1rem; 
+  font-size: 0.9rem; 
+  width: auto; 
+}
+
+h4 {
+  color: var(--primary-black);
+  margin-bottom: 1rem;
+}
+
+.text-muted {
+  font-style: italic;
+}
+
+.btn-primary {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-blue-dark);
+  border-color: var(--primary-blue-dark);
 }
