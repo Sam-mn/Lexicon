@@ -52,8 +52,13 @@ export const AddEditCourse: React.FC<PopupProps> = ({
       }
       setLoading(true);
       if (res.status === 201 || res.status === 204) {
+        console.log(res.data);
         handleClose();
-        handleUpdateCourses(res.data);
+        if (edit && courseData) {
+          handleUpdateCourses(courseData);
+        } else {
+          handleUpdateCourses(res.data);
+        }
         setError("");
         setLoading(false);
       } else {

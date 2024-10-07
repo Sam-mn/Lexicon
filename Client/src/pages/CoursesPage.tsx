@@ -17,7 +17,12 @@ export function CoursesPage(): ReactElement {
   const handleClose = () => setShowPopup(false);
 
   const handleUpdateCourses = (NewCourseData: ICourse) => {
-    setCourses([NewCourseData, ...courses]);
+    if (edit) {
+      const getEditedCOurse = courses.filter((c) => c.id !== NewCourseData.id);
+      setCourses([NewCourseData, ...getEditedCOurse]);
+    } else {
+      setCourses([NewCourseData, ...courses]);
+    }
   };
 
   return (
