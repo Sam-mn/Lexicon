@@ -13,5 +13,6 @@ namespace LMS.API.Models.Dtos
        public Guid? CourseId { get; set; }
        public Guid? ModuleId { get; set; }
        public Guid? ActivityId { get; set; }
+        public string? Status {  get; set; }
     }
 }

@@ -28,7 +28,6 @@ namespace LMS.API.Models.Entities
         public ApplicationUser? UploadedBy { get; set; }
 
         public Guid? CourseId { get; set; }
-        public Course? RelatedTo { get; set; }
 
         public Guid? ModuleId { get; set; }
         

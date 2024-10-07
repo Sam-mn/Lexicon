@@ -30,6 +30,7 @@ export function CourseDetailsPage(): ReactElement {
     course,
     loading: courseLoading,
     error: courseError,
+    fetchCourseDetails,
   } = useCourseDetails(courseId);
   const [showModulesPopup, setShowModulesPopup] = useState(false);
   const handleShowModulesPopup = () => setShowModulesPopup(true);
@@ -45,7 +46,7 @@ export function CourseDetailsPage(): ReactElement {
     }
     if (course) setNavBarName(course?.courseName);
   }, [modules, selectedModuleId, course]);
-  const { artifacts } = useArtifacts();
+
   const { setNavBarName } = useNavbar();
 
   const downloadFile = async (documentId: string) => {
@@ -98,6 +99,7 @@ export function CourseDetailsPage(): ReactElement {
           id={courseId}
           documentType="course"
           edit={false}
+          handleUpdateDocs={fetchCourseDetails}
         />
       )}
       <section className="modules-section mb-5">
@@ -124,6 +126,7 @@ export function CourseDetailsPage(): ReactElement {
                   maxWidth: "20rem",
                   marginRight: "2rem",
                   cursor: "pointer",
+                  minWidth: "13rem",
                 }}
                 onClick={() => {
                   navigate(`/modules/${module.id}`);
@@ -158,9 +161,9 @@ export function CourseDetailsPage(): ReactElement {
           )}
         </div>
         <ul className="materials-list">
-          {artifacts && (
+          {course?.artifacts && (
             <ul className="materials-list">
-              {artifacts.map((artifact) => (
+              {course?.artifacts.map((artifact) => (
                 <li key={artifact.id} className="material-item">
                   <span>{artifact.fileName}</span>
                   <span>
@@ -187,7 +190,11 @@ export function CourseDetailsPage(): ReactElement {
 
       <section className="participants-section">
         {course && (
-          <ParticipantList courseUser={course.users} courseId={course.id} />
+          <ParticipantList
+            courseUser={course.users}
+            courseId={course.id}
+            fetchCourseDetails={fetchCourseDetails}
+          />
         )}
       </section>
     </div>

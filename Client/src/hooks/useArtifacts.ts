@@ -9,7 +9,7 @@ interface ArtifactsHookResult {
   setArtifacts: React.Dispatch<React.SetStateAction<IArtifact[]>>
 }
 
-export function useArtifacts(): ArtifactsHookResult {
+export function useArtifacts(courseId: string): ArtifactsHookResult {
   const [artifacts, setArtifacts] = useState<IArtifact[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +17,7 @@ export function useArtifacts(): ArtifactsHookResult {
   useEffect(() => {
     async function fetchArtifacts() {
       try {
-        const data = await getCourseArtifacts();
+        const data = await getCourseArtifacts(courseId);
         setArtifacts(data);
         setLoading(false);
       } catch (err) {

@@ -10,6 +10,8 @@ interface PopupProps {
   edit: boolean;
   id?: string | null;
   documentType: "course" | "module" | "activity";
+  handleUpdateDocs?: () => Promise<void>;
+  userId?: string | null;
 }
 export const DocumentAddPage: React.FC<PopupProps> = ({
   show,
@@ -17,6 +19,8 @@ export const DocumentAddPage: React.FC<PopupProps> = ({
   edit,
   id,
   documentType,
+  handleUpdateDocs,
+  userId,
 }) => {
   const [fileName, setFileName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -30,7 +34,6 @@ export const DocumentAddPage: React.FC<PopupProps> = ({
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(documentType);
     try {
       setSuccess(false);
       setLoading(true);
@@ -45,6 +48,8 @@ export const DocumentAddPage: React.FC<PopupProps> = ({
           courseId: documentType === "course" ? id : null,
           moduleId: documentType === "module" ? id : null,
           activityId: documentType === "activity" ? id : null,
+          userId: userId !== null ? userId : null,
+          status: userId && documentType === "activity" ? "pending" : null,
         },
         {
           headers: {
@@ -55,6 +60,7 @@ export const DocumentAddPage: React.FC<PopupProps> = ({
 
       if (res.status === 201) {
         setSuccess(true);
+        handleUpdateDocs();
         setFileName("");
         setDescription("");
         setError("");

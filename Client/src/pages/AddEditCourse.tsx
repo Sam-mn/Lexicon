@@ -15,7 +15,7 @@ interface PopupProps {
   handleClose: () => void;
   edit: boolean;
   courseId?: string | null;
-  handleUpdateCourses?: (NewCourseData: ICourse) => void | undefined;
+  handleUpdateCourses?: (NewCourseData: ICourse) => Promise<void>;
 }
 
 export const AddEditCourse: React.FC<PopupProps> = ({

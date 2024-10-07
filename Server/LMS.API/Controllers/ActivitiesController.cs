@@ -21,10 +21,39 @@ namespace LMS.API.Controllers
 
         // GET: api/Activities
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Activity>>> GetActivity()
+        public async Task<ActionResult<IEnumerable<ActivitiesDto>>> GetActivity()
         {
-            return await _context.Activity.ToListAsync();
+            return await _context.Activity.Include(c => c.ActivityType).Select((a) => new ActivitiesDto
+            {
+                Id = a.Id,
+                Description = a.Description,
+                Name = a.Name,
+                StartTime = a.StartTime,
+                EndTime = a.EndTime,
+                ActivityTypeName = a.ActivityType.ActivityTypeName
+            }).ToListAsync();
         }
+
+        // GET: api/Activities
+        [HttpGet("{id}/getDocuments")]
+        public async Task<ActionResult<IEnumerable<Artifact>>> GetActivityDocuments(Guid id)
+        {
+            return await _context.Artifact.Where((a)=> a.ActivityId == id && a.UserId == null).ToListAsync();
+        }
+
+        [HttpGet("{id}/getDocuments/{studentId}/student")]
+        public async Task<ActionResult<IEnumerable<Artifact>>> GetActivityDocuments(Guid id, Guid studentId)
+        {
+            return await _context.Artifact.Where((a) => a.ActivityId == id && a.UserId == studentId).ToListAsync();
+        }
+
+        [HttpGet("{id}/teacher")]
+        public async Task<ActionResult<IEnumerable<Artifact>>> GetActivityTeacherDocuments(Guid id)
+        {
+            var test = await _context.Artifact.Where((a) => a.ActivityId == id && a.UserId != null).ToListAsync();
+            return test;
+        }
+
 
         // GET: api/Activities
         [HttpGet("courseActivity")]

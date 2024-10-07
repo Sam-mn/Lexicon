@@ -18,6 +18,7 @@ interface PopupProps {
   handleClose: () => void;
   edit: boolean;
   courseId?: string | null;
+  fetchCourseDetails: () => Promise<void>;
 }
 
 export const ParticipantsAddPage: React.FC<PopupProps> = ({
@@ -25,6 +26,7 @@ export const ParticipantsAddPage: React.FC<PopupProps> = ({
   handleClose,
   edit,
   courseId,
+  fetchCourseDetails,
 }) => {
   // const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ export const ParticipantsAddPage: React.FC<PopupProps> = ({
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [role, setRole] = useState<string>("");
+  const [userRole, setUserRole] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -44,18 +46,19 @@ export const ParticipantsAddPage: React.FC<PopupProps> = ({
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        `${BASE_URL}/courses/${courseId}/participants`,
-        {
-          name: firstName + lastName,
-          email,
-          role,
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/authentication`, {
+        name: `${firstName} ${lastName}`,
+        email,
+        userRole,
+        userName,
+        password,
+        courseId,
+      });
 
       if (res.status === 201) {
         // navigate(`/courses/${courseId}`);
         handleClose();
+        fetchCourseDetails();
       } else {
         setError("Något gick fel vid tillägg av deltagare.");
       }
@@ -115,8 +118,8 @@ export const ParticipantsAddPage: React.FC<PopupProps> = ({
               <Form.Group className="mb-3">
                 <Form.Label>Roll*</Form.Label>
                 <Form.Select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
+                  value={userRole}
+                  onChange={(e) => setUserRole(e.target.value)}
                   required
                 >
                   <option value="">Välj roll</option>
@@ -139,7 +142,7 @@ export const ParticipantsAddPage: React.FC<PopupProps> = ({
               <Form.Group className="mb-3">
                 <Form.Label>Lösenord*</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="password"
                   placeholder="Ange deltagarens lösenord"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -156,12 +159,6 @@ export const ParticipantsAddPage: React.FC<PopupProps> = ({
                 >
                   {loading ? "Lägger till..." : "Lägg till deltagare"}
                 </Button>
-                {/* <Button
-                  variant="secondary"
-                  onClick={() => navigate(`/courses/${courseId}`)}
-                >
-                  Avbryt
-                </Button> */}
               </div>
             </Form>
           </Col>

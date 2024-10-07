@@ -85,6 +85,7 @@ export interface IArtifact {
   description: string;
   uploadTime: string;
   ContentType: string;
+  status: string
 }
 
 export interface IUser {

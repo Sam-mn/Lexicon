@@ -30,6 +30,9 @@ export function LoginPage(): ReactElement {
       } else if (userData?.UserRole === "teacher") {
         navigate("/");
       }
+      if (userData === undefined) {
+        setError("Invalid username or password");
+      }
     } catch (err) {
       setError("Invalid username or password");
     } finally {

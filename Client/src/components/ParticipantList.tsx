@@ -8,11 +8,13 @@ import { ParticipantsAddPage } from "../pages";
 interface ParticipantListProps {
   courseUser: IUser[];
   courseId: string;
+  fetchCourseDetails: () => Promise<void>;
 }
 
 export function ParticipantList({
   courseUser,
   courseId,
+  fetchCourseDetails,
 }: ParticipantListProps): ReactElement {
   const { userData } = useAuth();
   const [showPopup, setShowPopup] = useState(false);
@@ -27,6 +29,7 @@ export function ParticipantList({
           handleClose={handleClose}
           show={showPopup}
           courseId={courseId}
+          fetchCourseDetails={fetchCourseDetails}
         />
       )}
       <div className="mb-3">

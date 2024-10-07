@@ -48,9 +48,12 @@ namespace LMS.API.Data
                     {
                         var currentModulesList = await db.Module.ToListAsync();
                         var activityTypesList = await db.ActivityType.ToListAsync();
-                        var generatedActivities = GenerateActivities(currentModulesList, activityTypesList);
-                        await db.AddRangeAsync(generatedActivities);
-                        await db.SaveChangesAsync();
+                        if(activityTypesList.Count <= 0)
+                        {
+                            var generatedActivities = GenerateActivities(currentModulesList, activityTypesList);
+                            await db.AddRangeAsync(generatedActivities);
+                            await db.SaveChangesAsync();
+                        }
                     }
 
                     var existingCourses = await db.Courses.ToListAsync();

@@ -48,6 +48,7 @@ namespace LMS.API.Controllers
             });
         }
 
+
         // PUT: api/Artifacts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -105,6 +106,7 @@ namespace LMS.API.Controllers
                 ActivityId = dto.ActivityId,
                 UserId = dto.UserId,
                 ContentType = dto.ContentType,
+                status = dto.Status
             };
 
             _context.Artifact.Add(artifact);

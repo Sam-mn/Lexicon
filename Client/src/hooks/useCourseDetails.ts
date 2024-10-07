@@ -7,6 +7,7 @@ interface CourseDetailsHookResult {
   activities?: IActivity[];
   loading: boolean;
   error: string | null;
+  fetchCourseDetails: () => Promise<void>
 }
 
 export function useCourseDetails(courseId: string | undefined): CourseDetailsHookResult {
@@ -16,29 +17,30 @@ export function useCourseDetails(courseId: string | undefined): CourseDetailsHoo
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchCourseDetails() {
-      console.log(course)
-      if (!courseId) {
-        setError('Invalid course ID');
-        setLoading(false);
-        return;
-      }
-      try {
-        const courseData = await getCourseDetails(courseId);
-        // console.log(courseData)
-        //const activitiesData = await getCourseActivities(courseId);
-        setCourse(courseData);
-        //setActivities(activitiesData);
-        setLoading(false);
-      } catch (err) {
-        setError('An error occurred while fetching course details.');
-        setLoading(false);
-      }
+  const fetchCourseDetails = async ()=>{
+    console.log(course)
+    if (!courseId) {
+      setError('Invalid course ID');
+      setLoading(false);
+      return;
     }
+    try {
+      const courseData = await getCourseDetails(courseId);
+      // console.log(courseData)
+      //const activitiesData = await getCourseActivities(courseId);
+      setCourse(courseData);
+      //setActivities(activitiesData);
+      setLoading(false);
+    } catch (err) {
+      setError('An error occurred while fetching course details.');
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
 
     fetchCourseDetails();
   }, [courseId]);
 
-  return { course, activities, loading, error };
+  return { course, activities, loading, error ,fetchCourseDetails };
 }

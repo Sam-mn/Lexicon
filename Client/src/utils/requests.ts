@@ -124,7 +124,7 @@ export async function getCourseActivities(
   return response.data;
 }
 
-export async function getCourseArtifacts(): Promise<IArtifact[]> {
+export async function getCourseArtifacts( courseId: string): Promise<IArtifact[]> {
   const response = await axios.get(`${BASE_URL}/Artifacts`);
   return response.data;
 }
