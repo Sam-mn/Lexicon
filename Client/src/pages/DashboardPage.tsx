@@ -1,12 +1,11 @@
-import "../css/DashboardPage.css";
-import { useNavigate, Link } from "react-router-dom";
-import { useCourses, useNavbar, useWeeklyActivities, useAuth } from "../hooks";
-import { ActivityCard } from "../components";
-import { ReactElement, useEffect, useState } from "react";
-import { AddEditCourse } from "../pages";
-import { Button } from "react-bootstrap";
-import "../css/DashboardPage.css";
-import { ICourse } from "../utils";
+import { useNavigate, Link } from 'react-router-dom';
+import { useCourses, useNavbar, useWeeklyActivities, useAuth } from '../hooks';
+import { ActivityCard } from '../components';
+import { ReactElement, useEffect, useState } from 'react';
+import { AddEditCourse } from '../pages';
+import { Button, ListGroup } from 'react-bootstrap';
+import '../css/DashboardPage.css';
+import { ICourse } from '../utils';
 
 export function DashboardPage(): ReactElement {
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ export function DashboardPage(): ReactElement {
   const handleShow = () => setShowPopup(true);
   const handleClose = () => setShowPopup(false);
   useEffect(() => {
-    setNavBarName("Hem");
+    setNavBarName('Hem');
   }, []);
 
   const handleUpdateCourses = (NewCourseData: ICourse) => {
@@ -40,11 +39,11 @@ export function DashboardPage(): ReactElement {
   endOfWeek.setDate(currentDate.getDate() + (5 - currentDate.getDay()));
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString("sv-SE", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+    return date.toLocaleDateString('sv-SE', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
   };
 
@@ -58,7 +57,7 @@ export function DashboardPage(): ReactElement {
           handleUpdateCourses={handleUpdateCourses}
         />
       )}
-      <div className="mt-4 ">
+      <div className="mt-4">
         <h1>Välkommen {userData?.name}!</h1>
         <p className="text-muted">{formatDate(currentDate)} </p>
         <hr />
@@ -74,35 +73,46 @@ export function DashboardPage(): ReactElement {
           {activities.length === 0 && (
             <p>Det finns inga aktiviteter planerade för resten av veckan.</p>
           )}
-          <div className="mt-4 d-flex flex-wrap">
+          <div className="activities-grid">
             {activities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
             ))}
           </div>
         </section>
       </div>
-      <section className="courses-section">
-        <h4>Kurser</h4>
-        <Button variant="primary" className="w-25" onClick={handleShow}>
-          {" "}
-          Lägg till en ny kurs
-        </Button>
 
-        {courses?.map((c) => (
-          <div
-            key={c.id}
-            className="dashBoardCourseList"
-            onClick={() => {
-              navigate(`/courses/${c.id}`);
-              setNavBarName(c.courseName);
-              setCourseCode(c.courseCode);
-              setCredits(c.credits);
-              setIsCourse(true);
-            }}
+      <section className="courses-section">
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h4>Kurser</h4>
+          <Button
+            variant="primary"
+            className="add-course-button"
+            onClick={handleShow}
           >
-            <h4>{c.courseName}</h4>
-          </div>
-        ))}
+            Lägg till en ny kurs
+          </Button>
+        </div>
+        <ListGroup className="courses-list">
+          {courses?.map((c) => (
+            <ListGroup.Item
+              key={c.id}
+              action
+              onClick={() => {
+                navigate(`/courses/${c.id}`);
+                setNavBarName(c.courseName);
+                setCourseCode(c.courseCode);
+                setCredits(c.credits);
+                setIsCourse(true);
+              }}
+              className="course-item"
+            >
+              <div className="d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">{c.courseName}</h5>
+                <small className="text-muted">Kurskod: {c.courseCode}</small>
+              </div>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
       </section>
     </div>
   );
