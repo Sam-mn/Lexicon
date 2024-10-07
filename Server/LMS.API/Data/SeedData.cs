@@ -56,19 +56,6 @@ namespace LMS.API.Data
                         }
                     }
 
-                    var existingCourses = await db.Courses.ToListAsync();
-
-                    var modules = GenerateModules(existingCourses).Take(5);
-                    await db.AddRangeAsync(modules);
-                    await db.SaveChangesAsync();
-
-                    var existingModules = await db.Module.ToListAsync();
-                    var activityTypes = await db.ActivityType.ToListAsync();
-
-                    var activities = GenerateActivities(existingModules, activityTypes);
-                    await db.AddRangeAsync(activities);
-                    await db.SaveChangesAsync();
-
                 }
                 catch (Exception ex)
                 {
@@ -139,7 +126,7 @@ namespace LMS.API.Data
                     .RuleFor(a => a.CourseId, module.CourseId)
                     .RuleFor(a => a.ActivityTypeId, f => f.PickRandom(activityTypes).Id);
 
-                activitiesList.AddRange(activityFaker.Generate(3));
+                activitiesList.AddRange(activityFaker.Generate(1));
             }
             return activitiesList;
         }
